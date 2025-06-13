@@ -12,7 +12,7 @@ node_modules*
 .DS_Store
 dist
 *.local
-
+.cursor
 # Editor directories and files
 .idea
 *.suo

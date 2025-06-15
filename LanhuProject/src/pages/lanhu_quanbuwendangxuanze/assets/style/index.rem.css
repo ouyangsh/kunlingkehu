@@ -1,0 +1,454 @@
+html {
+  font-size: 37.5px;
+}
+
+.page {
+  background-color: rgba(242, 245, 250, 1);
+  position: relative;
+  width: 20rem;
+  height: 43.307rem;
+  overflow: hidden;
+}
+
+.group_1 {
+  background-color: rgba(255, 255, 255, 1);
+  padding: 0.774rem 0.374rem 0.774rem 0.8rem;
+}
+
+.group_21 {
+  margin: 0 0.027rem 0 0.32rem;
+}
+
+.text_24 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 0.8rem;
+  letter-spacing: -0.6000000238418579px;
+  font-family: SFProText-Semibold;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 0.96rem;
+}
+
+.label_30 {
+  width: 0.907rem;
+  height: 0.587rem;
+  margin: 0.107rem 0 0.267rem 13.2rem;
+}
+
+.label_31 {
+  width: 0.8rem;
+  height: 0.587rem;
+  margin: 0.107rem 0 0.267rem 0.267rem;
+}
+
+.label_32 {
+  width: 1.28rem;
+  height: 0.614rem;
+  margin: 0.107rem 0 0.24rem 0.267rem;
+}
+
+.group_22 {
+  width: 11.654rem;
+  margin: 0.88rem 0 0 7.174rem;
+}
+
+.text_2 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 1.013rem;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 1.067rem;
+  margin-top: 0.454rem;
+}
+
+.image_1 {
+  width: 4.134rem;
+  height: 1.52rem;
+}
+
+.text-wrapper_8 {
+  width: 18.4rem;
+  margin: 1.174rem 0.427rem 0 0;
+}
+
+.text_3 {
+  overflow-wrap: break-word;
+  color: rgba(25, 33, 61, 1);
+  font-size: 0.746rem;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.854rem;
+}
+
+.text_4 {
+  overflow-wrap: break-word;
+  color: rgba(37, 99, 235, 1);
+  font-size: 0.746rem;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.854rem;
+}
+
+.group_4 {
+  background-color: rgba(255, 255, 255, 1);
+  margin-top: 0.267rem;
+  padding: 0.8rem 0.8rem 0.534rem 0.8rem;
+}
+
+.group_23 {
+}
+
+.block_1 {
+  background-color: rgba(244, 246, 250, 1);
+  border-radius: 8px;
+  padding: 0.56rem 0.534rem 0.48rem 0.8rem;
+}
+
+.image_2 {
+  width: 1.814rem;
+  height: 1.814rem;
+  margin-bottom: 0.08rem;
+}
+
+.text-group_37 {
+  margin: 0.027rem 0 0.054rem 0.534rem;
+}
+
+.text_5 {
+  overflow-wrap: break-word;
+  color: rgba(25, 33, 61, 1);
+  font-size: 0.746rem;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.747rem;
+  margin-right: 3.894rem;
+}
+
+.text_6 {
+  overflow-wrap: break-word;
+  color: rgba(102, 102, 102, 1);
+  font-size: 0.64rem;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.64rem;
+  margin-top: 0.427rem;
+}
+
+.label_4 {
+  width: 0.64rem;
+  height: 0.64rem;
+  margin: 1.254rem 0 0 0.64rem;
+}
+
+.text_7 {
+  overflow-wrap: break-word;
+  color: rgba(102, 102, 102, 1);
+  font-size: 0.64rem;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.64rem;
+  margin: 1.254rem 0 0 0.107rem;
+}
+
+.label_5 {
+  width: 0.854rem;
+  height: 0.854rem;
+  margin: 0.534rem 0 0.507rem 6.694rem;
+}
+
+.block_2 {
+  background-color: rgba(244, 246, 250, 1);
+  border-radius: 8px;
+  margin-top: 0.427rem;
+  padding: 0.48rem 0.534rem 0.534rem 0.8rem;
+}
+
+.image-text_36 {
+  width: 7.734rem;
+}
+
+.image_3 {
+  width: 1.814rem;
+  height: 1.814rem;
+  margin-bottom: 0.107rem;
+}
+
+.text-group_38 {
+  margin-top: 0.054rem;
+}
+
+.text_8 {
+  overflow-wrap: break-word;
+  color: rgba(25, 33, 61, 1);
+  font-size: 0.746rem;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.747rem;
+  margin-right: 3.44rem;
+}
+
+.text_9 {
+  overflow-wrap: break-word;
+  color: rgba(102, 102, 102, 1);
+  font-size: 0.64rem;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.64rem;
+  margin-top: 0.48rem;
+}
+
+.label_6 {
+  width: 0.64rem;
+  height: 0.64rem;
+  margin: 1.28rem 0 0 0.8rem;
+}
+
+.text_10 {
+  overflow-wrap: break-word;
+  color: rgba(102, 102, 102, 1);
+  font-size: 0.64rem;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.64rem;
+  margin: 1.28rem 0 0 0.107rem;
+}
+
+.label_7 {
+  width: 0.854rem;
+  height: 0.854rem;
+  margin: 0.56rem 0 0.507rem 6.534rem;
+}
+
+.block_3 {
+  background-color: rgba(244, 246, 250, 1);
+  border-radius: 8px;
+  margin-top: 0.427rem;
+  padding: 0.534rem 0.534rem 0.534rem 0.8rem;
+}
+
+.image-text_37 {
+  width: 7.734rem;
+}
+
+.image_4 {
+  width: 1.814rem;
+  height: 1.814rem;
+  margin: 0.027rem 0 0.027rem 0;
+}
+
+.text-group_39 {
+}
+
+.text_11 {
+  overflow-wrap: break-word;
+  color: rgba(25, 33, 61, 1);
+  font-size: 0.746rem;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.747rem;
+  margin-right: 3.44rem;
+}
+
+.text_12 {
+  overflow-wrap: break-word;
+  color: rgba(102, 102, 102, 1);
+  font-size: 0.64rem;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.64rem;
+  margin-top: 0.48rem;
+}
+
+.label_8 {
+  width: 0.64rem;
+  height: 0.64rem;
+  margin: 1.227rem 0 0 0.8rem;
+}
+
+.text_13 {
+  overflow-wrap: break-word;
+  color: rgba(102, 102, 102, 1);
+  font-size: 0.64rem;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.64rem;
+  margin: 1.227rem 0 0 0.107rem;
+}
+
+.label_9 {
+  width: 0.854rem;
+  height: 0.854rem;
+  margin: 0.507rem 0 0.507rem 6.534rem;
+}
+
+.group_24 {
+  width: 18.4rem;
+  margin-top: 0.534rem;
+}
+
+.image-text_38 {
+  width: 14.614rem;
+}
+
+.image-wrapper_1 {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 8px;
+  border: 1px solid rgba(221, 221, 221, 1);
+  padding: 0.534rem 0.054rem 0.534rem 0.054rem;
+}
+
+.image_5 {
+  width: 2.987rem;
+  height: 2.027rem;
+}
+
+.text-group_40 {
+  margin: 0.64rem 0 0.64rem 0;
+}
+
+.text_14 {
+  overflow-wrap: break-word;
+  color: rgba(25, 33, 61, 1);
+  font-size: 0.746rem;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.747rem;
+}
+
+.text_15 {
+  overflow-wrap: break-word;
+  color: rgba(102, 102, 102, 1);
+  font-size: 0.64rem;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.64rem;
+  margin: 0.48rem 5.547rem 0 0;
+}
+
+.label_14 {
+  width: 0.854rem;
+  height: 0.854rem;
+  margin: 1.147rem 0 1.147rem 0;
+}
+
+.group_25 {
+  width: 18.4rem;
+  margin-top: 0.534rem;
+}
+
+.image-text_39 {
+  width: 14.614rem;
+}
+
+.image-wrapper_2 {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 8px;
+  border: 1px solid rgba(221, 221, 221, 1);
+  padding: 0.534rem 0.054rem 0.534rem 0.054rem;
+}
+
+.image_6 {
+  width: 2.987rem;
+  height: 2.027rem;
+}
+
+.text-group_41 {
+  margin: 0.64rem 0 0.64rem 0;
+}
+
+.text_16 {
+  overflow-wrap: break-word;
+  color: rgba(25, 33, 61, 1);
+  font-size: 0.746rem;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.747rem;
+}
+
+.text_17 {
+  overflow-wrap: break-word;
+  color: rgba(102, 102, 102, 1);
+  font-size: 0.64rem;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.64rem;
+  margin: 0.48rem 5.547rem 0 0;
+}
+
+.box_4 {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  width: 0.854rem;
+  height: 0.854rem;
+  border: 2px solid rgba(204, 204, 204, 1);
+  margin: 1.147rem 0 1.147rem 0;
+}
+
+.group_6 {
+  background-color: rgba(255, 255, 255, 1);
+  margin-top: 12.96rem;
+  padding: 0.88rem 1.6rem 0.427rem 2.267rem;
+}
+
+.list_8 {
+  width: 16.134rem;
+  height: 1.867rem;
+}
+
+.image-text_40 {
+  margin-right: 3.547rem;
+}
+
+.label_10 {
+  width: 1.067rem;
+  height: 1.067rem;
+}
+
+.text-group_6 {
+  width: 2.4rem;
+  overflow-wrap: break-word;
+  color: rgba(68, 68, 68, 1);
+  font-size: 0.48rem;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.48rem;
+  align-self: center;
+  margin-top: 0.32rem;
+}
+
+.group_7 {
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 5px;
+  width: 7.2rem;
+  height: 0.267rem;
+  margin: 1.36rem 4.774rem 0 4.16rem;
+}

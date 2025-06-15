@@ -1,0 +1,149 @@
+.page {
+  background-color: rgba(242, 245, 250, 1);
+  position: relative;
+  width: 750rpx;
+  height: 1624rpx;
+  overflow: hidden;
+}
+
+.section_1 {
+  background-color: rgba(255, 255, 255, 1);
+  padding: 29rpx 14rpx 25rpx 30rpx;
+}
+
+.block_2 {
+  margin: 0 1rpx 0 12rpx;
+}
+
+.text_4 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 30rpx;
+  letter-spacing: -0.6000000238418579px;
+  font-family: SFProText-Semibold;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 36rpx;
+}
+
+.label_8 {
+  width: 34rpx;
+  height: 22rpx;
+  margin: 4rpx 0 10rpx 495rpx;
+}
+
+.label_9 {
+  width: 30rpx;
+  height: 22rpx;
+  margin: 4rpx 0 10rpx 10rpx;
+}
+
+.label_10 {
+  width: 48rpx;
+  height: 23rpx;
+  margin: 4rpx 0 9rpx 10rpx;
+}
+
+.block_3 {
+  margin-top: 33rpx;
+}
+
+.label_4 {
+  width: 32rpx;
+  height: 32rpx;
+  margin: 13rpx 0 12rpx 0;
+}
+
+.text_2 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 38rpx;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 40rpx;
+  margin: 9rpx 0 0 237rpx;
+}
+
+.image_1 {
+  width: 155rpx;
+  height: 57rpx;
+  margin-left: 130rpx;
+}
+
+.section_4 {
+  background-color: rgba(255, 255, 255, 1);
+  position: relative;
+  width: 750rpx;
+  margin-top: 10rpx;
+  padding: 2rpx 30rpx 0 30rpx;
+}
+
+.paragraph_1 {
+  width: 112rpx;
+  height: 440rpx;
+  overflow-wrap: break-word;
+  color: rgba(119, 119, 119, 1);
+  font-size: 28rpx;
+  font-weight: NaN;
+  text-align: left;
+  line-height: 88rpx;
+  margin-bottom: -2rpx;
+}
+
+.paragraph_2 {
+  width: 242rpx;
+  height: 440rpx;
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 28rpx;
+  font-weight: NaN;
+  text-align: right;
+  line-height: 88rpx;
+  margin-bottom: -2rpx;
+}
+
+.image_2 {
+  position: absolute;
+  left: 30rpx;
+  top: 88rpx;
+  width: 690rpx;
+  height: 1rpx;
+}
+
+.image_3 {
+  position: absolute;
+  left: 30rpx;
+  top: 178rpx;
+  width: 690rpx;
+  height: 1rpx;
+}
+
+.image_4 {
+  position: absolute;
+  left: 30rpx;
+  top: 267rpx;
+  width: 690rpx;
+  height: 1rpx;
+}
+
+.image_5 {
+  position: absolute;
+  left: 30rpx;
+  top: 356rpx;
+  width: 690rpx;
+  height: 1rpx;
+}
+
+.group_2 {
+  padding: 968rpx 239rpx 17rpx 241rpx;
+}
+
+.group_1 {
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 5px;
+  width: 270rpx;
+  height: 10rpx;
+}

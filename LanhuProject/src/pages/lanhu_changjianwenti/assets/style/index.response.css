@@ -1,0 +1,304 @@
+.page {
+  background-color: rgba(242, 245, 250, 1);
+  position: relative;
+  width: 100vw;
+  height: 240vw;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 135.34vw;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.image_1 {
+  width: 100vw;
+  height: 104.67vw;
+}
+
+.box_1 {
+  background-color: rgba(255, 255, 255, 1);
+  position: absolute;
+  left: 0;
+  top: 69.34vw;
+  width: 100vw;
+  height: 170.67vw;
+}
+
+.group_5 {
+  position: relative;
+  height: 146.8vw;
+  margin-bottom: 23.87vw;
+  padding: 0 39.86vw 3.6vw 4vw;
+}
+
+.text_6 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 4vw;
+  letter-spacing: -0.6000000238418579px;
+  font-family: SFProText-Semibold;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 4.8vw;
+  margin: -65.46vw 45.73vw 0 1.6vw;
+}
+
+.text_2 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 5.06vw;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 5.34vw;
+  margin: 5.6vw 0 0 35.86vw;
+}
+
+.paragraph_1 {
+  width: 48vw;
+  height: 14.94vw;
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 5.33vw;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  line-height: 7.47vw;
+  margin: 12.4vw 6.8vw 0 1.33vw;
+}
+
+.text_3 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 4.26vw;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 4.27vw;
+  margin: 26.4vw 39.06vw 0 0;
+}
+
+.paragraph_2 {
+  width: 51.87vw;
+  height: 58.67vw;
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 3.73vw;
+  font-weight: NaN;
+  text-align: left;
+  line-height: 11.74vw;
+  margin: 4vw 4.26vw 0 0;
+}
+
+.text_4 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 4.26vw;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 4.27vw;
+  margin: 5.33vw 39.06vw 0 0;
+}
+
+.paragraph_3 {
+  width: 51.87vw;
+  height: 58.67vw;
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 3.73vw;
+  font-weight: NaN;
+  text-align: left;
+  line-height: 11.74vw;
+  margin: 4vw 4.26vw 0 0;
+}
+
+.image_2 {
+  position: absolute;
+  left: 4vw;
+  top: 24vw;
+  width: 92vw;
+  height: 0.14vw;
+}
+
+.image_3 {
+  position: absolute;
+  left: 4vw;
+  top: 96.27vw;
+  width: 92vw;
+  height: 0.14vw;
+}
+
+.image_4 {
+  position: absolute;
+  left: 4vw;
+  top: 36vw;
+  width: 92vw;
+  height: 0.14vw;
+}
+
+.image_5 {
+  position: absolute;
+  left: 4vw;
+  top: 108.27vw;
+  width: 92vw;
+  height: 0.14vw;
+}
+
+.image_6 {
+  position: absolute;
+  left: 4vw;
+  top: 47.87vw;
+  width: 92vw;
+  height: 0.14vw;
+}
+
+.image_7 {
+  position: absolute;
+  left: 4vw;
+  top: 120.14vw;
+  width: 92vw;
+  height: 0.14vw;
+}
+
+.image_8 {
+  position: absolute;
+  left: 4vw;
+  top: 59.74vw;
+  width: 92vw;
+  height: 0.14vw;
+}
+
+.label_10 {
+  position: absolute;
+  left: 91.6vw;
+  top: -64.93vw;
+  width: 6.4vw;
+  height: 3.07vw;
+}
+
+.label_11 {
+  position: absolute;
+  left: 86.27vw;
+  top: -64.93vw;
+  width: 4vw;
+  height: 2.94vw;
+}
+
+.label_12 {
+  position: absolute;
+  left: 80.4vw;
+  top: -64.93vw;
+  width: 4.54vw;
+  height: 2.94vw;
+}
+
+.image_9 {
+  position: absolute;
+  left: 77.47vw;
+  top: -56.26vw;
+  width: 20.67vw;
+  height: 7.6vw;
+}
+
+.label_4 {
+  position: absolute;
+  left: 4vw;
+  top: -54.53vw;
+  width: 4.27vw;
+  height: 4.27vw;
+}
+
+.image_10 {
+  position: absolute;
+  left: 4vw;
+  top: 132vw;
+  width: 92vw;
+  height: 0.14vw;
+}
+
+.group_1 {
+  position: absolute;
+  left: 4vw;
+  top: -17.06vw;
+  width: 92vw;
+  height: 11.74vw;
+  background: url(/static/lanhu_changjianwenti/SketchPng820d21f6bf149019cedb421d857b5742821d50349ec8e0b002f80271de34c0a1.png)
+    100% no-repeat;
+  background-size: 100% 100%;
+  padding: 3.73vw 38.4vw 3.73vw 4vw;
+}
+
+.image-text_5 {
+  width: 49.6vw;
+}
+
+.label_5 {
+  width: 4.27vw;
+  height: 4.27vw;
+}
+
+.text-group_1 {
+  overflow-wrap: break-word;
+  color: rgba(153, 153, 153, 1);
+  font-size: 4.26vw;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 4.27vw;
+}
+
+.group_2 {
+  background-image: url(/static/lanhu_changjianwenti/99f0009d89dd4404a1da4166ad32a6cd_mergeImage.png);
+  position: absolute;
+  left: 55.87vw;
+  top: -36.53vw;
+  width: 34.67vw;
+  height: 19.47vw;
+}
+
+.box_3 {
+  background-color: rgba(242, 245, 250, 1);
+  margin: 146.66vw 0 0 -100vw;
+  padding: 4vw 24vw 2.13vw 24vw;
+}
+
+.list_3 {
+  width: 52vw;
+  height: 9.87vw;
+  justify-content: space-between;
+}
+
+.image-text_6 {
+  margin-right: 32.8vw;
+}
+
+.label_6 {
+  width: 5.34vw;
+  height: 5.34vw;
+  align-self: center;
+}
+
+.text-group_2 {
+  overflow-wrap: break-word;
+  color: rgba(68, 68, 68, 1);
+  font-size: 2.4vw;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 2.4vw;
+  margin-top: 2.14vw;
+}
+
+.group_3 {
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 5px;
+  width: 36vw;
+  height: 1.34vw;
+  margin: 6.66vw 7.86vw 0 8.13vw;
+}

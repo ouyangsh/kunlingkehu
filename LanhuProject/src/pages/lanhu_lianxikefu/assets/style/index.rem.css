@@ -1,0 +1,129 @@
+html {
+  font-size: 37.5px;
+}
+
+.page {
+  background-color: rgba(242, 245, 250, 1);
+  position: relative;
+  width: 20rem;
+  height: 43.307rem;
+  overflow: hidden;
+  padding: 0.774rem 0.374rem 0.427rem 0.8rem;
+}
+
+.group_1 {
+  margin: 0 0.027rem 0 0.32rem;
+}
+
+.text_6 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 0.8rem;
+  letter-spacing: -0.6000000238418579px;
+  font-family: SFProText-Semibold;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 0.96rem;
+}
+
+.label_8 {
+  width: 0.907rem;
+  height: 0.587rem;
+  margin: 0.107rem 0 0.267rem 13.2rem;
+}
+
+.label_9 {
+  width: 0.8rem;
+  height: 0.587rem;
+  margin: 0.107rem 0 0.267rem 0.267rem;
+}
+
+.label_10 {
+  width: 1.28rem;
+  height: 0.614rem;
+  margin: 0.107rem 0 0.24rem 0.267rem;
+}
+
+.group_2 {
+  margin-top: 0.88rem;
+}
+
+.label_4 {
+  width: 0.854rem;
+  height: 0.854rem;
+  margin: 0.347rem 0 0.32rem 0;
+}
+
+.text_2 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 1.013rem;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 1.067rem;
+  margin: 0.24rem 0 0 6.32rem;
+}
+
+.image_1 {
+  width: 4.134rem;
+  height: 1.52rem;
+  margin-left: 3.467rem;
+}
+
+.group_3 {
+  width: 13.307rem;
+  margin: 1.387rem 5.52rem 0 0;
+}
+
+.section_1 {
+  border-radius: 50%;
+  background-image: url(/static/lanhu_lianxikefu/b2cd59a421e24358aa610072c15a4f6f_mergeImage.png);
+  width: 2.667rem;
+  height: 2.667rem;
+  border: 1px solid rgba(151, 151, 151, 1);
+}
+
+.text-wrapper_1 {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 16px;
+  margin: 0.16rem 0 0.16rem 0;
+  padding: 0.747rem 0.64rem 0.747rem 0.667rem;
+}
+
+.text_3 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 0.8rem;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 0.854rem;
+}
+
+.text-wrapper_2 {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 16px;
+  margin: 30.854rem 0.427rem 0 0;
+  padding: 0.587rem 11.2rem 0.587rem 1.227rem;
+}
+
+.text_4 {
+  overflow-wrap: break-word;
+  color: rgba(153, 153, 153, 1);
+  font-size: 0.853rem;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 1.494rem;
+}
+
+.block_4 {
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 5px;
+  width: 7.2rem;
+  height: 0.267rem;
+  margin: 0.907rem 6.027rem 0 5.6rem;
+}

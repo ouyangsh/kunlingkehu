@@ -1,0 +1,157 @@
+.page {
+  background-color: rgba(242, 245, 250, 1);
+  position: relative;
+  width: 750px;
+  height: 1624px;
+  overflow: hidden;
+}
+
+.block_1 {
+  background-color: rgba(255, 255, 255, 1);
+  padding: 29px 14px 25px 20px;
+}
+
+.section_7 {
+  margin: 0 1px 0 22px;
+}
+
+.text_10 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 30px;
+  letter-spacing: -0.6000000238418579px;
+  font-family: SFProText-Semibold;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 36px;
+}
+
+.label_22 {
+  width: 34px;
+  height: 22px;
+  margin: 4px 0 10px 495px;
+}
+
+.label_23 {
+  width: 30px;
+  height: 22px;
+  margin: 4px 0 10px 10px;
+}
+
+.label_24 {
+  width: 48px;
+  height: 23px;
+  margin: 4px 0 9px 10px;
+}
+
+.section_8 {
+  margin-top: 33px;
+}
+
+.image_1 {
+  width: 55px;
+  height: 55px;
+  margin: 1px 0 1px 0;
+}
+
+.box_10 {
+  margin: 15px 0 11px 10px;
+}
+
+.text_2 {
+  overflow-wrap: break-word;
+  color: rgba(7, 25, 59, 1);
+  font-size: 26px;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 26px;
+}
+
+.image_2 {
+  width: 384px;
+  height: 1px;
+  align-self: center;
+  margin-top: 4px;
+}
+
+.label_4 {
+  width: 32px;
+  height: 32px;
+  margin: 15px 0 10px 9px;
+}
+
+.image_3 {
+  width: 155px;
+  height: 57px;
+  margin-left: 69px;
+}
+
+.image_4 {
+  width: 710px;
+  height: 493px;
+  align-self: center;
+  margin-top: 285px;
+}
+
+.block_2 {
+  background-color: rgba(255, 255, 255, 1);
+  margin-top: 485px;
+  padding: 34px 30px 16px 55px;
+}
+
+.section_9 {
+  width: 665px;
+}
+
+.list_7 {
+  width: 442px;
+  height: 70px;
+}
+
+.image-text_7 {
+  margin-right: 72px;
+}
+
+.label_5 {
+  width: 40px;
+  height: 40px;
+  align-self: center;
+}
+
+.text-group_1 {
+  width: 72px;
+  overflow-wrap: break-word;
+  color: rgba(68, 68, 68, 1);
+  font-size: 18px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 18px;
+  margin-top: 12px;
+}
+
+.image-wrapper_1 {
+  background-color: rgba(37, 99, 235, 1);
+  border-radius: 8px;
+  margin: 7px 0 3px 0;
+  padding: 12px 43px 12px 43px;
+}
+
+.label_6 {
+  width: 36px;
+  height: 36px;
+}
+
+.section_10 {
+  margin: 51px 209px 0 186px;
+}
+
+.section_3 {
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 5px;
+  width: 270px;
+  height: 10px;
+}

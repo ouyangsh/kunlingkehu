@@ -1,0 +1,240 @@
+.page {
+  background-color: rgba(242, 245, 250, 1);
+  position: relative;
+  width: 750rpx;
+  height: 1624rpx;
+  overflow: hidden;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 1012rpx;
+}
+
+.box_1 {
+  background-color: rgba(255, 255, 255, 1);
+  padding: 29rpx 14rpx 25rpx 30rpx;
+}
+
+.group_3 {
+  margin: 0 1rpx 0 12rpx;
+}
+
+.text_10 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 30rpx;
+  letter-spacing: -0.6000000238418579px;
+  font-family: SFProText-Semibold;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 36rpx;
+}
+
+.label_17 {
+  width: 34rpx;
+  height: 22rpx;
+  margin: 4rpx 0 10rpx 495rpx;
+}
+
+.label_18 {
+  width: 30rpx;
+  height: 22rpx;
+  margin: 4rpx 0 10rpx 10rpx;
+}
+
+.label_19 {
+  width: 48rpx;
+  height: 23rpx;
+  margin: 4rpx 0 9rpx 10rpx;
+}
+
+.group_4 {
+  margin-top: 33rpx;
+}
+
+.label_16 {
+  width: 32rpx;
+  height: 32rpx;
+  margin: 13rpx 0 12rpx 0;
+}
+
+.text_2 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 38rpx;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 40rpx;
+  margin: 17rpx 0 0 237rpx;
+}
+
+.image_1 {
+  width: 155rpx;
+  height: 57rpx;
+  margin-left: 130rpx;
+}
+
+.box_4 {
+  background-color: rgba(255, 255, 255, 1);
+  margin-top: 10rpx;
+  padding: 30rpx 30rpx 30rpx 30rpx;
+}
+
+.block_1 {
+  background-color: rgba(249, 248, 252, 1);
+  border-radius: 8px;
+  padding: 21rpx 20rpx 21rpx 30rpx;
+}
+
+.image_2 {
+  width: 68rpx;
+  height: 68rpx;
+}
+
+.text_3 {
+  overflow-wrap: break-word;
+  color: rgba(25, 33, 61, 1);
+  font-size: 28rpx;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 28rpx;
+  margin: 20rpx 0 0 20rpx;
+}
+
+.label_4 {
+  width: 32rpx;
+  height: 32rpx;
+  margin: 20rpx 0 16rpx 464rpx;
+}
+
+.block_2 {
+  background-color: rgba(249, 248, 252, 1);
+  border-radius: 8px;
+  width: 690rpx;
+  margin-top: 16rpx;
+  padding: 18rpx 20rpx 24rpx 30rpx;
+}
+
+.image-text_9 {
+  width: 161rpx;
+}
+
+.image_3 {
+  width: 68rpx;
+  height: 68rpx;
+}
+
+.text-group_1 {
+  overflow-wrap: break-word;
+  color: rgba(25, 33, 61, 1);
+  font-size: 28rpx;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 28rpx;
+  margin-top: 23rpx;
+}
+
+.label_5 {
+  width: 32rpx;
+  height: 32rpx;
+  margin: 21rpx 0 15rpx 0;
+}
+
+.block_3 {
+  background-color: rgba(249, 248, 252, 1);
+  border-radius: 8px;
+  width: 690rpx;
+  margin-top: 16rpx;
+  padding: 21rpx 20rpx 21rpx 30rpx;
+}
+
+.image-text_10 {
+  width: 161rpx;
+}
+
+.image_4 {
+  width: 68rpx;
+  height: 68rpx;
+}
+
+.text-group_2 {
+  overflow-wrap: break-word;
+  color: rgba(25, 33, 61, 1);
+  font-size: 28rpx;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 28rpx;
+  margin-top: 20rpx;
+}
+
+.label_6 {
+  width: 32rpx;
+  height: 32rpx;
+  margin: 18rpx 0 18rpx 0;
+}
+
+.box_5 {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 1624rpx;
+  width: 750rpx;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 634rpx 60rpx 626rpx 60rpx;
+}
+
+.box_6 {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 24px;
+  padding: 50rpx 30rpx 40rpx 30rpx;
+}
+
+.text_4 {
+  overflow-wrap: break-word;
+  color: rgba(25, 33, 61, 1);
+  font-size: 32rpx;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 28rpx;
+  align-self: center;
+}
+
+.text_5 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 32rpx;
+  font-weight: NaN;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 45rpx;
+  align-self: center;
+  margin-top: 52rpx;
+}
+
+.text-wrapper_1 {
+  background-color: rgba(37, 99, 235, 1);
+  border-radius: 8px;
+  margin-top: 61rpx;
+  padding: 22rpx 237rpx 21rpx 237rpx;
+}
+
+.text_6 {
+  overflow-wrap: break-word;
+  color: rgba(255, 255, 255, 1);
+  font-size: 32rpx;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 45rpx;
+}

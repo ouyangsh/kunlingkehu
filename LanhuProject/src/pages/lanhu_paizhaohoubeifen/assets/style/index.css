@@ -1,0 +1,213 @@
+.page {
+  background-color: rgba(242, 245, 250, 1);
+  position: relative;
+  width: 750px;
+  height: 1624px;
+  overflow: hidden;
+}
+
+.box_1 {
+  background-color: rgba(255, 255, 255, 1);
+  padding: 29px 14px 25px 20px;
+}
+
+.group_1 {
+  margin: 0 1px 0 22px;
+}
+
+.text_1 {
+  overflow-wrap: break-word;
+  color: rgba(0, 0, 0, 1);
+  font-size: 30px;
+  letter-spacing: -0.6000000238418579px;
+  font-family: SFProText-Semibold;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 36px;
+}
+
+.label_1 {
+  width: 34px;
+  height: 22px;
+  margin: 4px 0 10px 495px;
+}
+
+.label_2 {
+  width: 30px;
+  height: 22px;
+  margin: 4px 0 10px 10px;
+}
+
+.label_3 {
+  width: 48px;
+  height: 23px;
+  margin: 4px 0 9px 10px;
+}
+
+.group_2 {
+  margin-top: 33px;
+}
+
+.image_1 {
+  width: 55px;
+  height: 55px;
+  margin: 1px 0 1px 0;
+}
+
+.section_1 {
+  margin: 15px 0 11px 10px;
+}
+
+.text_2 {
+  overflow-wrap: break-word;
+  color: rgba(7, 25, 59, 1);
+  font-size: 26px;
+  font-weight: NaN;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 26px;
+}
+
+.image_2 {
+  width: 384px;
+  height: 1px;
+  align-self: center;
+  margin-top: 4px;
+}
+
+.label_4 {
+  width: 32px;
+  height: 32px;
+  margin: 15px 0 10px 9px;
+}
+
+.image_3 {
+  width: 155px;
+  height: 57px;
+  margin-left: 69px;
+}
+
+.image_4 {
+  width: 710px;
+  height: 493px;
+  align-self: center;
+  margin-top: 285px;
+}
+
+.box_2 {
+  background-color: rgba(255, 255, 255, 1);
+  margin-top: 306px;
+  padding: 30px 0 16px 0;
+}
+
+.section_2 {
+  width: 270px;
+  margin: 0 450px 0 30px;
+}
+
+.group_3 {
+  border-radius: 8px;
+  background-image: url(/static/lanhu_paizhaohoubeifen/c09a88a769ed4d8c8f84e170f02fe424_mergeImage.png);
+  border: 1px solid rgba(151, 151, 151, 1);
+  padding-top: 87px;
+}
+
+.text-wrapper_1 {
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 4px 42px 3px 42px;
+}
+
+.text_3 {
+  overflow-wrap: break-word;
+  color: rgba(255, 255, 255, 1);
+  font-size: 18px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 25px;
+}
+
+.group_4 {
+  border-radius: 8px;
+  background-image: url(/static/lanhu_paizhaohoubeifen/f703bf8de8c34e2ba1e95ecc28f0ee3e_mergeImage.png);
+  border: 2px solid rgba(37, 99, 235, 1);
+  padding-top: 86px;
+}
+
+.text-wrapper_2 {
+  background-color: rgba(37, 99, 235, 1);
+  padding: 4px 6px 3px 6px;
+}
+
+.text_4 {
+  overflow-wrap: break-word;
+  color: rgba(255, 255, 255, 1);
+  font-size: 18px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 25px;
+}
+
+.image_5 {
+  width: 750px;
+  height: 1px;
+  margin-top: 29px;
+}
+
+.section_3 {
+  width: 665px;
+  margin: 33px 30px 0 55px;
+}
+
+.list_1 {
+  width: 442px;
+  height: 70px;
+}
+
+.image-text_1 {
+  margin-right: 72px;
+}
+
+.label_5 {
+  width: 40px;
+  height: 40px;
+  align-self: center;
+}
+
+.text-group_1 {
+  width: 72px;
+  overflow-wrap: break-word;
+  color: rgba(68, 68, 68, 1);
+  font-size: 18px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 18px;
+  margin-top: 12px;
+}
+
+.image-wrapper_1 {
+  background-color: rgba(37, 99, 235, 1);
+  border-radius: 8px;
+  margin: 7px 0 3px 0;
+  padding: 12px 43px 12px 43px;
+}
+
+.label_6 {
+  width: 36px;
+  height: 36px;
+}
+
+.section_4 {
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 5px;
+  width: 270px;
+  height: 10px;
+  align-self: center;
+  margin-top: 51px;
+}

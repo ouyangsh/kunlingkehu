@@ -6,6 +6,7 @@
 interface NavigateToOptions {
   url: "/pages/index/index" |
        "/pages/demo/index" |
+       "/pages/index/dibu" |
        "/pages/index/request" |
        "/pages/login/index" |
        "/pages/my/index" |
@@ -55,7 +56,7 @@ interface NavigateToOptions {
 interface RedirectToOptions extends NavigateToOptions {}
 
 interface SwitchTabOptions {
-  url: "/pages/index/index" | "/pages/demo/index"
+  
 }
 
 type ReLaunchOptions = NavigateToOptions | SwitchTabOptions;

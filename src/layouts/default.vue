@@ -1,5 +1,5 @@
 <template>
-  <view class="default-layout">
+  <view>
     <slot />
     <wd-toast />
     <wd-message-box />

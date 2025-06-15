@@ -59,6 +59,9 @@ importers:
       '@dcloudio/uni-ui':
         specifier: 1.5.0
         version: 1.5.0
+      '@intlify/message-compiler':
+        specifier: 9.14.4
+        version: 9.14.4
       dayjs:
         specifier: 1.11.10
         version: 1.11.10

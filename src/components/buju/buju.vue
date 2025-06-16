@@ -16,6 +16,8 @@ const {
 //   safeAreaInsets.value.top = 30
 //   safeAreaInsets.value.bottom = 30
 // }
+const showHeader = ref(true)
+const showFooter = ref(true)
 </script>
 
 <template>
@@ -26,7 +28,7 @@ const {
     mode="aspectFill"
   ></image>
   <!--  传入顶部导航使用传入的，不传入使用默认的-->
-  <div class="bg-yellow-200" :style="{ height: headerHeight }">
+  <div v-if="showHeader" class="bg-yellow-200" :style="{ height: headerHeight }">
     <slot name="header">
       <div
         class="bg-red-500 relative"
@@ -44,7 +46,7 @@ const {
     <slot name="main"></slot>
   </div>
   <!--  底部导航-->
-  <div class="bg-blue-500" :style="{ height: footerHeight }">
+  <div v-if="showFooter" class="bg-blue-500" :style="{ height: footerHeight }">
     <slot name="footer"></slot>
   </div>
 </template>

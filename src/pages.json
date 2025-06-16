@@ -336,6 +336,10 @@
       }
     },
     {
+      "path": "pages/index/lanhu_shouye/index",
+      "type": "page"
+    },
+    {
       "path": "pages/demo/page/echarts/index",
       "type": "page",
       "layout": "demo",

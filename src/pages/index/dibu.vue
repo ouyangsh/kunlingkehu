@@ -1,5 +1,6 @@
 <template>
-  <view class="box_13 flex-col">
+  <!-- 上面添加阴影 -->
+  <view class="box_13 flex-col shadow-[0_-5px_10px_#f6f6f6]">
     <view class="list_12 flex-row">
       <view
         class="image-text_37 flex-col"
@@ -8,6 +9,7 @@
         @click="handleTabClick(index)"
       >
         <span
+          class="text-32rpx"
           :class="['font_family', item.lanhuimage0]"
           :style="{ color: currentIndex === index ? '#2150C3' : item.lanhufontColor0 }"
         ></span>
@@ -19,7 +21,6 @@
         </text>
       </view>
     </view>
-    <view class="box_14 flex-col"></view>
   </view>
 </template>
 

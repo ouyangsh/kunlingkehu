@@ -35,6 +35,12 @@ const showFooter = computed(() => props.showFooter)
     src="https://img.yzcdn.cn/vant/apple-3.jpg"
     mode="aspectFill"
   ></image>
+
+  <!-- <div
+    class="w-full h-full absolute top-0 left-0 z--1 bg-red-500"
+    src="https://img.yzcdn.cn/vant/apple-3.jpg"
+    mode="aspectFill"
+  ></div> -->
   <!--  传入顶部导航使用传入的，不传入使用默认的-->
   <div v-if="showHeader" class="bg-yellow-200" :style="{ height: headerHeight }">
     <slot name="header">

@@ -59,6 +59,14 @@
       }
     },
     {
+      "path": "pages/wendang/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "文档",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/demo/base/auto-import",
       "type": "page",
       "layout": "demo",

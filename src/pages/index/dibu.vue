@@ -1,6 +1,6 @@
 <template>
   <!-- 上面添加阴影 -->
-  <view class="box_13 flex-col shadow-[0_-5px_10px_#f6f6f6]">
+  <view class="box_13 flex-col shadow-t-lg shadow-gray-200">
     <view class="list_12 flex-row">
       <view
         class="image-text_37 flex-col"
@@ -24,11 +24,33 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="js">
+import { onShow } from '@dcloudio/uni-app'
+
 const currentIndex = ref(0)
+const pages = [
+  '/pages/index/index',
+  '/pages/wendang/index',
+  '', // 筛查页面路径待定
+  '', // 资讯页面路径待定
+  '',
+]
+
+onShow(() => {
+  const currentRoute = getCurrentPages().pop().route
+  const index = pages.findIndex((page) => `/${currentRoute}` === page)
+  if (index !== -1) {
+    currentIndex.value = index
+  }
+})
 
 const handleTabClick = (index) => {
-  currentIndex.value = index
+  const url = pages[index]
+  if (url && url !== `/${getCurrentPages().pop().route}`) {
+    uni.reLaunch({
+      url,
+    })
+  }
 }
 
 // 添加选中和未选中状态图标
@@ -61,7 +83,7 @@ const loopData1 = ref([
 ])
 </script>
 
-<style lang="css">
-@import '../common/common.css';
+<style lang="scss">
+@import '../common/common';
 @import './assets/style/index.rpx.css';
 </style>

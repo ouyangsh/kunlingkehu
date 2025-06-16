@@ -130,54 +130,23 @@
               />
             </view>
           </view>
-          <view class="section_12 flex-row justify-between">
-            <view class="image-text_35 flex-row justify-between">
-              <view class="image-wrapper_3 flex-col">
-                <image
-                  class="image_7"
-                  referrerpolicy="no-referrer"
-                  src="/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png"
-                />
-              </view>
-              <view class="text-group_32 flex-col">
-                <text class="text_13">贸易合规助手2025-05-21&nbsp;10.46</text>
-                <text class="text_14">2025/05/21&nbsp;12:36</text>
-              </view>
-            </view>
-            <view class="block_1 flex-col"></view>
-          </view>
 
-          <view class="section_12 flex-row justify-between">
+          <view
+            class="section_12 flex-row justify-between"
+            v-for="item in recentList"
+            :key="item.id"
+            @click="toggleSelect(item)"
+          >
             <view class="image-text_35 flex-row justify-between">
               <view class="image-wrapper_3 flex-col">
-                <image
-                  class="image_7"
-                  referrerpolicy="no-referrer"
-                  src="/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png"
-                />
+                <image class="image_7" referrerpolicy="no-referrer" :src="item.image" />
               </view>
               <view class="text-group_32 flex-col">
-                <text class="text_13">贸易合规助手2025-05-21&nbsp;10.46</text>
-                <text class="text_14">2025/05/21&nbsp;12:36</text>
+                <text class="text_13">{{ item.title }}</text>
+                <text class="text_14">{{ item.subtitle }}</text>
               </view>
             </view>
-            <view class="block_1 flex-col"></view>
-          </view>
-          <view class="section_12 flex-row justify-between">
-            <view class="image-text_35 flex-row justify-between">
-              <view class="image-wrapper_3 flex-col">
-                <image
-                  class="image_7"
-                  referrerpolicy="no-referrer"
-                  src="/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png"
-                />
-              </view>
-              <view class="text-group_32 flex-col">
-                <text class="text_13">贸易合规助手2025-05-21&nbsp;10.46</text>
-                <text class="text_14">2025/05/21&nbsp;12:36</text>
-              </view>
-            </view>
-            <view class="block_1 flex-col"></view>
+            <view class="block_1 flex-col" :class="{ selected: item.selected }"></view>
           </view>
         </view>
       </view>
@@ -190,7 +159,6 @@
 </template>
 <script setup>
 import dibu from './dibu.vue'
-import buju from '@/components/buju/buju.vue'
 const { footerHeight } = useLayout()
 const loopData0 = ref([
   {
@@ -209,6 +177,54 @@ const loopData0 = ref([
     yanse0: '#F45C27',
   },
 ])
+
+const recentList = ref([
+  {
+    id: 1,
+    image:
+      '/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    title: '贸易合规助手2025-05-21 10.46',
+    subtitle: '2025/05/21 12:36',
+    selected: false,
+  },
+
+  {
+    id: 1,
+    image:
+      '/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    title: '贸易合规助手2025-05-21 10.46',
+    subtitle: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    id: 1,
+    image:
+      '/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    title: '贸易合规助手2025-05-21 10.46',
+    subtitle: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    id: 1,
+    image:
+      '/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    title: '贸易合规助手2025-05-21 10.46',
+    subtitle: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    id: 2,
+    image:
+      '/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    title: '贸易合规助手2025-05-22 11.47',
+    subtitle: '2025/05/22 12:37',
+    selected: true,
+  },
+])
+
+const toggleSelect = (item) => {
+  item.selected = !item.selected
+}
 const constants = ref({})
 </script>
 <style lang="css">

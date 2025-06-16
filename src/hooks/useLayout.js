@@ -25,7 +25,7 @@ export function useLayout() {
   // 顶部导航高度
   const headerHeight = ref((menuButtonBoundingClientRect.bottom || 50) + 'px')
   // 底部导航高度
-  const footerHeight = ref(50 + bottomSafeArea.value + 'px')
+  const footerHeight = ref(160 + 'rpx')
   // 主体高度
   const mainHeight = computed(() => {
     return `calc(100vh  - ${headerHeight.value} - ${footerHeight.value})`

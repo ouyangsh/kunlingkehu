@@ -13,6 +13,7 @@ onHide(() => {
 </script>
 
 <style lang="scss">
+@import 'https://at.alicdn.com/t/c/font_4948968_uwf7jy5t0lb.css';
 /* stylelint-disable selector-type-no-unknown */
 button::after {
   border: none;

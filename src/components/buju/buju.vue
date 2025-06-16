@@ -16,8 +16,18 @@ const {
 //   safeAreaInsets.value.top = 30
 //   safeAreaInsets.value.bottom = 30
 // }
-const showHeader = ref(true)
-const showFooter = ref(true)
+const props = defineProps({
+  showHeader: {
+    type: Boolean,
+    default: true,
+  },
+  showFooter: {
+    type: Boolean,
+    default: true,
+  },
+})
+const showHeader = computed(() => props.showHeader)
+const showFooter = computed(() => props.showFooter)
 </script>
 
 <template>
@@ -46,7 +56,11 @@ const showFooter = ref(true)
     <slot name="main"></slot>
   </div>
   <!--  底部导航-->
-  <div v-if="showFooter" class="bg-blue-500" :style="{ height: footerHeight }">
+  <div
+    v-if="showFooter"
+    class="bg-[#ffffffff] fixed bottom-0 left-0 right-0 z-10"
+    :style="{ height: footerHeight }"
+  >
     <slot name="footer"></slot>
   </div>
 </template>

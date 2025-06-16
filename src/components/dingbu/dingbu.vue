@@ -1,6 +1,4 @@
 <script setup lang="js">
-import { useLayout } from '@/hooks/useLayout'
-
 const { menuButtonBoundingClientRect } = useLayout()
 </script>
 

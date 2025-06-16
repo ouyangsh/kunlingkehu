@@ -182,7 +182,6 @@
   </buju>
 </template>
 <script setup>
-import { ref } from 'vue'
 import dibu from './dibu.vue'
 import buju from '@/components/buju/buju.vue'
 

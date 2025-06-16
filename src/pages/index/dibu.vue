@@ -7,10 +7,10 @@
         :key="index"
         @click="handleTabClick(index)"
       >
-        <text
+        <span
           :class="['font_family', item.lanhuimage0]"
           :style="{ color: currentIndex === index ? '#2150C3' : item.lanhufontColor0 }"
-        ></text>
+        ></span>
         <text
           class="text-group_8"
           :style="{ color: currentIndex === index ? '#2150C3' : item.lanhufontColor0 }"
@@ -24,8 +24,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
 const currentIndex = ref(0)
 
 const handleTabClick = (index) => {

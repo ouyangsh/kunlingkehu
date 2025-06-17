@@ -8,6 +8,17 @@
 </route>
 
 <template>
+  <buju>
+    <template #header>
+      <dingbu>
+        <template #title>
+          <text>全部文档</text>
+        </template>
+      </dingbu>
+    </template>
+    <template #main></template>
+    <template #footer></template>
+  </buju>
   <view class="page flex-col">
     <view class="group_1 flex-col">
       <view class="group_22 flex-row justify-between">

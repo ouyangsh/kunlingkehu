@@ -53,53 +53,11 @@
             />
           </view>
           <view class="block_10 flex-col">
-            <template v-for="(item, index) in documentList" :key="index">
-              <!-- Folder View -->
-              <view
-                v-if="item.type === 'folder'"
-                class="section_3 flex-row"
-                :class="{ section_4: index === 1, section_5: index === 2 }"
-                @click="toggleSelect(item)"
-              >
-                <image class="image_3" referrerpolicy="no-referrer" :src="item.icon" />
-                <view class="text-group_33 flex-col">
-                  <text class="text_6">{{ item.name }}</text>
-                  <text class="text_7">{{ item.date }}</text>
-                </view>
-                <image
-                  class="label_6"
-                  referrerpolicy="no-referrer"
-                  src="/static/lanhu_wendang/SketchPng02436086c2092674a945161418af30e40396dd2e3262527fbdd0f29f81760ea6.png"
-                />
-                <text class="text_8">{{ item.count }}</text>
-                <image
-                  class="label_7"
-                  referrerpolicy="no-referrer"
-                  src="/static/lanhu_wendang/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
-                />
-              </view>
+            <!-- 使用文件夹列表组件 -->
+            <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
 
-              <!-- File View -->
-              <view
-                v-if="item.type === 'file'"
-                class="block_11 flex-row justify-between"
-                @click="toggleSelect(item)"
-              >
-                <view class="image-text_34 flex-row justify-between">
-                  <view class="image-wrapper_1 flex-col">
-                    <image class="image_6" referrerpolicy="no-referrer" :src="item.icon" />
-                  </view>
-                  <view class="text-group_36 flex-col">
-                    <text class="text_15">{{ item.name }}</text>
-                    <text class="text_16">{{ item.date }}</text>
-                  </view>
-                </view>
-                <view
-                  class="block_1 flex-col self-center"
-                  :class="{ selected: item.selected }"
-                ></view>
-              </view>
-            </template>
+            <!-- 使用文件列表组件 -->
+            <file-list :file-list="fileList" @file-click="toggleSelectFile" />
           </view>
         </view>
       </view>
@@ -114,6 +72,8 @@
 import { ref } from 'vue'
 import buju from '@/components/buju/buju.vue'
 import dibu from '../index/dibu.vue'
+import FolderList from './components/folder-list.vue'
+import FileList from './components/file-list.vue'
 const { footerHeight } = useLayout()
 
 const loopData0 = ref([
@@ -134,9 +94,9 @@ const loopData0 = ref([
   },
 ])
 
-const documentList = ref([
+// 文件夹列表
+const folderList = ref([
   {
-    type: 'folder',
     icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
     name: '单据',
     date: '2025/05/21 12:36',
@@ -144,7 +104,6 @@ const documentList = ref([
     selected: false,
   },
   {
-    type: 'folder',
     icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
     name: '分类2',
     date: '2025/05/21 12:36',
@@ -152,50 +111,47 @@ const documentList = ref([
     selected: false,
   },
   {
-    type: 'folder',
     icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
     name: '分类3',
     date: '2025/05/21 12:36',
     count: 0,
     selected: false,
   },
+])
+
+// 文件列表
+const fileList = ref([
   {
-    type: 'file',
     icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     name: '贸易合规助手2025-05-21 10.46',
     date: '2025/05/21 12:36',
     selected: false,
   },
   {
-    type: 'file',
     icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     name: '贸易合规助手2025-05-21 10.46',
     date: '2025/05/21 12:36',
     selected: false,
   },
   {
-    type: 'file',
     icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     name: '贸易合规助手2025-05-21 10.46',
     date: '2025/05/21 12:36',
     selected: false,
   },
   {
-    type: 'file',
     icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     name: '贸易合规助手2025-05-21 10.46',
     date: '2025/05/21 12:36',
     selected: false,
   },
   {
-    type: 'file',
     icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     name: '贸易合规助手2025-05-21 10.46',
     date: '2025/05/21 12:36',
     selected: false,
   },
   {
-    type: 'file',
     icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     name: '贸易合规助手2025-05-21 10.46',
     date: '2025/05/21 12:36',
@@ -203,15 +159,173 @@ const documentList = ref([
   },
 ])
 
-const toggleSelect = (item) => {
-  if (item.type === 'file') {
-    item.selected = !item.selected
-  }
+// 文件夹选择切换
+const toggleSelectFolder = (folder) => {
+  // 文件夹的选择逻辑（如果需要）
+  console.log('点击文件夹:', folder.name)
+}
+
+// 文件选择切换
+const toggleSelectFile = (file) => {
+  file.selected = !file.selected
+  console.log('切换文件选择状态:', file.name, file.selected)
 }
 
 const constants = ref({})
 </script>
 <style lang="scss">
 @import '../common/common.css';
-@import './assets/style/index.rpx.css';
+
+.page {
+  position: relative;
+  width: 750rpx;
+  overflow: auto;
+  background-color: rgb(242 245 250 / 100%);
+}
+
+.fixed-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 99;
+}
+
+.h-180rpx {
+  height: 200rpx; /* 根据 .group_1 的实际高度调整 */
+}
+
+.group_1 {
+  padding: 29rpx 14rpx 36rpx 30rpx;
+  background-color: rgb(37 99 235 / 100%);
+}
+
+.block_8 {
+  width: 706rpx;
+  margin-top: 34rpx;
+}
+
+.text_2 {
+  margin-top: 25rpx;
+  font-family: PingFangSC-Medium;
+  font-size: 38rpx;
+  font-weight: 500;
+  line-height: 40rpx;
+  color: rgb(255 255 255 / 100%);
+  text-align: left;
+  overflow-wrap: break-word;
+  white-space: nowrap;
+}
+
+.image_1 {
+  width: 155rpx;
+  height: 57rpx;
+  margin-bottom: 8rpx;
+}
+
+.box_12 {
+  padding: 30rpx 30rpx 31rpx;
+}
+
+.list_13 {
+  justify-content: space-between;
+  width: 690rpx;
+  height: 158rpx;
+}
+
+.image-text_1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 210rpx;
+  height: 158rpx;
+  background-color: rgb(255 255 255 / 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px 0 rgb(146 154 169 / 10%);
+}
+
+.text-group_1 {
+  margin-top: 20rpx;
+  font-size: 24rpx;
+  font-weight: nan;
+  line-height: 24rpx;
+  color: rgb(25 33 61 / 100%);
+  text-align: center;
+  overflow-wrap: break-word;
+  white-space: nowrap;
+}
+
+.group_3 {
+  padding: 30rpx 30rpx 34rpx;
+  margin-top: -1rpx;
+  background-color: rgb(255 255 255 / 100%);
+}
+
+.block_9 {
+}
+
+.text-wrapper_1 {
+  width: 151rpx;
+  height: 32rpx;
+  font-family: PingFangSC-Medium;
+  font-size: 0;
+  font-weight: 500;
+  line-height: 32rpx;
+  text-align: left;
+  overflow-wrap: break-word;
+  white-space: nowrap;
+}
+
+.text_3 {
+  font-family: PingFangSC-Medium;
+  font-size: 28rpx;
+  font-weight: 500;
+  line-height: 32rpx;
+  color: rgb(25 33 61 / 100%);
+  text-align: left;
+  overflow-wrap: break-word;
+  white-space: nowrap;
+}
+
+.text_4 {
+  font-family: PingFangSC-Medium;
+  font-size: 24rpx;
+  font-weight: 500;
+  line-height: 32rpx;
+  color: rgb(25 33 61 / 100%);
+  text-align: left;
+  overflow-wrap: break-word;
+  white-space: nowrap;
+}
+
+.text_5 {
+  font-size: 24rpx;
+  font-weight: nan;
+  line-height: 32rpx;
+  color: rgb(102 102 102 / 100%);
+  text-align: left;
+  overflow-wrap: break-word;
+  white-space: nowrap;
+}
+
+.label_4 {
+  width: 32rpx;
+  height: 32rpx;
+  margin-left: 455rpx;
+}
+
+.label_5 {
+  width: 32rpx;
+  height: 32rpx;
+  margin-left: 20rpx;
+}
+
+.block_10 {
+  margin-top: 36rpx;
+}
+/* 字体图标样式 */
+.font_family {
+  font-family: iconfont;
+}
 </style>

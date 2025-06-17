@@ -36,7 +36,7 @@
         <view class="box_4 flex-col">
           <view class="section_10 flex-row justify-between">
             <text class="text_3">最近使用</text>
-            <view class="image-text_32 flex-row justify-between">
+            <view class="image-text_32 flex-row justify-between" @click="navigateToAllDocs">
               <text class="text-group_2">全部文档</text>
               <image
                 class="thumbnail_1"
@@ -233,6 +233,13 @@ const functionItems = ref([
 const handleFunctionItemClick = ({ item, index }) => {
   console.log('点击功能按钮:', item.text, index)
   // 这里可以根据不同的功能执行不同的操作
+}
+
+// 跳转到全部文档选择页面
+const navigateToAllDocs = () => {
+  uni.navigateTo({
+    url: '/pages/quanbu-wendang-xuanze/index',
+  })
 }
 </script>
 <style lang="css" scoped>

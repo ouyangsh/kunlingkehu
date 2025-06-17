@@ -19,20 +19,7 @@
         </view>
         <view class="h-180rpx"></view>
         <view class="box_12 flex-col">
-          <view class="list_13 flex flex-row justify-around">
-            <view
-              class="image-text_1 flex-col justify-center items-center"
-              v-for="(item, index) in loopData0"
-              :key="index"
-            >
-              <span
-                class="text-64rpx"
-                :class="['font_family', item.lanhuimage0]"
-                :style="{ color: item.yanse0 }"
-              ></span>
-              <rich-text class="text-group_1" :nodes="item.lanhutext0"></rich-text>
-            </view>
-          </view>
+          <function-grid :items="functionItems" @itemClick="handleFunctionItemClick" />
         </view>
         <view class="group_3 flex-col">
           <view class="block_9 flex-row">
@@ -74,25 +61,32 @@ import buju from '@/components/buju/buju.vue'
 import dibu from '../index/dibu.vue'
 import FolderList from './components/folder-list.vue'
 import FileList from './components/file-list.vue'
+import FunctionGrid from './components/function-grid.vue'
 const { footerHeight } = useLayout()
 
-const loopData0 = ref([
+const functionItems = ref([
   {
-    lanhuimage0: 'icon-icon-xiangcedaoru',
-    lanhutext0: '相册导入',
-    yanse0: '#2563EB',
+    icon: 'icon-icon-xiangcedaoru',
+    text: '相册导入',
+    color: '#2563EB',
   },
   {
-    lanhuimage0: 'icon-icon-paizhao',
-    lanhutext0: '拍照',
-    yanse0: '#37C3C8',
+    icon: 'icon-icon-paizhao',
+    text: '拍照',
+    color: '#37C3C8',
   },
   {
-    lanhuimage0: 'icon-icon-xinjianwenjianjia',
-    lanhutext0: '新建文件夹',
-    yanse0: '#F45C27',
+    icon: 'icon-icon-xinjianwenjianjia',
+    text: '新建文件夹',
+    color: '#F45C27',
   },
 ])
+
+// 处理功能项点击
+const handleFunctionItemClick = ({ item, index }) => {
+  console.log('点击功能按钮:', item.text, index)
+  // 这里可以根据不同的功能执行不同的操作
+}
 
 // 文件夹列表
 const folderList = ref([
@@ -225,35 +219,6 @@ const constants = ref({})
 
 .box_12 {
   padding: 30rpx 30rpx 31rpx;
-}
-
-.list_13 {
-  justify-content: space-between;
-  width: 690rpx;
-  height: 158rpx;
-}
-
-.image-text_1 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 210rpx;
-  height: 158rpx;
-  background-color: rgb(255 255 255 / 100%);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px 0 rgb(146 154 169 / 10%);
-}
-
-.text-group_1 {
-  margin-top: 20rpx;
-  font-size: 24rpx;
-  font-weight: nan;
-  line-height: 24rpx;
-  color: rgb(25 33 61 / 100%);
-  text-align: center;
-  overflow-wrap: break-word;
-  white-space: nowrap;
 }
 
 .group_3 {

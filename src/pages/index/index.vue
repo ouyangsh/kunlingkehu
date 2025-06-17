@@ -31,20 +31,7 @@
           </view>
         </view>
         <view class="box_25 flex-col">
-          <view class="list_11 flex-row">
-            <view
-              class="image-text_1 flex-col justify-center items-center"
-              v-for="(item, index) in loopData0"
-              :key="index"
-            >
-              <span
-                class="text-64rpx"
-                :class="['font_family', item.lanhuimage0]"
-                :style="{ color: item.yanse0 }"
-              ></span>
-              <rich-text class="text-group_1" :nodes="item.lanhutext0"></rich-text>
-            </view>
-          </view>
+          <function-grid :items="functionItems" @itemClick="handleFunctionItemClick" />
         </view>
         <view class="box_4 flex-col">
           <view class="section_10 flex-row justify-between">
@@ -78,6 +65,7 @@
 import dibu from './dibu.vue'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
+import FunctionGrid from '@/pages/wendang/components/function-grid.vue'
 const { footerHeight } = useLayout()
 const loopData0 = ref([
   {
@@ -222,6 +210,30 @@ const toggleSelect = (item) => {
   item.selected = !item.selected
 }
 const constants = ref({})
+
+const functionItems = ref([
+  {
+    icon: 'icon-icon-xiangcedaoru',
+    text: '相册导入',
+    color: '#2563EB',
+  },
+  {
+    icon: 'icon-icon-paizhao',
+    text: '拍照',
+    color: '#37C3C8',
+  },
+  {
+    icon: 'icon-icon-zhishiku',
+    text: '知识库',
+    color: '#F45C27',
+  },
+])
+
+// 处理功能项点击
+const handleFunctionItemClick = ({ item, index }) => {
+  console.log('点击功能按钮:', item.text, index)
+  // 这里可以根据不同的功能执行不同的操作
+}
 </script>
 <style lang="css" scoped>
 @import '../common/common.css';

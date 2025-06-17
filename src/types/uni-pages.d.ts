@@ -10,6 +10,7 @@ interface NavigateToOptions {
        "/pages/index/request" |
        "/pages/login/index" |
        "/pages/my/index" |
+       "/pages/quanbu-wendang-xuanze/index" |
        "/pages/wendang/index" |
        "/pages/demo/base/auto-import" |
        "/pages/demo/base/css" |

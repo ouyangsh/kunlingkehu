@@ -212,6 +212,6 @@ const toggleSelect = (item) => {
 const constants = ref({})
 </script>
 <style lang="scss">
-@import '../common/common';
+@import '../common/common.css';
 @import './assets/style/index.rpx.css';
 </style>

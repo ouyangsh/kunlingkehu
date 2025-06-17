@@ -58,95 +58,12 @@
               />
             </view>
           </view>
-          <view class="section_11 flex-col">
-            <view class="box_7 flex-row">
-              <image
-                class="image_4"
-                referrerpolicy="no-referrer"
-                src="/static/lanhu_shouye/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png"
-              />
-              <view class="text-group_29 flex-col">
-                <text class="text_4">单据</text>
-                <text class="text_5">2025/05/21&nbsp;12:36</text>
-              </view>
-              <image
-                class="label_4"
-                referrerpolicy="no-referrer"
-                src="/static/lanhu_shouye/SketchPng02436086c2092674a945161418af30e40396dd2e3262527fbdd0f29f81760ea6.png"
-              />
-              <text class="text_6">2</text>
-              <image
-                class="label_5"
-                referrerpolicy="no-referrer"
-                src="/static/lanhu_shouye/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
-              />
-            </view>
-            <view class="box_8 flex-row">
-              <view class="image-text_33 flex-row justify-between">
-                <image
-                  class="image_5"
-                  referrerpolicy="no-referrer"
-                  src="/static/lanhu_shouye/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png"
-                />
-                <view class="text-group_30 flex-col">
-                  <text class="text_7">分类2</text>
-                  <text class="text_8">2025/05/21&nbsp;12:36</text>
-                </view>
-              </view>
-              <image
-                class="label_6"
-                referrerpolicy="no-referrer"
-                src="/static/lanhu_shouye/SketchPng02436086c2092674a945161418af30e40396dd2e3262527fbdd0f29f81760ea6.png"
-              />
-              <text class="text_9">2</text>
-              <image
-                class="label_7"
-                referrerpolicy="no-referrer"
-                src="/static/lanhu_shouye/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
-              />
-            </view>
-            <view class="box_9 flex-row">
-              <view class="image-text_34 flex-row justify-between">
-                <image
-                  class="image_6"
-                  referrerpolicy="no-referrer"
-                  src="/static/lanhu_shouye/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png"
-                />
-                <view class="text-group_31 flex-col">
-                  <text class="text_10">分类3</text>
-                  <text class="text_11">2025/05/21&nbsp;12:36</text>
-                </view>
-              </view>
-              <image
-                class="label_8"
-                referrerpolicy="no-referrer"
-                src="/static/lanhu_shouye/SketchPng02436086c2092674a945161418af30e40396dd2e3262527fbdd0f29f81760ea6.png"
-              />
-              <text class="text_12">0</text>
-              <image
-                class="label_9"
-                referrerpolicy="no-referrer"
-                src="/static/lanhu_shouye/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
-              />
-            </view>
-          </view>
+          <view class="block_10 flex-col">
+            <!-- 使用文件夹列表组件 -->
+            <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
 
-          <view
-            class="section_12 flex-row justify-between"
-            v-for="item in recentList"
-            :key="item.id"
-            @click="toggleSelect(item)"
-          >
-            <view class="image-text_35 flex-row justify-between">
-              <view class="image-wrapper_3 flex-col">
-                <image class="image_7" referrerpolicy="no-referrer" :src="item.image" />
-              </view>
-              <view class="text-group_32 flex-col">
-                <text class="text_13">{{ item.title }}</text>
-                <text class="text_14">{{ item.subtitle }}</text>
-              </view>
-            </view>
-            <view class="block_1 flex-col" :class="{ selected: item.selected }"></view>
+            <!-- 使用文件列表组件 -->
+            <file-list :file-list="fileList" @file-click="toggleSelectFile" />
           </view>
         </view>
       </view>
@@ -159,6 +76,8 @@
 </template>
 <script setup>
 import dibu from './dibu.vue'
+import FolderList from '@/pages/wendang/components/folder-list.vue'
+import FileList from '@/pages/wendang/components/file-list.vue'
 const { footerHeight } = useLayout()
 const loopData0 = ref([
   {
@@ -177,6 +96,83 @@ const loopData0 = ref([
     yanse0: '#F45C27',
   },
 ])
+
+// 文件夹列表
+const folderList = ref([
+  {
+    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
+    name: '单据',
+    date: '2025/05/21 12:36',
+    count: 2,
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
+    name: '分类2',
+    date: '2025/05/21 12:36',
+    count: 2,
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
+    name: '分类3',
+    date: '2025/05/21 12:36',
+    count: 0,
+    selected: false,
+  },
+])
+
+// 文件列表
+const fileList = ref([
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+])
+
+// 文件夹选择切换
+const toggleSelectFolder = (folder) => {
+  // 文件夹的选择逻辑（如果需要）
+  console.log('点击文件夹:', folder.name)
+}
+
+// 文件选择切换
+const toggleSelectFile = (file) => {
+  file.selected = !file.selected
+  console.log('切换文件选择状态:', file.name, file.selected)
+}
 
 const recentList = ref([
   {
@@ -227,7 +223,11 @@ const toggleSelect = (item) => {
 }
 const constants = ref({})
 </script>
-<style lang="css">
+<style lang="css" scoped>
 @import '../common/common.css';
 @import './assets/style/index.rpx.css';
+
+.block_10 {
+  margin-top: 36rpx;
+}
 </style>

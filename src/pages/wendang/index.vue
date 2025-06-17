@@ -173,7 +173,7 @@ const toggleSelectFile = (file) => {
 
 const constants = ref({})
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../common/common.css';
 
 .page {

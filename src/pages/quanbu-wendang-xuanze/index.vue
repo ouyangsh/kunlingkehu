@@ -20,114 +20,11 @@
       </view>
     </view>
     <view class="group_4 flex-col pb-140rpx">
-      <view class="group_23 flex-col">
-        <view class="block_1 flex-row">
-          <image
-            class="image_2"
-            referrerpolicy="no-referrer"
-            src="/static/lanhu_quanbuwendangxuanze/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png"
-          />
-          <view class="text-group_37 flex-col">
-            <text class="text_5">单据</text>
-            <text class="text_6">2025/05/21&nbsp;12:36</text>
-          </view>
-          <image
-            class="label_4"
-            referrerpolicy="no-referrer"
-            src="/static/lanhu_quanbuwendangxuanze/SketchPng02436086c2092674a945161418af30e40396dd2e3262527fbdd0f29f81760ea6.png"
-          />
-          <text class="text_7">2</text>
-          <image
-            class="label_5"
-            referrerpolicy="no-referrer"
-            src="/static/lanhu_quanbuwendangxuanze/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
-          />
-        </view>
-        <view class="block_2 flex-row">
-          <view class="image-text_36 flex-row justify-between">
-            <image
-              class="image_3"
-              referrerpolicy="no-referrer"
-              src="/static/lanhu_quanbuwendangxuanze/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png"
-            />
-            <view class="text-group_38 flex-col">
-              <text class="text_8">分类2</text>
-              <text class="text_9">2025/05/21&nbsp;12:36</text>
-            </view>
-          </view>
-          <image
-            class="label_6"
-            referrerpolicy="no-referrer"
-            src="/static/lanhu_quanbuwendangxuanze/SketchPng02436086c2092674a945161418af30e40396dd2e3262527fbdd0f29f81760ea6.png"
-          />
-          <text class="text_10">2</text>
-          <image
-            class="label_7"
-            referrerpolicy="no-referrer"
-            src="/static/lanhu_quanbuwendangxuanze/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
-          />
-        </view>
-        <view class="block_3 flex-row">
-          <view class="image-text_37 flex-row justify-between">
-            <image
-              class="image_4"
-              referrerpolicy="no-referrer"
-              src="/static/lanhu_quanbuwendangxuanze/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png"
-            />
-            <view class="text-group_39 flex-col">
-              <text class="text_11">分类3</text>
-              <text class="text_12">2025/05/21&nbsp;12:36</text>
-            </view>
-          </view>
-          <image
-            class="label_8"
-            referrerpolicy="no-referrer"
-            src="/static/lanhu_quanbuwendangxuanze/SketchPng02436086c2092674a945161418af30e40396dd2e3262527fbdd0f29f81760ea6.png"
-          />
-          <text class="text_13">0</text>
-          <image
-            class="label_9"
-            referrerpolicy="no-referrer"
-            src="/static/lanhu_quanbuwendangxuanze/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
-          />
-        </view>
-      </view>
-      <view class="group_24 flex-row justify-between">
-        <view class="image-text_38 flex-row justify-between">
-          <view class="image-wrapper_1 flex-col">
-            <image
-              class="image_5"
-              referrerpolicy="no-referrer"
-              src="/static/lanhu_quanbuwendangxuanze/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png"
-            />
-          </view>
-          <view class="text-group_40 flex-col">
-            <text class="text_14">贸易合规助手2025-05-21&nbsp;10.46</text>
-            <text class="text_15">2025/05/21&nbsp;12:36</text>
-          </view>
-        </view>
-        <image
-          class="label_14"
-          referrerpolicy="no-referrer"
-          src="/static/lanhu_quanbuwendangxuanze/SketchPng9bccd17e3f01b76e4d8ce865c604fc9d05b0fedd5dca19869a9fd9771674f9a9.png"
-        />
-      </view>
-      <view class="group_25 flex-row justify-between">
-        <view class="image-text_39 flex-row justify-between">
-          <view class="image-wrapper_2 flex-col">
-            <image
-              class="image_6"
-              referrerpolicy="no-referrer"
-              src="/static/lanhu_quanbuwendangxuanze/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png"
-            />
-          </view>
-          <view class="text-group_41 flex-col">
-            <text class="text_16">贸易合规助手2025-05-21&nbsp;10.46</text>
-            <text class="text_17">2025/05/21&nbsp;12:36</text>
-          </view>
-        </view>
-        <view class="box_4 flex-col"></view>
-      </view>
+      <!-- 使用文件夹列表组件 -->
+      <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
+
+      <!-- 使用文件列表组件 -->
+      <file-list :file-list="fileList" @file-click="toggleSelectFile" />
     </view>
     <view
       class="group_6 flex-col fixed bottom-0 left-0 w-full bg-white z-10 border-t border-gray-200 h-140rpx pb-safe"
@@ -155,6 +52,96 @@
 </template>
 <script setup lang="js">
 import { ref } from 'vue'
+import FolderList from '@/pages/wendang/components/folder-list.vue'
+import FileList from '@/pages/wendang/components/file-list.vue'
+// 文件夹列表
+const folderList = ref([
+  {
+    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
+    name: '单据',
+    date: '2025/05/21 12:36',
+    count: 2,
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
+    name: '分类2',
+    date: '2025/05/21 12:36',
+    count: 2,
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
+    name: '分类3',
+    date: '2025/05/21 12:36',
+    count: 0,
+    selected: false,
+  },
+])
+
+// 文件列表
+const fileList = ref([
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+])
+
+// 文件夹选择切换
+const toggleSelectFolder = (folder) => {
+  // 文件夹的选择逻辑（如果需要）
+  console.log('点击文件夹:', folder.name)
+}
+
+// 文件选择切换
+const toggleSelectFile = (file) => {
+  file.selected = !file.selected
+  console.log('切换文件选择状态:', file.name, file.selected)
+}
 
 const loopData0 = ref([
   {
@@ -175,7 +162,7 @@ const loopData0 = ref([
   },
 ])
 </script>
-<style lang="css">
+<style lang="css" scoped>
 @import '../common/common.css';
 @import './assets/style/index.rpx.css';
 </style>

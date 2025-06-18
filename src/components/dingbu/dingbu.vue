@@ -17,7 +17,7 @@ const { menuButtonBoundingClientRect, headerHeight } = useLayout()
           height: menuButtonBoundingClientRect.height + 'px',
         }"
       >
-        <uni-icons type="left" size="25"></uni-icons>
+        <uni-icons type="left" size="18"></uni-icons>
         <slot name="title">组件标题</slot>
         <div>asdf</div>
       </div>

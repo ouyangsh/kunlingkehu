@@ -45,7 +45,7 @@ const handleFolderClick = (folder) => {
 </script>
 
 <style lang="scss" scoped>
-@import '../../common/common.css';
+@import '../../../static/common/common.css';
 /* 文件夹样式 */
 .folder-list {
   .section_3,

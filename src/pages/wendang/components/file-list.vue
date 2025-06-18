@@ -35,7 +35,7 @@ const handleFileClick = (file) => {
 </script>
 
 <style lang="scss" scoped>
-@import '../../common/common.css';
+@import '../../../static/common/common.css';
 /* 文件样式 */
 .file-list {
   .block_11 {

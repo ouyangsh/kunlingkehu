@@ -237,12 +237,12 @@ const handleFunctionItemClick = ({ item, index }) => {
 // 跳转到全部文档选择页面
 const navigateToAllDocs = () => {
   uni.navigateTo({
-    url: '/pages/quanbu-wendang-xuanze/index',
+    url: '/pages-sub/quanbu-wendang-xuanze/index',
   })
 }
 </script>
 <style lang="css" scoped>
-@import '../common/common.css';
+@import '../../static/common/common.css';
 @import './assets/style/index.rpx.css';
 
 .block_10 {

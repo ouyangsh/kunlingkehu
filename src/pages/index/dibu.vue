@@ -84,6 +84,6 @@ const loopData1 = ref([
 </script>
 
 <style lang="scss">
-@import '../common/common';
+@import '../../static/common/common';
 @import './assets/style/index.rpx.css';
 </style>

@@ -212,6 +212,6 @@ const loopData0 = ref([
 ])
 </script>
 <style lang="css" scoped>
-@import '../common/common.css';
-@import './assets/style/index.rpx.css';
+@import '../../static/common/common.css';
+@import 'assets/style/index.rpx.css';
 </style>

@@ -59,14 +59,6 @@
       }
     },
     {
-      "path": "pages/quanbu-wendang-xuanze/index",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "全部文档",
-        "navigationStyle": "custom"
-      }
-    },
-    {
       "path": "pages/wendang/index",
       "type": "page",
       "style": {
@@ -416,6 +408,14 @@
           "type": "page",
           "style": {
             "navigationBarTitleText": "分包页面 标题"
+          }
+        },
+        {
+          "path": "quanbu-wendang-xuanze/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "全部文档",
+            "navigationStyle": "custom"
           }
         }
       ]

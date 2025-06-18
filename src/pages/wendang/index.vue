@@ -170,7 +170,7 @@ const toggleSelectFile = (file) => {
 const constants = ref({})
 </script>
 <style lang="scss" scoped>
-@import '../common/common.css';
+@import '../../static/common/common.css';
 
 .page {
   position: relative;

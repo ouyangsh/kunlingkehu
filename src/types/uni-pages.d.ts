@@ -10,7 +10,6 @@ interface NavigateToOptions {
        "/pages/index/request" |
        "/pages/login/index" |
        "/pages/my/index" |
-       "/pages/quanbu-wendang-xuanze/index" |
        "/pages/wendang/index" |
        "/pages/demo/base/auto-import" |
        "/pages/demo/base/css" |
@@ -53,7 +52,8 @@ interface NavigateToOptions {
        "/pages/demo/page/sp-editor/index" |
        "/pages/demo/page/ucharts/index" |
        "/pages/demo/page/z-paging/index" |
-       "/pages-sub/demo/index";
+       "/pages-sub/demo/index" |
+       "/pages-sub/quanbu-wendang-xuanze/index";
 }
 interface RedirectToOptions extends NavigateToOptions {}
 

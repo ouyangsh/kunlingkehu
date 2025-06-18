@@ -32,7 +32,7 @@ const handleItemClick = (item, index) => {
 </script>
 
 <style lang="scss" scoped>
-@import '../../common/common.css';
+@import '../../../static/common/common.css';
 
 .function-grid {
   display: flex;

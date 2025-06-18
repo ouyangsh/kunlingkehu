@@ -1,5 +1,14 @@
 <script setup lang="js">
 const { menuButtonBoundingClientRect, headerHeight } = useLayout()
+const navigateBack = () => {
+  if (getCurrentPages().length > 1) {
+    uni.navigateBack()
+  } else {
+    uni.reLaunch({
+      url: '/pages/index/index',
+    })
+  }
+}
 </script>
 
 <template>
@@ -17,7 +26,7 @@ const { menuButtonBoundingClientRect, headerHeight } = useLayout()
           height: menuButtonBoundingClientRect.height + 'px',
         }"
       >
-        <uni-icons type="left" size="22"></uni-icons>
+        <uni-icons type="left" size="22" @click="navigateBack"></uni-icons>
         <slot name="title">组件标题</slot>
         <div></div>
       </div>

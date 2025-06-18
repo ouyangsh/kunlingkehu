@@ -20,6 +20,7 @@
           <view
             class="list-items_1 flex-row box-border"
             v-for="(item, index) in loopData0"
+            @click="tiaozhuan"
             :key="index"
           >
             <image
@@ -80,7 +81,13 @@ export default {
       constants: {},
     }
   },
-  methods: {},
+  methods: {
+    tiaozhuan() {
+      uni.navigateTo({
+        url: '/pages/demo/index',
+      })
+    },
+  },
 }
 </script>
 <style lang="css" scoped>

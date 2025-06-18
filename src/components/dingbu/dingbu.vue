@@ -12,12 +12,14 @@ const { menuButtonBoundingClientRect, headerHeight } = useLayout()
       }"
     >
       <div
-        class="flex justify-center items-center font-500 text-38rpx"
+        class="flex justify-between mx-30rpx items-center font-500 text-38rpx"
         :style="{
           height: menuButtonBoundingClientRect.height + 'px',
         }"
       >
+        <uni-icons type="left" size="25"></uni-icons>
         <slot name="title">组件标题</slot>
+        <div>asdf</div>
       </div>
     </div>
   </div>

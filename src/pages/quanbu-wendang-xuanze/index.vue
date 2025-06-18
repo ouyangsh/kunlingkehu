@@ -16,55 +16,56 @@
         </template>
       </dingbu>
     </template>
-    <template #main></template>
-    <template #footer></template>
-  </buju>
-  <view class="page flex-col">
-    <view class="group_1 flex-col">
-      <view class="group_22 flex-row justify-between">
-        <text class="text_2">全部文档</text>
-        <image class="image_1" referrerpolicy="no-referrer" />
-      </view>
-      <view class="text-wrapper_8 flex-row justify-between">
-        <text class="text_3">取消</text>
-        <text class="text_4">全选</text>
-      </view>
-    </view>
-    <view class="group_4 flex-col pb-140rpx">
-      <!-- 使用文件夹列表组件 -->
-      <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
-
-      <!-- 使用文件列表组件 -->
-      <file-list :file-list="fileList" @file-click="toggleSelectFile" />
-    </view>
-    <view
-      class="group_6 flex-col fixed bottom-0 left-0 w-full bg-white z-10 border-t border-gray-200 h-140rpx pb-safe"
-      style="padding: 10px 0; margin-top: 0"
-    >
-      <view class="list_8 flex-row justify-around py-2" style="width: 100%; height: auto">
+    <template #main>
+      <view class="overflow-auto" :style="{ height: mainHeight }">
         <view
-          class="image-text_40 flex-col items-center"
-          v-for="(item, index) in loopData0"
-          :key="index"
-          style="margin-right: 0"
+          class="inline-block bg-[#ffffffff] mt--3rpx justify-between px-30rpx h-60rpx box-border fixed items-center w-full"
         >
-          <span
-            class="text-40rpx"
-            :class="['font_family', item.lanhuimage0]"
-            style="color: #444"
-          ></span>
-          <text class="text-group_6" style="width: auto; text-align: center">
-            {{ item.lanhutext0 }}
-          </text>
+          <text class="text_3">取消</text>
+          <text class="text_4">全选</text>
+        </view>
+        <div class="h-60rpx"></div>
+        <div class="h-10rpx bg-#F4F6FA"></div>
+        <view class="group_4 flex-col pb-140rpx">
+          <!-- 使用文件夹列表组件 -->
+          <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
+
+          <!-- 使用文件列表组件 -->
+          <file-list :file-list="fileList" @file-click="toggleSelectFile" />
         </view>
       </view>
-    </view>
-  </view>
+    </template>
+    <template #footer>
+      <view
+        class="group_6 flex-col fixed bottom-0 left-0 w-full bg-white z-10 border-t border-gray-200 h-140rpx pb-safe"
+        style="padding: 10px 0; margin-top: 0"
+      >
+        <view class="list_8 flex-row justify-around py-2" style="width: 100%; height: auto">
+          <view
+            class="image-text_40 flex-col items-center"
+            v-for="(item, index) in loopData0"
+            :key="index"
+            style="margin-right: 0"
+          >
+            <span
+              class="text-40rpx"
+              :class="['font_family', item.lanhuimage0]"
+              style="color: #444"
+            ></span>
+            <text class="text-group_6" style="width: auto; text-align: center">
+              {{ item.lanhutext0 }}
+            </text>
+          </view>
+        </view>
+      </view>
+    </template>
+  </buju>
 </template>
 <script setup lang="js">
 import { ref } from 'vue'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
+const { mainHeight, headerHeight } = useLayout()
 // 文件夹列表
 const folderList = ref([
   {

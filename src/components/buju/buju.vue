@@ -42,7 +42,7 @@ const showFooter = computed(() => props.showFooter)
     mode="aspectFill"
   ></div> -->
   <!--  传入顶部导航使用传入的，不传入使用默认的-->
-  <div v-if="showHeader" class="bg-yellow-200" :style="{ height: headerHeight }">
+  <div v-if="showHeader" :style="{ height: headerHeight }">
     <slot name="header">
       <dingbu></dingbu>
     </slot>

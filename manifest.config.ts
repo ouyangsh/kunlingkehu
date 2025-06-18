@@ -86,6 +86,7 @@ export default defineManifestConfig({
       urlCheck: false,
     },
     usingComponents: true,
+    lazyCodeLoading: 'requiredComponents',
     // __usePrivacyCheck__: true,
   },
   'mp-alipay': {

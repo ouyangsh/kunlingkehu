@@ -19,12 +19,14 @@
     <template #main>
       <view class="overflow-auto" :style="{ height: mainHeight }">
         <view
-          class="inline-block bg-[#ffffffff] mt--3rpx justify-between px-30rpx h-60rpx box-border fixed items-center w-full"
+          class="inline-block h-80rpx bg-[#ffffffff] mt--3rpx justify-between px-30rpx box-border fixed items-center w-full"
         >
-          <text class="text_3">取消</text>
-          <text class="text_4">全选</text>
+          <text class="text_3" @click="goBackToHome">取消</text>
+          <text class="text_4" @click="toggleSelectAll">
+            {{ isAllSelected ? '取消全选' : '全选' }}
+          </text>
         </view>
-        <div class="h-60rpx"></div>
+        <div class="h-80rpx"></div>
         <div class="h-10rpx bg-#F4F6FA"></div>
         <view class="group_4 flex-col pb-140rpx">
           <!-- 使用文件夹列表组件 -->
@@ -62,7 +64,7 @@
   </buju>
 </template>
 <script setup lang="js">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
 const { mainHeight, headerHeight } = useLayout()
@@ -143,10 +145,43 @@ const fileList = ref([
   },
 ])
 
+// 计算属性：是否全部选中
+const isAllSelected = computed(() => {
+  const foldersSelected = folderList.value.every((folder) => folder.selected)
+  const filesSelected = fileList.value.every((file) => file.selected)
+  return (
+    foldersSelected && filesSelected && (folderList.value.length > 0 || fileList.value.length > 0)
+  )
+})
+
+// 返回首页
+const goBackToHome = () => {
+  uni.redirectTo({
+    url: '/pages/index/index',
+  })
+}
+
+// 全选/取消全选
+const toggleSelectAll = () => {
+  const newStatus = !isAllSelected.value
+
+  // 更新文件夹选中状态
+  folderList.value.forEach((folder) => {
+    folder.selected = newStatus
+  })
+
+  // 更新文件选中状态
+  fileList.value.forEach((file) => {
+    file.selected = newStatus
+  })
+
+  console.log('全选/取消全选状态:', newStatus)
+}
+
 // 文件夹选择切换
 const toggleSelectFolder = (folder) => {
-  // 文件夹的选择逻辑（如果需要）
-  console.log('点击文件夹:', folder.name)
+  folder.selected = !folder.selected
+  console.log('切换文件夹选择状态:', folder.name, folder.selected)
 }
 
 // 文件选择切换

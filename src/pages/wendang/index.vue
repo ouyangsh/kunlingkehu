@@ -48,7 +48,7 @@
           </view>
         </view>
       </view>
-      <div :style="{ height: footerHeight }"></div>
+      <!--      <div :style="{ height: footerHeight }"></div>-->
     </template>
     <template #footer>
       <dibu />
@@ -62,8 +62,10 @@ import dibu from '../index/dibu.vue'
 import FolderList from './components/folder-list.vue'
 import FileList from './components/file-list.vue'
 import FunctionGrid from './components/function-grid.vue'
-const { footerHeight } = useLayout()
-
+const { footerHeight } = useLayout({
+  topNavHeight: 200, // 自定义顶部导航高度为80rpx
+  footerHeight: 160, // 自定义底部导航高度为140rpx
+})
 const functionItems = ref([
   {
     icon: 'icon-icon-xiangcedaoru',

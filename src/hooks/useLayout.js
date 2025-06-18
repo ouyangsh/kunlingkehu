@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 
-export function useLayout() {
+export function useLayout(options = {}) {
   // 计算安全区域
   const safeAreaInsets = computed(() => {
     const systemInfo = uni.getSystemInfoSync()
@@ -22,10 +22,11 @@ export function useLayout() {
   // 底部安全区域
   const bottomSafeArea = ref(safeAreaInsets.value.bottom)
 
-  // 顶部导航高度
-  const headerHeight = ref((menuButtonBoundingClientRect.bottom || 50) + 'px')
-  // 底部导航高度
-  const footerHeight = ref(160 + 'rpx')
+  // 顶部导航高度 - 支持传入自定义值
+  const topNavHeight = ref((options.topNavHeight || 100) + 'rpx')
+  const headerHeight = ref((menuButtonBoundingClientRect.bottom || topNavHeight.value) + 'px')
+  // 底部导航高度 - 支持传入自定义值
+  const footerHeight = ref((options.footerHeight || 160) + 'rpx')
   // 主体高度
   const mainHeight = computed(() => {
     return `calc(100vh  - ${headerHeight.value} - ${footerHeight.value})`

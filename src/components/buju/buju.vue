@@ -50,8 +50,10 @@ const showFooter = computed(() => props.showFooter)
   <!--  主体-->
   <div class="" :style="{ height: mainHeight }">
     <slot name="main"></slot>
+    <div :style="{ height: footerHeight }"></div>
   </div>
   <!--  底部导航-->
+
   <div
     v-if="showFooter"
     class="bg-[#ffffffff] fixed bottom-0 left-0 right-0 z-10"

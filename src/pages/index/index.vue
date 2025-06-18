@@ -54,7 +54,6 @@
           </view>
         </view>
       </view>
-      <div :style="{ height: footerHeight }"></div>
     </template>
     <template #footer>
       <dibu />

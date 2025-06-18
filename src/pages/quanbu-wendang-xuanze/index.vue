@@ -17,9 +17,9 @@
       </dingbu>
     </template>
     <template #main>
-      <view class="overflow-auto" :style="{ height: mainHeight }">
+      <view class="overflow-auto">
         <view
-          class="inline-block h-80rpx bg-[#ffffffff] mt--3rpx justify-between px-30rpx box-border fixed items-center w-full"
+          class="inline-block h-80rpx bg-[#ffffffff] mt--3rpx z-10 justify-between px-30rpx box-border fixed items-center w-full"
         >
           <text class="text_3" @click="goBackToHome">取消</text>
           <text class="text_4" @click="toggleSelectAll">
@@ -67,7 +67,9 @@
 import { ref, computed } from 'vue'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
-const { mainHeight, headerHeight } = useLayout()
+const { mainHeight, headerHeight } = useLayout({
+  footerHeight: 180,
+})
 // 文件夹列表
 const folderList = ref([
   {

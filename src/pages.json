@@ -411,6 +411,14 @@
           }
         },
         {
+          "path": "fenleishezhi/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "分类设置",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "quanbu-wendang-xuanze/index",
           "type": "page",
           "style": {

@@ -39,57 +39,61 @@
         </view>
       </view>
       <div class="fixed bottom-60rpx w-full flex justify-center">
-        <view class="text-wrapper_1 flex-col box-border">
+        <view class="text-wrapper_1 flex-col box-border" @click="handleAddCategory">
           <text class="text_4">新建分类</text>
         </view>
       </div>
     </template>
   </buju>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      loopData0: [
-        {
-          lanhuimage0:
-            'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c',
-          slot2: 2,
-          slot1: 1,
-        },
-        {
-          lanhuimage0:
-            'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c',
-          specialSlot3: {
-            lanhuimage0:
-              '/static/lanhu_fenleishezhi/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
-            lanhutext0: '分类2',
-          },
-          slot3: 3,
-        },
-        {
-          lanhuimage0:
-            'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c',
-          specialSlot3: {
-            lanhuimage0:
-              '/static/lanhu_fenleishezhi/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
-            lanhutext0: '分类3',
-          },
-          slot3: 3,
-        },
-      ],
-      constants: {},
-    }
+
+<script setup>
+import { ref } from 'vue'
+
+// 数据定义，使用ref替代data选项
+const loopData0 = ref([
+  {
+    lanhuimage0:
+      'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c',
+    slot2: 2,
+    slot1: 1,
   },
-  methods: {
-    tiaozhuan() {
-      uni.navigateTo({
-        url: '/pages/demo/index',
-      })
+  {
+    lanhuimage0:
+      'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c',
+    specialSlot3: {
+      lanhuimage0:
+        '/static/lanhu_fenleishezhi/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
+      lanhutext0: '分类2',
     },
+    slot3: 3,
   },
+  {
+    lanhuimage0:
+      'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c',
+    specialSlot3: {
+      lanhuimage0:
+        '/static/lanhu_fenleishezhi/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
+      lanhutext0: '分类3',
+    },
+    slot3: 3,
+  },
+])
+
+// 方法定义，直接作为函数
+const tiaozhuan = () => {
+  uni.navigateTo({
+    url: '/pages/demo/index',
+  })
+}
+
+// 新增分类的处理函数
+const handleAddCategory = () => {
+  console.log('新建分类')
+  // 这里可以添加新建分类的逻辑
 }
 </script>
+
 <style lang="css" scoped>
 @import '../../static/common/common.css';
 @import './assets/style/index.rpx.css';

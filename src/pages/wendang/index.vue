@@ -29,6 +29,7 @@
               <text class="text_5">(6)</text>
             </view>
             <image
+              @click="tiaozhuan"
               class="label_4"
               referrerpolicy="no-referrer"
               src="/static/lanhu_wendang/SketchPng010d95ac2a9e84192e9b3a69673847ba55fc67e70b4dc42b120e9c24d2b053c5.png"
@@ -168,6 +169,11 @@ const toggleSelectFile = (file) => {
 }
 
 const constants = ref({})
+const tiaozhuan = () => {
+  uni.navigateTo({
+    url: '/pages-sub/fenleishezhi/index',
+  })
+}
 </script>
 <style lang="scss" scoped>
 @import '../../static/common/common.css';

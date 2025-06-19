@@ -153,9 +153,9 @@ const fileList = ref([
 const toggleSelectFolder = (folder) => {
   // 文件夹的选择逻辑（如果需要）
   console.log('点击文件夹:', folder.name)
-  uni.navigateTo({
-    url: '/pages-sub/fenleishezhi/index',
-  })
+  // uni.navigateTo({
+  //   url: '/pages-sub/fenleishezhi/index',
+  // })
 }
 
 // 文件选择切换

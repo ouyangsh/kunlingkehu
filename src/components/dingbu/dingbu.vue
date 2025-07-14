@@ -28,7 +28,7 @@ const navigateBack = () => {
       >
         <uni-icons type="left" size="22" @click="navigateBack"></uni-icons>
         <slot name="title">组件标题</slot>
-        <div></div>
+        <div class="w-40rpx"></div>
       </div>
     </div>
   </div>

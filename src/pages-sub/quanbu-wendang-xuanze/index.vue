@@ -27,7 +27,6 @@
           </text>
         </view>
         <div class="h-80rpx"></div>
-        <div class="h-10rpx bg-#F4F6FA"></div>
         <view class="group_4 flex-col pb-140rpx">
           <!-- 使用文件夹列表组件 -->
           <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />

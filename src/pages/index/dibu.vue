@@ -31,7 +31,7 @@ const currentIndex = ref(0)
 const pages = [
   '/pages/index/index',
   '/pages/wendang/index',
-  '', // 筛查页面路径待定
+  '/pages/demo/index',
   '', // 资讯页面路径待定
   '',
 ]

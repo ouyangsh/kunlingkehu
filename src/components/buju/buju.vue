@@ -48,7 +48,7 @@ const showFooter = computed(() => props.showFooter)
     </slot>
   </div>
   <!--  主体-->
-  <div class="" :style="{ height: mainHeight }">
+  <div class="bg-[#F2F5FA]" :style="{ height: mainHeight }">
     <slot name="main"></slot>
     <div :style="{ height: footerHeight }"></div>
   </div>

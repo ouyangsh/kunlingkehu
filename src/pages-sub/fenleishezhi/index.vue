@@ -9,11 +9,13 @@
 
 <template>
   <buju :showFooter="false">
-    <dingbu>
-      <template #title>
-        <text>全部文档</text>
-      </template>
-    </dingbu>
+    <template #header>
+      <dingbu>
+        <template #title>
+          <text>分类设置</text>
+        </template>
+      </dingbu>
+    </template>
     <template #main>
       <view class="box_2 flex-col">
         <view class="list_7 flex-col">
@@ -30,6 +32,7 @@
             <text class="text_3">{{ item.lanhutext0 }}</text>
 
             <image
+              @click="xuanzhong(item, index)"
               class="label_4"
               referrerpolicy="no-referrer"
               src="/static/lanhu_wendang/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
@@ -44,6 +47,30 @@
       </div>
     </template>
   </buju>
+  <!-- 分类设置 -->
+  <wd-popup
+    v-model="showfenlei"
+    position="bottom"
+    custom-style="height: 400rpx; border-radius: 20rpx 20rpx 0 0"
+  >
+    <div class="bg-#F4F6FA h-88rpx flex justify-between items-center mx30rpx">
+      <div class="text-32rpx">单据</div>
+      <div class="text-32rpx">
+        <uni-icons type="clear" color="#CCCCCC" size="22" @click="showfenlei = false"></uni-icons>
+      </div>
+    </div>
+    <div class="mx30rpx h-88rpx flex items-center" @click="chongming = true">
+      <i class="icon-icon-bianji font_family mr20rpx text-50rpx" style="font-size: 40rpx"></i>
+      <div>重命名</div>
+    </div>
+    <div class="flex justify-center">
+      <div class="border-b-1 border-b-solid w690rpx border-#DDDDDD"></div>
+    </div>
+    <div class="mx30rpx h-88rpx flex items-center text-#EA635C" @click="shanchu = true">
+      <i class="font_family icon-icon-shanchu2 mr20rpx" style="font-size: 40rpx"></i>
+      <div>删除</div>
+    </div>
+  </wd-popup>
   <wd-popup
     v-model="show"
     position="bottom"
@@ -77,10 +104,83 @@
       </div>
     </div>
   </wd-popup>
+
+  <wd-popup
+    v-model="chongming"
+    position="bottom"
+    custom-style="height: 400rpx; border-radius: 20rpx 20rpx 0 0"
+  >
+    <div class="flex flex-col items-center">
+      <div class="text-32rpx my40rpx">重命名</div>
+      <div class="w-690rpx bg-#F4F6FA; h-88rpx rounded-md flex items-center pl10rpx">
+        <input
+          type="text"
+          class="w-690rpx bg-#F4F6FA; h-88rpx rounded-md ml10rpx"
+          v-model="chongmingvalue"
+        />
+        <div class="w-88rpx h-88rpx bg-#F4F6FA; rounded-md flex items-center justify-center">
+          <uni-icons
+            type="clear"
+            color="#CCCCCC"
+            size="22"
+            @click="chongmingvalue = ''"
+          ></uni-icons>
+        </div>
+      </div>
+      <div class="w-690rpx h-88rpx rounded-md flex items-center justify-between mt40rpx">
+        <div
+          @click="handleClose"
+          class="text-32rpx w330rpx h80rpx bg-#F4F6FA flex justify-center items-center rounded-md"
+        >
+          取消
+        </div>
+        <div
+          @click="chongmingfun"
+          class="text-32rpx w330rpx h80rpx text-#fff bg-#2563EB flex justify-center items-center rounded-md"
+        >
+          确定
+        </div>
+      </div>
+    </div>
+  </wd-popup>
+  <wd-popup v-model="shanchu" custom-style="height: 364rpx; width: 630rpx; border-radius: 20rpx ">
+    <div class="flex flex-col items-center">
+      <div class="text-32rpx my40rpx">删除提示</div>
+      <div class="text-32rpx my20rpx">请确认是否删除此分类？</div>
+      <div class="h-88rpx rounded-md flex items-center justify-evenly mt40rpx w-630rpx mb-20rpx">
+        <div
+          @click="shanchuhanshu(false)"
+          class="text-32rpx w270rpx h88rpx bg-#F4F6FA flex justify-center items-center rounded-md"
+        >
+          取消
+        </div>
+        <div
+          @click="shanchuhanshu(true)"
+          class="text-32rpx w270rpx h88rpx text-#fff bg-#2563EB flex justify-center items-center rounded-md"
+        >
+          确定
+        </div>
+      </div>
+    </div>
+  </wd-popup>
+
+  <wd-popup v-model="tishi" custom-style="height: 364rpx; width: 630rpx; border-radius: 20rpx ">
+    <div class="flex flex-col items-center">
+      <div class="text-32rpx my40rpx">删除提示</div>
+      <div class="text-32rpx my20rpx">请先清空分类下文件，才可以删除</div>
+      <div class="h-88rpx rounded-md flex items-center justify-evenly mt40rpx w-630rpx mb-20rpx">
+        <div
+          @click="tishi = false"
+          class="text-32rpx w570rpx h88rpx text-#fff bg-#2563EB flex justify-center items-center rounded-md"
+        >
+          知道了
+        </div>
+      </div>
+    </div>
+  </wd-popup>
 </template>
 
 <script setup>
-import { log } from 'console'
 import { ref } from 'vue'
 
 const inputValue = ref('')
@@ -109,7 +209,34 @@ const loopData0 = ref([
 const handleClose = () => {
   show.value = false
 }
+
+const xuanzhong = (item, index) => {
+  showfenlei.value = true
+  xuanzhongindex.value = index
+  console.log(xuanzhongindex.value)
+}
+
+const shanchuhanshu = (can) => {
+  if (can) {
+    loopData0.value.splice(xuanzhongindex.value, 1)
+  }
+  shanchu.value = false
+  showfenlei.value = false
+}
+
+const chongmingfun = () => {
+  loopData0.value[xuanzhongindex.value].lanhutext0 = chongmingvalue.value
+  chongming.value = false
+}
+
+const xuanzhongindex = ref(0)
 const show = ref(false)
+const chongming = ref(false)
+const chongmingvalue = ref('')
+const showfenlei = ref(false)
+const shanchu = ref(false)
+const tishi = ref(false)
+
 // 新增分类的处理函数
 const handleAddCategory = () => {
   show.value = true

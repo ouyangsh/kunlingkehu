@@ -8,7 +8,7 @@
 </route>
 
 <template>
-  <buju>
+  <buju :layout-options="{ footerHeight: 180 }">
     <template #header>
       <dingbu>
         <template #title>

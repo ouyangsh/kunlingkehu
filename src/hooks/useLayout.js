@@ -24,7 +24,9 @@ export function useLayout(options = {}) {
 
   // 顶部导航高度 - 支持传入自定义值
   const topNavHeight = ref((options.topNavHeight || 100) + 'rpx')
-  const headerHeight = ref((menuButtonBoundingClientRect.bottom || topNavHeight.value) + 'px')
+  const headerHeight = ref(
+    (options.topNavHeight && topNavHeight.value) || menuButtonBoundingClientRect.bottom + 'px',
+  )
   // 底部导航高度 - 支持传入自定义值
   const footerHeight = ref((options.footerHeight || 160) + 'rpx')
   // 主体高度

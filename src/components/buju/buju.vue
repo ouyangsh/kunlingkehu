@@ -1,20 +1,14 @@
 <script setup lang="js">
-const {
-  safeAreaInsets,
-  menuButtonBoundingClientRect,
-  topSafeArea,
-  bottomSafeArea,
-  headerHeight,
-  footerHeight,
-  mainHeight,
-} = useLayout()
-
 // 判断safeAreaInsets的top和bottom是否为空
 // if (safeAreaInsets.value.top === 0 && safeAreaInsets.value.bottom === 0) {
 //   safeAreaInsets.value.top = 30
 //   safeAreaInsets.value.bottom = 30
 // }
 const props = defineProps({
+  layoutOptions: {
+    type: Object,
+    default: () => ({ footerHeight: 160 }),
+  },
   showHeader: {
     type: Boolean,
     default: true,
@@ -24,6 +18,15 @@ const props = defineProps({
     default: true,
   },
 })
+const {
+  safeAreaInsets,
+  menuButtonBoundingClientRect,
+  topSafeArea,
+  bottomSafeArea,
+  headerHeight,
+  footerHeight,
+  mainHeight,
+} = useLayout(props.layoutOptions)
 const showHeader = computed(() => props.showHeader)
 const showFooter = computed(() => props.showFooter)
 </script>

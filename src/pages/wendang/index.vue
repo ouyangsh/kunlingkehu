@@ -8,7 +8,7 @@
 </route>
 
 <template>
-  <buju :show-header="false">
+  <buju :show-header="false" :layout-options="{ footerHeight: 160, topNavHeight: 1 }">
     <template #main>
       <view class="page flex-col">
         <view class="group_1 flex-col fixed-header">
@@ -63,10 +63,7 @@ import dibu from '../index/dibu.vue'
 import FolderList from './components/folder-list.vue'
 import FileList from './components/file-list.vue'
 import FunctionGrid from './components/function-grid.vue'
-const { footerHeight } = useLayout({
-  topNavHeight: 200, // 自定义顶部导航高度为80rpx
-  footerHeight: 160, // 自定义底部导航高度为140rpx
-})
+
 const functionItems = ref([
   {
     icon: 'icon-icon-xiangcedaoru',
@@ -118,30 +115,6 @@ const folderList = ref([
 
 // 文件列表
 const fileList = ref([
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
   {
     icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     name: '贸易合规助手2025-05-21 10.46',

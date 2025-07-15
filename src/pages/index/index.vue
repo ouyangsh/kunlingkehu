@@ -8,12 +8,12 @@
 }
 </route>
 <template>
-  <buju :show-header="false">
+  <buju :show-header="false" :layout-options="{ footerHeight: 160, topNavHeight: 1 }">
     <template #main>
       <view class="page flex-col">
         <view class="h-240rpx"></view>
         <view class="box_1 flex-col fixed top-0 left-0 z-10">
-          <image class="box_1_background" src="@/static/lanhu_shouye/qwer.png" mode="aspectFill" />
+          <image class="box_1_background" src="@/static/lanhu_shouye/qwer.png" mode="" />
           <view class="box_1_content flex-col">
             <view class="image-wrapper_13 flex-row">
               <image class="image_1" referrerpolicy="no-referrer" />
@@ -111,30 +111,6 @@ const folderList = ref([
 
 // 文件列表
 const fileList = ref([
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
   {
     icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     name: '贸易合规助手2025-05-21 10.46',

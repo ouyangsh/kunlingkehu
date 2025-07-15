@@ -31,7 +31,7 @@ const currentIndex = ref(0)
 const pages = [
   '/pages/index/index',
   '/pages/wendang/index',
-  '/pages/demo/index',
+  '/pages/popmart/index',
   '', // 资讯页面路径待定
   '',
 ]

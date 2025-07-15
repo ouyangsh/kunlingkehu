@@ -67,7 +67,7 @@ const showModal = () => {
 }
 const showToast = () => {
   // 顺便测试 message 的使用
-  toast.success('菲鸽找工作')
+  toast.success('unibest 你值得拥有')
 }
 const value = ref<boolean>(false)
 

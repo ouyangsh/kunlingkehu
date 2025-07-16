@@ -8,53 +8,51 @@
 }
 </route>
 <template>
-  <buju :show-header="false" :layout-options="{ footerHeight: 160, topNavHeight: 1 }">
-    <template #main>
-      <view class="page flex-col">
-        <view class="h-240rpx"></view>
-        <view class="box_1 flex-col fixed top-0 left-0 z-10">
-          <image class="box_1_background" src="@/static/lanhu_shouye/qwer.png" mode="" />
-          <view class="box_1_content flex-col">
-            <view class="image-wrapper_13 flex-row">
-              <image class="image_1" referrerpolicy="no-referrer" />
-            </view>
-            <view class="text-wrapper_6 flex-row">
-              <text class="text_2">贸易合规，国货领航！</text>
-            </view>
-            <view class="image-wrapper_14 flex-row">
-              <image
-                class="image_2"
-                referrerpolicy="no-referrer"
-                src="/static/lanhu_shouye/SketchPng90d6059e3c0b86e5c9b56bf40c7b4c9d17beb6da4b70b2778e006005f96729b4.png"
-              />
-            </view>
+  <buju title="首页">
+    <view class="page flex-col">
+      <view class="h-80rpx"></view>
+      <view class="box_1 flex-col fixed top-0 left-0 z-10">
+        <image class="box_1_background" src="@/static/lanhu_shouye/qwer.png" mode="" />
+        <view class="box_1_content flex-col">
+          <view class="image-wrapper_13 flex-row">
+            <image class="image_1" referrerpolicy="no-referrer" />
           </view>
-        </view>
-        <view class="box_25 flex-col">
-          <function-grid :items="functionItems" @itemClick="handleFunctionItemClick" />
-        </view>
-        <view class="box_4 flex-col">
-          <view class="section_10 flex-row justify-between">
-            <text class="text_3">最近使用</text>
-            <view class="image-text_32 flex-row justify-between" @click="navigateToAllDocs">
-              <text class="text-group_2">全部文档</text>
-              <image
-                class="thumbnail_1"
-                referrerpolicy="no-referrer"
-                src="/static/lanhu_shouye/SketchPng0c59d307ad6b7e2bdfdf2318d36012ee119fa9b3ceac3a5c743401e1beeee2ca.png"
-              />
-            </view>
+          <view class="text-wrapper_6 flex-row">
+            <text class="text_2">贸易合规，国货领航！</text>
           </view>
-          <view class="block_10 flex-col">
-            <!-- 使用文件夹列表组件 -->
-            <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
-
-            <!-- 使用文件列表组件 -->
-            <file-list :file-list="fileList" @file-click="toggleSelectFile" />
+          <view class="image-wrapper_14 flex-row">
+            <image
+              class="image_2"
+              referrerpolicy="no-referrer"
+              src="/static/lanhu_shouye/SketchPng90d6059e3c0b86e5c9b56bf40c7b4c9d17beb6da4b70b2778e006005f96729b4.png"
+            />
           </view>
         </view>
       </view>
-    </template>
+      <view class="box_25 flex-col">
+        <function-grid :items="functionItems" @itemClick="handleFunctionItemClick" />
+      </view>
+      <view class="box_4 flex-col">
+        <view class="section_10 flex-row justify-between">
+          <text class="text_3">最近使用</text>
+          <view class="image-text_32 flex-row justify-between" @click="navigateToAllDocs">
+            <text class="text-group_2">全部文档</text>
+            <image
+              class="thumbnail_1"
+              referrerpolicy="no-referrer"
+              src="/static/lanhu_shouye/SketchPng0c59d307ad6b7e2bdfdf2318d36012ee119fa9b3ceac3a5c743401e1beeee2ca.png"
+            />
+          </view>
+        </view>
+        <view class="block_10 flex-col">
+          <!-- 使用文件夹列表组件 -->
+          <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
+
+          <!-- 使用文件列表组件 -->
+          <file-list :file-list="fileList" @file-click="toggleSelectFile" />
+        </view>
+      </view>
+    </view>
     <template #footer>
       <dibu />
     </template>
@@ -111,6 +109,54 @@ const folderList = ref([
 
 // 文件列表
 const fileList = ref([
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
+  {
+    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+    name: '贸易合规助手2025-05-21 10.46',
+    date: '2025/05/21 12:36',
+    selected: false,
+  },
   {
     icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     name: '贸易合规助手2025-05-21 10.46',

@@ -8,34 +8,25 @@
 </route>
 
 <template>
-  <buju :layout-options="{ footerHeight: 180 }">
-    <template #header>
-      <dingbu>
-        <template #title>
-          <text>全部文档</text>
-        </template>
-      </dingbu>
-    </template>
-    <template #main>
-      <view class="overflow-auto">
-        <view
-          class="inline-block h-80rpx bg-[#ffffffff] mt--3rpx z-10 justify-between px-30rpx box-border fixed items-center w-full"
-        >
-          <text class="text_3" @click="goBackToHome">取消</text>
-          <text class="text_4" @click="toggleSelectAll">
-            {{ isAllSelected ? '取消全选' : '全选' }}
-          </text>
-        </view>
-        <div class="h-80rpx"></div>
-        <view class="group_4 flex-col pb-140rpx">
-          <!-- 使用文件夹列表组件 -->
-          <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
-
-          <!-- 使用文件列表组件 -->
-          <file-list :file-list="fileList" @file-click="toggleSelectFile" />
-        </view>
+  <buju>
+    <view class="overflow-auto">
+      <view
+        class="inline-block h-80rpx bg-[#ffffffff] mt--3rpx z-10 justify-between px-30rpx box-border fixed items-center w-full"
+      >
+        <text class="text_3" @click="goBackToHome">取消</text>
+        <text class="text_4" @click="toggleSelectAll">
+          {{ isAllSelected ? '取消全选' : '全选' }}
+        </text>
       </view>
-    </template>
+      <div class="h-80rpx"></div>
+      <view class="group_4 flex-col pb-140rpx">
+        <!-- 使用文件夹列表组件 -->
+        <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
+
+        <!-- 使用文件列表组件 -->
+        <file-list :file-list="fileList" @file-click="toggleSelectFile" />
+      </view>
+    </view>
     <template #footer>
       <view
         class="group_6 flex-col fixed bottom-0 left-0 w-full bg-white z-10 border-t border-gray-200 h-140rpx pb-safe"

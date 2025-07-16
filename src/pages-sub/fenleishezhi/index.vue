@@ -8,44 +8,35 @@
 </route>
 
 <template>
-  <buju :showFooter="false">
-    <template #header>
-      <dingbu>
-        <template #title>
-          <text>分类设置</text>
-        </template>
-      </dingbu>
-    </template>
-    <template #main>
-      <view class="box_2 flex-col">
-        <view class="list_7 flex-col">
-          <view
-            class="list-items_1 flex-row box-border"
-            v-for="(item, index) in loopData0"
-            :key="index"
-          >
-            <image
-              class="image_2"
-              referrerpolicy="no-referrer"
-              src="/static/lanhu_fenleishezhi/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png"
-            />
-            <text class="text_3">{{ item.lanhutext0 }}</text>
+  <buju>
+    <view class="box_2 flex-col">
+      <view class="list_7 flex-col">
+        <view
+          class="list-items_1 flex-row box-border"
+          v-for="(item, index) in loopData0"
+          :key="index"
+        >
+          <image
+            class="image_2"
+            referrerpolicy="no-referrer"
+            src="/static/lanhu_fenleishezhi/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png"
+          />
+          <text class="text_3">{{ item.lanhutext0 }}</text>
 
-            <image
-              @click="xuanzhong(item, index)"
-              class="label_4"
-              referrerpolicy="no-referrer"
-              src="/static/lanhu_wendang/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
-            />
-          </view>
+          <image
+            @click="xuanzhong(item, index)"
+            class="label_4"
+            referrerpolicy="no-referrer"
+            src="/static/lanhu_wendang/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
+          />
         </view>
       </view>
-      <div class="fixed bottom-60rpx w-full flex justify-center">
-        <view class="text-wrapper_1 flex-col box-border" @click="handleAddCategory">
-          <text class="text_4">新建分类</text>
-        </view>
-      </div>
-    </template>
+    </view>
+    <div class="fixed bottom-60rpx w-full flex justify-center">
+      <view class="text-wrapper_1 flex-col box-border" @click="handleAddCategory">
+        <text class="text_4">新建分类</text>
+      </view>
+    </div>
   </buju>
   <!-- 分类设置 -->
   <wd-popup
@@ -59,7 +50,7 @@
         <uni-icons type="clear" color="#CCCCCC" size="22" @click="showfenlei = false"></uni-icons>
       </div>
     </div>
-    <div class="mx30rpx h-88rpx flex items-center" @click="chongming = true">
+    <div class="mx30rpx h-88rpx flex items-center" @click="chongmingmingqueren">
       <i class="icon-icon-bianji font_family mr20rpx text-50rpx" style="font-size: 40rpx"></i>
       <div>重命名</div>
     </div>
@@ -208,6 +199,7 @@ const loopData0 = ref([
 // 方法定义，直接作为函数
 const handleClose = () => {
   show.value = false
+  chongming.value = false
 }
 
 const xuanzhong = (item, index) => {
@@ -227,6 +219,11 @@ const shanchuhanshu = (can) => {
 const chongmingfun = () => {
   loopData0.value[xuanzhongindex.value].lanhutext0 = chongmingvalue.value
   chongming.value = false
+}
+
+const chongmingmingqueren = () => {
+  chongmingvalue.value = loopData0.value[xuanzhongindex.value].lanhutext0
+  chongming.value = true
 }
 
 const xuanzhongindex = ref(0)

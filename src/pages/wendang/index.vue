@@ -8,49 +8,46 @@
 </route>
 
 <template>
-  <buju :show-header="false" :layout-options="{ footerHeight: 160, topNavHeight: 1 }">
-    <template #main>
-      <view class="page flex-col">
-        <view class="group_1 flex-col fixed-header">
-          <view class="block_8 flex-row justify-between">
-            <text class="text_2">文档</text>
-            <image class="image_1" referrerpolicy="no-referrer" />
-          </view>
-        </view>
-        <view class="h-180rpx"></view>
-        <view class="box_12 flex-col">
-          <function-grid :items="functionItems" @itemClick="handleFunctionItemClick" />
-        </view>
-        <view class="group_3 flex-col">
-          <view class="block_9 flex-row">
-            <view class="text-wrapper_1">
-              <text class="text_3">所有文档</text>
-              <text class="text_4"></text>
-              <text class="text_5">(6)</text>
-            </view>
-            <image
-              @click="tiaozhuan"
-              class="label_4"
-              referrerpolicy="no-referrer"
-              src="/static/lanhu_wendang/SketchPng010d95ac2a9e84192e9b3a69673847ba55fc67e70b4dc42b120e9c24d2b053c5.png"
-            />
-            <image
-              class="label_5"
-              referrerpolicy="no-referrer"
-              src="/static/lanhu_wendang/SketchPng890113b4a2f35b211f7f22a50480e91a53ea2213e1b7abde9f3837164f1098c5.png"
-            />
-          </view>
-          <view class="block_10 flex-col">
-            <!-- 使用文件夹列表组件 -->
-            <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
-
-            <!-- 使用文件列表组件 -->
-            <file-list :file-list="fileList" @file-click="toggleSelectFile" />
-          </view>
+  <buju>
+    <view class="page flex-col">
+      <view class="group_1 flex-col fixed-header">
+        <view class="block_8 flex-row justify-between">
+          <text class="text_2">文档</text>
+          <image class="image_1" referrerpolicy="no-referrer" />
         </view>
       </view>
-      <!--      <div :style="{ height: footerHeight }"></div>-->
-    </template>
+      <view class="box_12 flex-col">
+        <function-grid :items="functionItems" @itemClick="handleFunctionItemClick" />
+      </view>
+      <view class="group_3 flex-col">
+        <view class="block_9 flex-row">
+          <view class="text-wrapper_1">
+            <text class="text_3">所有文档</text>
+            <text class="text_4"></text>
+            <text class="text_5">(6)</text>
+          </view>
+          <image
+            @click="tiaozhuan"
+            class="label_4"
+            referrerpolicy="no-referrer"
+            src="/static/lanhu_wendang/SketchPng010d95ac2a9e84192e9b3a69673847ba55fc67e70b4dc42b120e9c24d2b053c5.png"
+          />
+          <image
+            class="label_5"
+            referrerpolicy="no-referrer"
+            src="/static/lanhu_wendang/SketchPng890113b4a2f35b211f7f22a50480e91a53ea2213e1b7abde9f3837164f1098c5.png"
+          />
+        </view>
+        <view class="block_10 flex-col">
+          <!-- 使用文件夹列表组件 -->
+          <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
+
+          <!-- 使用文件列表组件 -->
+          <file-list :file-list="fileList" @file-click="toggleSelectFile" />
+        </view>
+      </view>
+    </view>
+    <!--      <div :style="{ height: footerHeight }"></div>-->
     <template #footer>
       <dibu />
     </template>
@@ -171,7 +168,7 @@ const tiaozhuan = () => {
 }
 
 .group_1 {
-  padding: 29rpx 14rpx 36rpx 30rpx;
+  padding: 29rpx 14rpx 45rpx 30rpx;
   background-color: rgb(37 99 235 / 100%);
 }
 

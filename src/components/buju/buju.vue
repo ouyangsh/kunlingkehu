@@ -1,69 +1,83 @@
-<script setup lang="js">
-// 判断safeAreaInsets的top和bottom是否为空
-// if (safeAreaInsets.value.top === 0 && safeAreaInsets.value.bottom === 0) {
-//   safeAreaInsets.value.top = 30
-//   safeAreaInsets.value.bottom = 30
-// }
-const props = defineProps({
-  layoutOptions: {
-    type: Object,
-    default: () => ({ footerHeight: 160 }),
-  },
-  showHeader: {
-    type: Boolean,
-    default: true,
-  },
-  showFooter: {
-    type: Boolean,
-    default: true,
-  },
-})
-const {
-  safeAreaInsets,
-  menuButtonBoundingClientRect,
-  topSafeArea,
-  bottomSafeArea,
-  headerHeight,
-  footerHeight,
-  mainHeight,
-} = useLayout(props.layoutOptions)
-const showHeader = computed(() => props.showHeader)
-const showFooter = computed(() => props.showFooter)
-</script>
-
 <template>
-  <!-- 全局背景设置 -->
-  <!-- <image
-    class="w-full h-full absolute top-0 left-0 z--1"
-    src="https://img.yzcdn.cn/vant/apple-3.jpg"
-    mode="aspectFill"
-  ></image> -->
-
-  <!-- <div
-    class="w-full h-full absolute top-0 left-0 z--1 bg-red-500"
-    src="https://img.yzcdn.cn/vant/apple-3.jpg"
-    mode="aspectFill"
-  ></div> -->
-  <!--  传入顶部导航使用传入的，不传入使用默认的-->
-  <div v-if="showHeader" :style="{ height: headerHeight }">
-    <slot name="header">
-      <dingbu></dingbu>
-    </slot>
-  </div>
-  <!--  主体-->
-  <div class="bg-[#F2F5FA]" :style="{ height: mainHeight }">
-    <slot name="main"></slot>
-    <div :style="{ height: footerHeight }"></div>
-  </div>
-  <!--  底部导航-->
-
-  <div
-    v-if="showFooter"
-    class="bg-[#ffffffff] fixed bottom-0 left-0 right-0 z-10"
-    :style="{ height: footerHeight }"
-  >
-    <slot name="footer"></slot>
-  </div>
+  <view class="smart-layout-container">
+    <view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
+    <view class="header">
+      <slot name="header">
+        <view class="default-header-content">
+          <text class="title">{{ title }}</text>
+        </view>
+      </slot>
+    </view>
+    <view class="content">
+      <slot></slot>
+    </view>
+    <view class="footer">
+      <slot name="footer"></slot>
+    </view>
+  </view>
 </template>
 
-<style scoped lang="scss"></style>
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue'
+
+defineProps({
+  title: {
+    type: String,
+    default: '默认标题',
+  },
+})
+
+const statusBarHeight = ref(0)
+
+onMounted(() => {
+  const systemInfo = uni.getSystemInfoSync()
+  statusBarHeight.value = systemInfo.statusBarHeight || 0
+})
+</script>
+
+<style lang="scss" scoped>
+.smart-layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f4f4f4;
+
+  .status-bar {
+    background-color: #fff;
+  }
+
+  .header {
+    background-color: #fff;
+
+    .default-header-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+
+      .title {
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .content {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .footer {
+    //display: flex;
+    //align-items: center;
+    //justify-content: center;
+    //height: 50px;
+    /* #ifdef MP-WEIXIN */
+    /* stylelint-disable-next-line declaration-property-value-no-unknown */
+    //margin-bottom: constant(safe-area-inset-bottom);
+    //margin-bottom: env(safe-area-inset-bottom);
+    //background-color: #fff;
+    /* #endif */
+  }
+}
+</style>

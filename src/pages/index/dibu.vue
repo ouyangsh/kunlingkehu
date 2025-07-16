@@ -1,6 +1,8 @@
 <template>
   <!-- 上面添加阴影 -->
-  <view class="box_13 flex-col shadow-t-lg shadow-gray-200">
+  <view
+    class="box_13 flex-col dibuggao bg-[#ffffffff] box-border shadow-[inset_0_2px_4px_0_rgba(0,0,0,0.2)]"
+  >
     <view class="list_12 flex-row">
       <view
         class="image-text_37 flex-col"
@@ -86,4 +88,12 @@ const loopData1 = ref([
 <style lang="scss">
 @import '../../static/common/common';
 @import './assets/style/index.rpx.css';
+.dibuggao {
+  /* #ifdef MP-WEIXIN */
+  /* stylelint-disable-next-line declaration-property-value-no-unknown */
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+  //background-color: #fff;
+  /* #endif */
+}
 </style>

@@ -55,86 +55,9 @@
   </buju>
 </template>
 <script setup lang="js">
-import { ref, computed } from 'vue'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
-
-// 文件夹列表
-const folderList = ref([
-  {
-    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
-    name: '单据',
-    date: '2025/05/21 12:36',
-    count: 2,
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
-    name: '分类2',
-    date: '2025/05/21 12:36',
-    count: 2,
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
-    name: '分类3',
-    date: '2025/05/21 12:36',
-    count: 0,
-    selected: false,
-  },
-])
-
-// 文件列表
-const fileList = ref([
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-])
+import { folderList, fileList } from './zhuangtai'
 
 // 计算属性：是否全部选中
 const isAllSelected = computed(() => {

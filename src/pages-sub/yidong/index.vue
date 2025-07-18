@@ -8,7 +8,7 @@
 </route>
 
 <template>
-  <buju>
+  <buju title="全部文档">
     <view class="overflow-auto">
       <view
         class="inline-block h-80rpx bg-[#ffffffff] mt--3rpx z-10 justify-between px-30rpx box-border fixed items-center w-full"
@@ -24,7 +24,7 @@
         <folder-list :folder-list="folderList" @folder-click="toggleSelectFolder" />
 
         <!-- 使用文件列表组件 -->
-        <file-list :file-list="fileList" @file-click="toggleSelectFile" />
+        <!--        <file-list :file-list="fileList" @file-click="toggleSelectFile" />-->
       </view>
     </view>
     <template #footer>
@@ -35,6 +35,7 @@
         <view class="list_8 flex-row justify-around py-2" style="width: 100%; height: auto">
           <view
             class="image-text_40 flex-col items-center"
+            @click="dibuClick(item)"
             v-for="(item, index) in loopData0"
             :key="index"
             style="margin-right: 0"
@@ -54,88 +55,9 @@
   </buju>
 </template>
 <script setup lang="js">
-import { ref, computed } from 'vue'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
-const { mainHeight, headerHeight } = useLayout({
-  footerHeight: 180,
-})
-// 文件夹列表
-const folderList = ref([
-  {
-    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
-    name: '单据',
-    date: '2025/05/21 12:36',
-    count: 2,
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
-    name: '分类2',
-    date: '2025/05/21 12:36',
-    count: 2,
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
-    name: '分类3',
-    date: '2025/05/21 12:36',
-    count: 0,
-    selected: false,
-  },
-])
-
-// 文件列表
-const fileList = ref([
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-  {
-    icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
-    name: '贸易合规助手2025-05-21 10.46',
-    date: '2025/05/21 12:36',
-    selected: false,
-  },
-])
+import { folderList, fileList } from '../quanbu-wendang-xuanze/zhuangtai'
 
 // 计算属性：是否全部选中
 const isAllSelected = computed(() => {
@@ -182,10 +104,27 @@ const toggleSelectFile = (file) => {
   console.log('切换文件选择状态:', file.name, file.selected)
 }
 
+const dibuClick = (item) => {
+  // 检测是否有选中文件
+  const selectedFiles = fileList.value.filter((file) => file.selected)
+  if (selectedFiles.length === 0) {
+    uni.showToast({
+      title: '请先选择文件',
+      icon: 'none',
+    })
+    return
+  }
+
+  uni.navigateTo({
+    url: item.path,
+  })
+}
+
 const loopData0 = ref([
   {
     lanhuimage0: 'icon-icon-yidong',
     lanhutext0: '移动',
+    path: '/pages-sub/yidong/index',
   },
   {
     lanhuimage0: 'icon-icon-zhongmingming',

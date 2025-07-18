@@ -154,6 +154,23 @@
       </div>
     </div>
   </wd-popup>
+  <wd-popup
+    v-model="shanchutishi"
+    custom-style="height: 364rpx; width: 630rpx; border-radius: 20rpx "
+  >
+    <div class="flex flex-col items-center">
+      <div class="text-32rpx my40rpx">删除提示</div>
+      <div class="text-32rpx my20rpx">请先清空分类下文件，才可以删除</div>
+      <div class="h-88rpx rounded-md flex items-center justify-evenly mt40rpx w-630rpx mb-20rpx">
+        <div
+          @click="shanchuhanshu(true)"
+          class="text-32rpx w570rpx h88rpx text-#fff bg-#2563EB flex justify-center items-center rounded-md"
+        >
+          知道了
+        </div>
+      </div>
+    </div>
+  </wd-popup>
 
   <wd-popup v-model="tishi" custom-style="height: 364rpx; width: 630rpx; border-radius: 20rpx ">
     <div class="flex flex-col items-center">
@@ -233,6 +250,7 @@ const chongmingvalue = ref('')
 const showfenlei = ref(false)
 const shanchu = ref(false)
 const tishi = ref(false)
+const shanchutishi = ref(false)
 
 // 新增分类的处理函数
 const handleAddCategory = () => {

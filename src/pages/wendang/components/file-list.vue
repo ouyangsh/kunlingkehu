@@ -2,8 +2,8 @@
   <view class="file-list">
     <template v-for="(item, index) in fileList" :key="'file-' + index">
       <view class="block_11 flex-row justify-between" @click="handleFileClick(item)">
-        <view class="image-text_34 flex-row justify-between">
-          <view class="image-wrapper_1 flex-col">
+        <view class="image-text_34 flex-row justify-start">
+          <view class="image-wrapper_1 flex-col mr-3">
             <image class="image_6" referrerpolicy="no-referrer" :src="item.icon" />
           </view>
           <view class="text-group_36 flex-col">

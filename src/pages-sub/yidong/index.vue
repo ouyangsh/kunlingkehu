@@ -8,7 +8,7 @@
 </route>
 
 <template>
-  <buju title="全部文档">
+  <buju>
     <view class="overflow-auto">
       <view
         class="inline-block h-80rpx bg-[#ffffffff] mt--3rpx z-10 justify-between px-30rpx box-border fixed items-center w-full"
@@ -35,7 +35,6 @@
         <view class="list_8 flex-row justify-around py-2" style="width: 100%; height: auto">
           <view
             class="image-text_40 flex-col items-center"
-            @click="dibuClick(item)"
             v-for="(item, index) in loopData0"
             :key="index"
             style="margin-right: 0"
@@ -58,7 +57,9 @@
 import { ref, computed } from 'vue'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
-
+const { mainHeight, headerHeight } = useLayout({
+  footerHeight: 180,
+})
 // 文件夹列表
 const folderList = ref([
   {
@@ -181,27 +182,10 @@ const toggleSelectFile = (file) => {
   console.log('切换文件选择状态:', file.name, file.selected)
 }
 
-const dibuClick = (item) => {
-  // 检测是否有选中文件
-  const selectedFiles = fileList.value.filter((file) => file.selected)
-  if (selectedFiles.length === 0) {
-    uni.showToast({
-      title: '请先选择文件',
-      icon: 'none',
-    })
-    return
-  }
-
-  uni.navigateTo({
-    url: item.path,
-  })
-}
-
 const loopData0 = ref([
   {
     lanhuimage0: 'icon-icon-yidong',
     lanhutext0: '移动',
-    path: '/pages-sub/yidong/index',
   },
   {
     lanhuimage0: 'icon-icon-zhongmingming',

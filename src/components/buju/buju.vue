@@ -3,8 +3,11 @@
     <view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
     <view class="header">
       <slot name="header">
-        <view class="default-header-content">
+        <view class="default-header-content mx-2">
+          <uni-icons v-if="pageslength > 1" type="left" size="22" @click="navigateBack"></uni-icons>
+          <uni-icons v-else type="home" size="22" @click="navigateBack"></uni-icons>
           <text class="title">{{ title }}</text>
+          <uni-icons class="opacity-0" type="left" size="22" @click="navigateBack"></uni-icons>
         </view>
       </slot>
     </view>
@@ -26,8 +29,19 @@ defineProps({
     default: '默认标题',
   },
 })
+// 计算属性
+const pageslength = computed(() => getCurrentPages().length)
 
 const statusBarHeight = ref(0)
+const navigateBack = () => {
+  if (getCurrentPages().length > 1) {
+    uni.navigateBack()
+  } else {
+    uni.reLaunch({
+      url: '/pages/index/index',
+    })
+  }
+}
 
 onMounted(() => {
   const systemInfo = uni.getSystemInfoSync()
@@ -52,7 +66,7 @@ onMounted(() => {
     .default-header-content {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       height: 44px;
 
       .title {

@@ -55,7 +55,8 @@ interface NavigateToOptions {
        "/pages-sub/demo/index" |
        "/pages-sub/fenleishezhi/index" |
        "/pages-sub/quanbu-wendang-xuanze/index" |
-       "/pages-sub/yidong/index";
+       "/pages-sub/yidong/index" |
+       "/pages-sub/yidong2/index";
 }
 interface RedirectToOptions extends NavigateToOptions {}
 

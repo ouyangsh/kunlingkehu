@@ -3,7 +3,11 @@
     <template v-for="(item, index) in folderList" :key="'folder-' + index">
       <view
         class="section_3 flex-row"
-        :class="{ section_4: index === 1, section_5: index === 2 }"
+        :class="{
+          section_4: index === 1,
+          section_5: index === 2,
+          'opacity-50': item.selected && isAllSelected,
+        }"
         @click="handleFolderClick(item)"
       >
         <image class="image_3" referrerpolicy="no-referrer" :src="item.icon" />
@@ -31,6 +35,10 @@
 import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
+  isAllSelected: {
+    type: Boolean,
+    default: false,
+  },
   folderList: {
     type: Array,
     default: () => [],

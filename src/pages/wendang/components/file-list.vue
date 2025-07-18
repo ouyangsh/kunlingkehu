@@ -11,16 +11,21 @@
             <text class="text_16">{{ item.date }}</text>
           </view>
         </view>
-        <view class="block_1 flex-col self-center" :class="{ selected: item.selected }"></view>
+        <view
+          class="block_1 flex-col self-center"
+          :class="{ selected: item.selected, 'opacity-0': !isShowIcon }"
+        ></view>
       </view>
     </template>
   </view>
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue'
-
 const props = defineProps({
+  isShowIcon: {
+    type: Boolean,
+    default: true,
+  },
   fileList: {
     type: Array,
     default: () => [],

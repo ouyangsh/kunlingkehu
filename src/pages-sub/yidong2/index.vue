@@ -8,7 +8,7 @@
 </route>
 
 <template>
-  <buju title="全部文档">
+  <buju :title="folder.name">
     <view class="overflow-auto">
       <!--      <view-->
       <!--        class="inline-block h-80rpx bg-[#ffffffff] mt&#45;&#45;3rpx z-10 justify-between px-30rpx box-border fixed items-center w-full"-->
@@ -21,13 +21,17 @@
       <!--      <div class="h-80rpx"></div>-->
       <view class="group_4 flex-col pb-140rpx">
         <!-- 使用文件夹列表组件 -->
-        <folder-list
-          :isAllSelected="true"
-          :folder-list="folderList"
-          @folder-click="toggleSelectFolder"
-        />
+        <!--        <folder-list-->
+        <!--          :isAllSelected="true"-->
+        <!--          :folder-list="folder"-->
+        <!--          @folder-click="toggleSelectFolder"-->
+        <!--        />-->
         <!--        使用文件列表组件-->
-        <!--        <file-list :file-list="fileList" @file-click="toggleSelectFile" />-->
+        <file-list
+          :isShowIcon="false"
+          :file-list="folder.fileList"
+          @file-click="toggleSelectFile"
+        />
       </view>
     </view>
     <template #footer>
@@ -37,7 +41,6 @@
         </div>
         <div
           class="w-330rpx h-88rpx bg-[#2563EB] text-[#ffffff] rounded-1 flex justify-center items-center"
-          :class="{ 'opacity-50': true }"
         >
           移动({{ selectedCount }})
         </div>
@@ -48,7 +51,7 @@
 <script setup lang="js">
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
-import { folderList, fileList } from '../quanbu-wendang-xuanze/zhuangtai'
+import { folder, fileList, folderList } from '../quanbu-wendang-xuanze/zhuangtai'
 
 // 计算属性：是否全部选中
 const isAllSelected = computed(() => {
@@ -83,11 +86,10 @@ const toggleSelectAll = () => {
   console.log('全选/取消全选状态:', newStatus)
 }
 
-// 进入文件夹
+// 文件夹选择切换
 const toggleSelectFolder = (folder) => {
-  uni.navigateTo({
-    url: '/pages-sub/yidong2/index',
-  })
+  folder.selected = !folder.selected
+  console.log('切换文件夹选择状态:', folder.name, folder.selected)
 }
 
 // 文件选择切换

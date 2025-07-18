@@ -27,6 +27,7 @@
         <file-list :file-list="fileList" @file-click="toggleSelectFile" />
       </view>
     </view>
+    <div class="h-20rpx"></div>
     <template #footer>
       <view
         class="group_6 flex-col fixed bottom-0 left-0 w-full bg-white z-10 border-t border-gray-200 h-140rpx pb-safe"

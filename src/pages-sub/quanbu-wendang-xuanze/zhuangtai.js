@@ -14,7 +14,7 @@ export const folderList = ref([
     name: '分类2',
     date: '2025/05/21 12:36',
     count: 2,
-    selected: false,
+    selected: true,
   },
   {
     id: 3,
@@ -84,3 +84,21 @@ export const fileList = ref([
     selected: false,
   },
 ])
+
+export const folder = ref({
+  id: 1,
+  icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
+  name: '单据',
+  date: '2025/05/21 12:36',
+  count: 2,
+  selected: false,
+  fileList: [
+    {
+      id: 1,
+      icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+      name: '贸易合规助手2025-05-21 10.46',
+      date: '2025/05/21 12:36',
+      selected: false,
+    },
+  ],
+})

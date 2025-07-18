@@ -3,7 +3,7 @@
     <view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
     <view class="header">
       <slot name="header">
-        <view class="default-header-content mx-2">
+        <view class="default-header-content mx-[30rpx]">
           <uni-icons v-if="pageslength > 1" type="left" size="22" @click="navigateBack"></uni-icons>
           <uni-icons v-else type="home" size="22" @click="navigateBack"></uni-icons>
           <text class="title">{{ title }}</text>

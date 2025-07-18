@@ -433,6 +433,14 @@
             "navigationBarTitleText": "全部文档",
             "navigationStyle": "custom"
           }
+        },
+        {
+          "path": "yidong2/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "全部文档",
+            "navigationStyle": "custom"
+          }
         }
       ]
     }

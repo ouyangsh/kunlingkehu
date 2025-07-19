@@ -11,6 +11,7 @@ interface NavigateToOptions {
        "/pages/login/index" |
        "/pages/my/index" |
        "/pages/shaicha/index" |
+       "/pages/shougongshaicha/index" |
        "/pages/wendang/index" |
        "/pages/demo/base/auto-import" |
        "/pages/demo/base/css" |

@@ -1,7 +1,7 @@
 <route lang="json5">
 {
   style: {
-    navigationBarTitleText: '筛查',
+    navigationBarTitleText: '手工筛查',
     navigationStyle: 'custom',
   },
 }
@@ -16,13 +16,16 @@
       @confirm="handleConfirm"
     ></wd-datetime-picker>
   </div>
-  <div class="h340rpx w-full bg-[#D8EBFE] fixed top-0">
+
+  <div class="h340rpx w-full fixed top-0 bg-[#D8EBFE]">
     <view :style="{ height: statusBarHeight + 'px' }"></view>
-    <div class="h-44px flex justify-center items-center text-38rpx font-500">筛查</div>
-  </div>
-  <div class="h340rpx w-full fixed top-0">
-    <view :style="{ height: statusBarHeight + 'px' }"></view>
-    <div class="w-full justify-center flex" style="margin-top: 44px">
+    <div class="wfull flex justify-between items-center h-44px px-30rpx box-border">
+      <uni-icons v-if="pageslength > 1" type="left" size="22" @click="navigateBack"></uni-icons>
+      <uni-icons v-else type="home" size="22" @click="navigateBack"></uni-icons>
+      <div class="h-44px flex justify-center items-center text-38rpx font-500">手工筛查</div>
+      <uni-icons class="opacity-0" type="left" size="22" @click="navigateBack"></uni-icons>
+    </div>
+    <div class="w-full justify-center flex">
       <div
         class="w690rpx h200rpx bg-[#ffffffff] z-10 rounded-16rpx flex flex-col justify-evenly pl-30rpx color-[#333333] text-26rpx"
       >
@@ -87,19 +90,10 @@
       </div>
     </div>
     <!--      <div :style="{ height: footerHeight }"></div>-->
-    <div class="fixed bottom-190rpx right-30rpx">
-      <image
-        @click="tiaozhuan"
-        class="w-88rpx h-88rpx"
-        src="@/static/lanhu_shaicha/SketchPng5f6fde3afd1ee831a9e0ca2a045fc7b393f024f4af7028a4efeb23de0580afb2.png"
-      ></image>
-    </div>
-    <template #footer>
-      <dibu />
-    </template>
   </buju>
 </template>
 <script setup lang="js">
+import { onMounted, ref } from 'vue'
 import dibu from '../index/dibu.vue'
 
 const indexa = ref(0)
@@ -108,6 +102,18 @@ const datetimePickerRef = ref()
 const dateRange = ref(['', Date.now()]) // For v-model
 const startDate = ref('') // For display
 const endDate = ref('') // For display
+const pageslength = computed(() => getCurrentPages().length)
+
+const navigateBack = () => {
+  console.log('asdf')
+  if (getCurrentPages().length > 1) {
+    uni.navigateBack()
+  } else {
+    uni.reLaunch({
+      url: '/pages/index/index',
+    })
+  }
+}
 
 function handleConfirm(e) {
   if (Array.isArray(e.value) && e.value.length === 2) {
@@ -117,11 +123,6 @@ function handleConfirm(e) {
     endDate.value = formatDate(end)
     dateRange.value = [start, end] // Update the model value
   }
-}
-const tiaozhuan = () => {
-  uni.navigateTo({
-    url: '/pages/shougongshaicha/index',
-  })
 }
 
 function openPicker() {

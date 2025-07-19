@@ -34,7 +34,7 @@ const pages = [
   '/pages/index/index',
   '/pages/wendang/index',
   '/pages/shaicha/index',
-  '', // 资讯页面路径待定
+  '/pages/demo/index', // 资讯页面路径待定
   '',
 ]
 

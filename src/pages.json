@@ -67,6 +67,14 @@
       }
     },
     {
+      "path": "pages/shougongshaicha/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "手工筛查",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/wendang/index",
       "type": "page",
       "style": {

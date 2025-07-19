@@ -33,7 +33,7 @@ const currentIndex = ref(0)
 const pages = [
   '/pages/index/index',
   '/pages/wendang/index',
-  '/pages/popmart/index',
+  '/pages/shaicha/index',
   '', // 资讯页面路径待定
   '',
 ]
@@ -88,12 +88,14 @@ const loopData1 = ref([
 <style lang="scss">
 @import '../../static/common/common';
 @import './assets/style/index.rpx.css';
+
 .dibuggao {
   /* #ifdef MP-WEIXIN */
   /* stylelint-disable-next-line declaration-property-value-no-unknown */
   padding-bottom: constant(safe-area-inset-bottom);
   padding-bottom: env(safe-area-inset-bottom);
-  //background-color: #fff;
+
+  // background-color: #fff;
   /* #endif */
 }
 </style>

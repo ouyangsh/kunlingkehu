@@ -59,6 +59,14 @@
       }
     },
     {
+      "path": "pages/shaicha/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "筛查",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/wendang/index",
       "type": "page",
       "style": {

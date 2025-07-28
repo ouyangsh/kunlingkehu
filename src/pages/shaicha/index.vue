@@ -24,7 +24,7 @@
     <view :style="{ height: statusBarHeight + 'px' }"></view>
     <div class="w-full justify-center flex" style="margin-top: 44px">
       <div
-        class="w690rpx h200rpx bg-[#ffffffff] z-10 rounded-16rpx flex flex-col justify-evenly pl-30rpx color-[#333333] text-26rpx"
+        class="w690rpx box-border h200rpx bg-[#ffffffff] z-10 rounded-16rpx flex flex-col justify-evenly pl-30rpx color-[#333333] text-26rpx"
       >
         <div class="bg-[D8B14A6B] flex">
           <div class="h-60rpx flex justify-center items-center mr-20rpx">状态：</div>
@@ -120,7 +120,7 @@ function handleConfirm(e) {
 }
 const tiaozhuan = () => {
   uni.navigateTo({
-    url: '/pages/shougongshaicha/index',
+    url: '/pages-sub/shougongshaicha/index',
   })
 }
 

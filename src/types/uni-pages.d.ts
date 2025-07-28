@@ -11,7 +11,6 @@ interface NavigateToOptions {
        "/pages/login/index" |
        "/pages/my/index" |
        "/pages/shaicha/index" |
-       "/pages/shougongshaicha/index" |
        "/pages/wendang/index" |
        "/pages/demo/base/auto-import" |
        "/pages/demo/base/css" |
@@ -57,6 +56,7 @@ interface NavigateToOptions {
        "/pages-sub/demo/index" |
        "/pages-sub/fenleishezhi/index" |
        "/pages-sub/quanbu-wendang-xuanze/index" |
+       "/pages-sub/shougongshaicha/index" |
        "/pages-sub/yidong/index" |
        "/pages-sub/yidong2/index";
 }

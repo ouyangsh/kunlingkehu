@@ -89,6 +89,9 @@ importers:
       wot-design-uni:
         specifier: ^1.9.1
         version: 1.9.1(vue@3.3.11(typescript@4.9.5))
+      ws:
+        specifier: ^8.18.3
+        version: 8.18.3
       z-paging:
         specifier: ^2.7.8
         version: 2.8.7
@@ -7479,8 +7482,8 @@ packages:
       utf-8-validate:
         optional: true
 
-  ws@8.18.2:
-    resolution: {integrity: sha512-DMricUmwGZUVr++AEAe2uiVM7UoO9MAVZMDu05UQOaUII0lp+zOzLLU4Xqh/JvTqklB1T4uELaaPBKyjE1r4fQ==}
+  ws@8.18.3:
+    resolution: {integrity: sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -8577,7 +8580,7 @@ snapshots:
       merge: 2.1.1
       qrcode-reader: 1.0.4
       qrcode-terminal: 0.12.0
-      ws: 8.18.2
+      ws: 8.18.3
     transitivePeerDependencies:
       - '@nuxt/kit'
       - '@vueuse/core'
@@ -8758,7 +8761,7 @@ snapshots:
       licia: 1.48.0
       qrcode-reader: 1.0.4
       qrcode-terminal: 0.12.0
-      ws: 8.18.2
+      ws: 8.18.3
     transitivePeerDependencies:
       - '@nuxt/kit'
       - '@vueuse/core'
@@ -8919,7 +8922,7 @@ snapshots:
       licia: 1.48.0
       qrcode-reader: 1.0.4
       qrcode-terminal: 0.12.0
-      ws: 8.18.2
+      ws: 8.18.3
     transitivePeerDependencies:
       - '@nuxt/kit'
       - '@vueuse/core'
@@ -16421,7 +16424,7 @@ snapshots:
 
   ws@7.5.10: {}
 
-  ws@8.18.2: {}
+  ws@8.18.3: {}
 
   xhr@2.6.0:
     dependencies:

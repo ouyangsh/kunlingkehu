@@ -367,9 +367,56 @@ const selectCategory = (index) => {
 }
 
 const takePhoto = () => {
-  // 跳转页面
-  uni.navigateTo({
-    url: '/pages-sub/shougongshaicha_xiangce/index',
+  // 显示选择图片的选项
+  uni.showActionSheet({
+    itemList: ['拍照', '从相册选择'],
+    success: (res) => {
+      if (res.tapIndex === 0) {
+        // 拍照
+        uni.chooseImage({
+          count: 1,
+          sourceType: ['camera'],
+          success: (result) => {
+            console.log('拍照成功', result.tempFilePaths[0])
+            // 跳转到预览页面
+            uni.navigateTo({
+              url:
+                '/pages-sub/shougongshaicha_xiangce/index?imagePath=' +
+                encodeURIComponent(result.tempFilePaths[0]),
+            })
+          },
+          fail: (err) => {
+            console.log('拍照失败', err)
+            uni.showToast({
+              title: '拍照失败',
+              icon: 'error',
+            })
+          },
+        })
+      } else if (res.tapIndex === 1) {
+        // 从相册选择
+        uni.chooseImage({
+          count: 1,
+          sourceType: ['album'],
+          success: (result) => {
+            console.log('选择相册图片成功', result.tempFilePaths[0])
+            // 跳转到预览页面
+            uni.navigateTo({
+              url:
+                '/pages-sub/shougongshaicha_xiangce/index?imagePath=' +
+                encodeURIComponent(result.tempFilePaths[0]),
+            })
+          },
+          fail: (err) => {
+            console.log('选择相册图片失败', err)
+            uni.showToast({
+              title: '选择图片失败',
+              icon: 'error',
+            })
+          },
+        })
+      }
+    },
   })
 }
 

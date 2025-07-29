@@ -41,12 +41,14 @@
       <!-- 底部区域 -->
       <div class="bg-white pt-20rpx pb-30rpx pb-safe">
         <!-- 缩略图选择区域 -->
-        <div class="flex justify-center gap-[20rpx] mb-30rpx">
+        <div
+          class="flex justify-start gap-[20rpx] mb-30rpx border-b-solid border-b-1px border-#DDDDDD p30rpx"
+        >
           <!-- 原图 -->
           <div
             @click="selectImageType(0)"
             :class="[
-              'w-120rpx h-150rpx rounded-12rpx overflow-hidden relative',
+              'w-120rpx h-120rpx rounded-12rpx overflow-hidden relative',
               selectedImageType === 0
                 ? 'border-[4rpx] border-gray-400'
                 : 'border-[2rpx] border-gray-200',
@@ -54,7 +56,7 @@
           >
             <image :src="previewImagePath" mode="aspectFill" class="w-full h-full" />
             <div
-              class="absolute bottom-0 left-0 right-0 bg-gray-600 text-white text-20rpx text-center py-8rpx"
+              class="absolute bottom-0 left-0 right-0 bg-[#0000006e] text-white text-20rpx text-center py-8rpx"
             >
               原图
             </div>
@@ -64,7 +66,7 @@
           <div
             @click="selectImageType(1)"
             :class="[
-              'w-120rpx h-150rpx rounded-12rpx overflow-hidden relative',
+              'w-120rpx h-120rpx rounded-12rpx overflow-hidden relative border-solid border-1px border-blue-500',
               selectedImageType === 1
                 ? 'border-[4rpx] border-blue-500'
                 : 'border-[2rpx] border-gray-200',
@@ -81,50 +83,36 @@
 
         <!-- 底部操作按钮区域 -->
         <div class="flex justify-between items-center px-30rpx">
-          <div class="flex gap-[40rpx]">
+          <div class="flex gap-[80rpx] ml2">
             <view @click="retakePhoto" class="flex flex-col items-center">
-              <div
-                class="w-80rpx h-80rpx bg-gray-100 rounded-full flex justify-center items-center mb-10rpx"
-              >
-                <uni-icons type="camera" size="30" color="#666"></uni-icons>
-              </div>
-              <text class="text-24rpx text-gray-600">重拍这张</text>
+              <i class="font_family icon-icon-zhongpai !text-45rpx text-gray-600"></i>
+
+              <text class="text-18rpx text-gray-600">重拍这张</text>
             </view>
 
             <view @click="rotateImage" class="flex flex-col items-center">
-              <div
-                class="w-80rpx h-80rpx bg-gray-100 rounded-full flex justify-center items-center mb-10rpx"
-              >
-                <uni-icons type="loop" size="30" color="#666"></uni-icons>
-              </div>
-              <text class="text-24rpx text-gray-600">左转</text>
+              <i class="font_family icon-icon-zuozhuan !text-45rpx text-gray-600"></i>
+
+              <text class="text-18rpx text-gray-600">左转</text>
             </view>
 
             <view @click="cropImage" class="flex flex-col items-center">
-              <div
-                class="w-80rpx h-80rpx bg-gray-100 rounded-full flex justify-center items-center mb-10rpx"
-              >
-                <uni-icons type="crop" size="30" color="#666"></uni-icons>
-              </div>
-              <text class="text-24rpx text-gray-600">裁剪</text>
+              <i class="font_family icon-icon-caijian !text-45rpx text-gray-600"></i>
+              <text class="text-18rpx text-gray-600">裁剪</text>
             </view>
 
             <view @click="enhanceImage" class="flex flex-col items-center">
-              <div
-                class="w-80rpx h-80rpx bg-gray-100 rounded-full flex justify-center items-center mb-10rpx"
-              >
-                <uni-icons type="gear" size="30" color="#666"></uni-icons>
-              </div>
-              <text class="text-24rpx text-gray-600">矫正</text>
+              <i class="font_family icon-icon-jiaozheng !text-45rpx text-gray-600"></i>
+              <text class="text-18rpx text-gray-600">矫正</text>
             </view>
           </div>
 
           <!-- 确认按钮 -->
           <view
             @click="confirmImage"
-            class="w-100rpx h-100rpx bg-blue-600 rounded-full flex justify-center items-center"
+            class="w-122rpx h-60rpx bg-blue-600 rounded-8rpx flex justify-center items-center"
           >
-            <uni-icons type="checkmarkempty" size="40" color="white"></uni-icons>
+            <uni-icons type="checkmarkempty" size="30" color="white"></uni-icons>
           </view>
         </div>
       </div>

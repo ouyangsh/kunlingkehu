@@ -435,6 +435,14 @@
           }
         },
         {
+          "path": "shaichajieguo/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "筛查",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "shougongshaicha/index",
           "type": "page",
           "style": {

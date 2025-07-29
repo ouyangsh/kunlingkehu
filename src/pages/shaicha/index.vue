@@ -76,7 +76,12 @@
 
   <buju title="筛查">
     <div class="h200rpx"></div>
-    <div v-for="i in 10" :key="i" class="w-690rpx bg-#fff rounded-16rpx m-30rpx p30rpx box-border">
+    <div
+      @click="jieguo"
+      v-for="i in 10"
+      :key="i"
+      class="w-690rpx bg-#fff rounded-16rpx m-30rpx p30rpx box-border"
+    >
       <div class="flex justify-start itcems-center not-first:mt24rpx" v-for="i in 6" :key="i">
         <div class="h28rpx text-28rpx mr10rpx">ID：19269404193915576</div>
         <div
@@ -124,6 +129,11 @@ const tiaozhuan = () => {
   })
 }
 
+const jieguo = () => {
+  uni.navigateTo({
+    url: '/pages-sub/shaichajieguo/index',
+  })
+}
 function openPicker() {
   if (datetimePickerRef.value) {
     datetimePickerRef.value.open()

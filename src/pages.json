@@ -443,6 +443,14 @@
           }
         },
         {
+          "path": "shougongshaicha_xiangce/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "相册导入",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "yidong/index",
           "type": "page",
           "style": {

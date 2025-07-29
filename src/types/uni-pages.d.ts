@@ -57,6 +57,7 @@ interface NavigateToOptions {
        "/pages-sub/fenleishezhi/index" |
        "/pages-sub/quanbu-wendang-xuanze/index" |
        "/pages-sub/shougongshaicha/index" |
+       "/pages-sub/shougongshaicha_xiangce/index" |
        "/pages-sub/yidong/index" |
        "/pages-sub/yidong2/index";
 }

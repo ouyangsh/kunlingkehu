@@ -1,85 +1,30 @@
 <route lang="json5">
 {
   style: {
-    navigationBarTitleText: '手工筛查',
+    navigationBarTitleText: '相册导入',
     navigationStyle: 'custom',
   },
 }
 </route>
 
 <template>
-  <div class="h340rpx w-full fixed top-0 bg-[#D8EBFE] z1">
+  <div class="h180rpx w-full fixed top-0 bg-[#ffffffff] z10">
     <view :style="{ height: statusBarHeight + 'px' }"></view>
-    <div class="wfull flex justify-between items-center h-44px px-30rpx box-border">
+    <div class="wfull flex justify-start items-center h-44px px-30rpx box-border">
       <uni-icons v-if="pageslength > 1" type="left" size="22" @click="navigateBack"></uni-icons>
       <uni-icons v-else type="home" size="22" @click="navigateBack"></uni-icons>
-      <div class="h-44px flex justify-center items-center text-38rpx font-500">手工筛查</div>
-      <uni-icons class="opacity-0" type="left" size="22" @click="navigateBack"></uni-icons>
+      <!-- 文字超出显示省略 不换行 虚线边框 虚线间隔大一些-->
+      <div
+        class="w386rpx text-ellipsis ml3 overflow-hidden text-26rpx font-500 whitespace-nowrap border-b-1px border-b-dashed border-b-#000000FF"
+      >
+        贸易合规助手2025-05-23 14.阿的说法是短发
+      </div>
+      <i class="font_family icon-icon-bianji !text-35rpx ml3"></i>
     </div>
   </div>
 
   <buju title="筛查">
-    <div class="relative z-1">
-      <div class="w-full justify-center h130rpx items-center flex z10 fixed bg-[#D8EBFE]">
-        <div
-          @click="handleImport"
-          class="w690rpx box-border h88rpx bg-[#ffffffff] rounded-16rpx flex flex-col justify-evenly color-[#2563EB] text-28rpx"
-        >
-          <div class="bg-[D8B14A6B] flex justify-center items-center">
-            <i class="font_family icon-icon-daochu text-#2563EB text-20rpx mr1"></i>
-            <div>导入单据</div>
-          </div>
-        </div>
-      </div>
-      <div class="h100rpx"></div>
-      <div
-        v-for="i in 10"
-        :key="i"
-        class="w-690rpx bg-#fff rounded-16rpx m-30rpx p30rpx box-border"
-      >
-        <div class="not-first:mt24rpx text-28rpx">
-          <div class="mb-20rpx">交易方信息</div>
-          <div class="flex mb-10rpx justify-start items-center">
-            <div
-              class="w220rpx mr10rpx px-2 box-border rounded-8rpx h60rpx bg-#F4F6FA flex justify-between items-center color-[#333333]"
-            >
-              <div>境内发货人</div>
-              <i class="font_family icon-trangle-down text-20rpx"></i>
-            </div>
-            <input
-              class="w320rpx mr10rpx rounded-8rpx h60rpx bg-#F4F6FA pl-2"
-              type="text"
-              placeholder="请输入境内发货人"
-            />
-            <div
-              class="mr10rpx h60rpx bg-#F4F6FA rounded-8rpx px2 flex justify-center items-center"
-            >
-              <i class="font_family mr10rpx icon-icon0shanchu text-20rpx"></i>
-            </div>
-          </div>
-          <div class="flex justify-start items-center">
-            <div
-              class="w220rpx mr10rpx px-2 box-border rounded-8rpx h60rpx bg-#F4F6FA flex justify-between items-center color-[#333333]"
-            >
-              <div>境内发货人</div>
-              <i class="font_family icon-trangle-down text-20rpx"></i>
-            </div>
-            <input
-              class="w320rpx mr10rpx rounded-8rpx h60rpx bg-#F4F6FA pl-2"
-              type="text"
-              placeholder="请输入境内发货人"
-            />
-            <div
-              class="mr10rpx h60rpx bg-#F4F6FA rounded-8rpx px2 flex justify-center items-center"
-            >
-              <i class="font_family mr10rpx icon-icon-zengjia text-20rpx"></i>
-            </div>
-          </div>
-          <div class="mt-20rpx color-[#999999] text-24rpx">提示:宁波杰腾科通讯设备有限公司R.F.</div>
-        </div>
-      </div>
-      <!--      <div :style="{ height: footerHeight }"></div>-->
-    </div>
+    <div class="bg-amber h-100%"></div>
     <template #footer>
       <div class="h-180rpx w-full bg-[#ffffffff] flex justify-evenly items-center pb-2 box-border">
         <div class="w-330rpx h-88rpx bg-[#F2F5FA] rounded-1 flex justify-center items-center">
@@ -245,17 +190,16 @@
             class="bg-#F2F5FA border-1px border-solid border-#DDDDDD h330rpx flex justify-evenly items-center"
           >
             <div
-              @click="takePhoto"
               class="w210rpx h158rpx flex flex-col justify-evenly items-center bg-#FFFFFF rounded-16rpx"
             >
               <i class="font_family icon-icon-xiangcedaoru text-#2563EB !text-60rpx"></i>
-              <div>相册导入</div>
+              <div>拍照</div>
             </div>
             <div
               class="w210rpx h158rpx flex flex-col justify-evenly items-center bg-#FFFFFF rounded-16rpx"
             >
               <i class="font_family icon-icon-paizhao text-#37C3C8 !text-60rpx"></i>
-              <div>拍照</div>
+              <div>相册导入</div>
             </div>
           </view>
         </view>
@@ -364,13 +308,6 @@ const selectUploadType = (index) => {
 
 const selectCategory = (index) => {
   selectedCategory.value = index
-}
-
-const takePhoto = () => {
-  // 跳转页面
-  uni.navigateTo({
-    url: '/pages-sub/shougongshaicha_xiangce/index',
-  })
 }
 
 onMounted(() => {

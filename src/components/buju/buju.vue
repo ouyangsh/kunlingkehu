@@ -54,14 +54,14 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #f4f4f4;
+  background-color: #f2f5fa;
 
   .status-bar {
-    background-color: #fff;
+    background-color: #f2f5fa;
   }
 
   .header {
-    background-color: #fff;
+    background-color: #f2f5fa;
 
     .default-header-content {
       display: flex;

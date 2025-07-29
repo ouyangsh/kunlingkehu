@@ -207,12 +207,10 @@
             >
               <!-- 文件图标 -->
               <view class="w-65rpx h-82rpx mr-20rpx flex justify-center items-center rounded-8rpx">
-                <view
+                <i
                   v-if="file.type === 'pdf'"
-                  class="w-full h-full bg-red-500 rounded-8rpx flex flex-col justify-center items-center"
-                >
-                  <text class="text-white text-20rpx font-500">PDF</text>
-                </view>
+                  class="font_family icon-pdf !text-80rpx text-#F05542"
+                ></i>
                 <view
                   v-else
                   class="w-full h-full bg-gray-100 rounded-8rpx flex justify-center items-center"

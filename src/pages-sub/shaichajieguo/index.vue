@@ -1,14 +1,14 @@
 <route lang="json5">
 {
   style: {
-    navigationBarTitleText: '筛查',
+    navigationBarTitleText: '筛查结果',
     navigationStyle: 'custom',
   },
 }
 </route>
 
 <template>
-  <buju title="筛查">
+  <buju title="手工筛查">
     <div class="h200rpx"></div>
     <div
       @click="jieguo"

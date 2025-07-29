@@ -438,7 +438,7 @@
           "path": "shaichajieguo/index",
           "type": "page",
           "style": {
-            "navigationBarTitleText": "筛查",
+            "navigationBarTitleText": "筛查结果",
             "navigationStyle": "custom"
           }
         },

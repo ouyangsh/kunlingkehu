@@ -10,33 +10,31 @@
 <template>
   <buju title="手工筛查">
     <!-- 标签页 -->
-    <div>
-      <div class="flex border-b border-gray-200 mx-30rpx">
-        <div
-          v-for="(tab, index) in tabs"
-          :key="index"
-          @click="scrollToSection(index)"
-          :class="[
-            'flex justify-center items-center mr4 text-center px2 h60rpx  text-28rpx relative transition-all rounded-8rpx duration-200',
-            activeTab === index
-              ? 'text-blue-600 font-600 bg-#DDE6F9'
-              : 'text-gray-600 font-400 bg-#FFFFFF',
-          ]"
-        >
-          {{ tab }}
-        </div>
+    <div class="flex border-b border-gray-200 mx-30rpx fixed z10 bg-#f2f5fa wfull py2">
+      <div
+        v-for="(tab, index) in tabs"
+        :key="index"
+        @click="scrollToSection(index)"
+        :class="[
+          'flex justify-center items-center mr4 text-center px2 h60rpx  text-28rpx relative transition-all rounded-8rpx duration-200',
+          activeTab === index
+            ? 'text-blue-600 font-600 bg-#DDE6F9'
+            : 'text-gray-600 font-400 bg-#FFFFFF',
+        ]"
+      >
+        {{ tab }}
       </div>
     </div>
 
     <!-- 内容区域 -->
     <scroll-view
       ref="scrollViewRef"
-      class="flex-1 scroll-container pb3"
+      class="flex-1 scroll-container"
       scroll-y
       :scroll-into-view="scrollIntoViewId"
       :scroll-with-animation="true"
     >
-      <div id="section-0" class="px-30rpx mb-3">
+      <div id="section-0" class="px-30rpx mb-3 mt13">
         <div class="text-32rpx mt40rpx">商品信息</div>
         <div
           class="w92rpx h60rpx my30rpx bg-#DDE6F9 text-#2866EB flex justify-center items-center rounded-30rpx"
@@ -60,49 +58,49 @@
             </div>
 
             <div class="space-y-[16rpx] text-26rpx">
-              <div class="flex">
-                <text class="w-180rpx text-gray-600">物项/商品分类:</text>
-                <text class="flex-1">{{ item.category }}</text>
-              </div>
-              <div class="flex">
-                <text class="w-180rpx text-gray-600">物项/商品编码:</text>
-                <text class="flex-1">{{ item.code }}</text>
+              <div class="">
+                <text class="text-#777777">物项/商品分类：</text>
+                <text class="flex-1 leading-6">{{ item.category }}</text>
               </div>
               <div class="">
-                <text class="text-gray-600">物项/商品描述中文：</text>
+                <text class="text-#777777">物项/商品编码：</text>
+                <text class="flex-1 leading-6">{{ item.code }}</text>
+              </div>
+              <div class="">
+                <text class="text-#777777">物项/商品描述中文：</text>
                 <text class="flex-1 leading-6">{{ item.description }}</text>
               </div>
-              <div class="flex">
-                <text class="w-180rpx text-gray-600">发布国家/地区:</text>
-                <text class="flex-1">{{ item.publishCountry }}</text>
+              <div class="">
+                <text class="text-#777777">发布国家/地区：</text>
+                <text class="flex-1 leading-6">{{ item.publishCountry }}</text>
               </div>
-              <div class="flex">
-                <text class="w-180rpx text-gray-600">管制清单中文:</text>
-                <text class="flex-1">{{ item.controlList }}</text>
+              <div class="">
+                <text class="text-#777777">管制清单中文：</text>
+                <text class="flex-1 leading-6">{{ item.controlList }}</text>
               </div>
-              <div class="flex">
-                <text class="w-180rpx text-gray-600">检索码:</text>
-                <text class="flex-1">{{ item.searchCode }}</text>
+              <div class="">
+                <text class="text-#777777">检索码：</text>
+                <text class="flex-1 leading-6">{{ item.searchCode }}</text>
               </div>
-              <div class="flex">
-                <text class="w-180rpx text-gray-600">海关商品编码:</text>
-                <text class="flex-1">{{ item.customsCode }}</text>
+              <div class="">
+                <text class="text-#777777">海关商品编码：</text>
+                <text class="flex-1 leading-6">{{ item.customsCode }}</text>
               </div>
-              <div class="flex">
-                <text class="w-180rpx text-gray-600">管制国家/地区:</text>
-                <text class="flex-1">{{ item.controlCountry }}</text>
+              <div class="">
+                <text class="text-#777777">管制国家/地区：</text>
+                <text class="flex-1 leading-6">{{ item.controlCountry }}</text>
               </div>
-              <div class="flex">
-                <text class="w-180rpx text-gray-600">综合关税编码:</text>
-                <text class="flex-1">{{ item.tariffCode }}</text>
+              <div class="">
+                <text class="text-#777777">综合关税编码：</text>
+                <text class="flex-1 leading-6">{{ item.tariffCode }}</text>
               </div>
-              <div class="flex">
-                <text class="w-180rpx text-gray-600">化学品编码:</text>
-                <text class="flex-1">{{ item.chemicalCode }}</text>
+              <div class="">
+                <text class="text-#777777">化学品编码：</text>
+                <text class="flex-1 leading-6">{{ item.chemicalCode }}</text>
               </div>
-              <div class="flex">
-                <text class="w-180rpx text-gray-600">监管分组:</text>
-                <text class="flex-1">{{ item.supervisionGroup }}</text>
+              <div class="">
+                <text class="text-#777777">监管分组：</text>
+                <text class="flex-1 leading-6">{{ item.supervisionGroup }}</text>
               </div>
             </div>
           </div>
@@ -114,43 +112,43 @@
           <div class="bg-white rounded-16rpx p-30rpx">
             <div class="space-y-[16rpx] text-26rpx">
               <div class="flex justify-between">
-                <div class="flex">
-                  <text class="w-150rpx text-gray-600">内贸国家:</text>
-                  <text class="flex-1">{{ traderInfo.domesticCountry }}</text>
+                <div class="">
+                  <text class="text-#777777">内贸国家：</text>
+                  <text class="flex-1 leading-6">{{ traderInfo.domesticCountry }}</text>
                 </div>
                 <view class="custom-checkbox mr-15rpx" :class="{ selected: true }"></view>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">位置类型:</text>
-                <text class="flex-1">{{ traderInfo.locationType }}</text>
+              <div class="">
+                <text class="text-#777777">位置类型：</text>
+                <text class="flex-1 leading-6">{{ traderInfo.locationType }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">实体名称:</text>
-                <text class="flex-1">{{ traderInfo.entityName }}</text>
+              <div class="">
+                <text class="text-#777777">实体名称：</text>
+                <text class="flex-1 leading-6">{{ traderInfo.entityName }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">实体别名:</text>
-                <text class="flex-1">{{ traderInfo.entityAlias }}</text>
+              <div class="">
+                <text class="text-#777777">实体别名：</text>
+                <text class="flex-1 leading-6">{{ traderInfo.entityAlias }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">内贸省份:</text>
-                <text class="flex-1">{{ traderInfo.domesticProvince }}</text>
+              <div class="">
+                <text class="text-#777777">内贸省份：</text>
+                <text class="flex-1 leading-6">{{ traderInfo.domesticProvince }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">城市名:</text>
-                <text class="flex-1">{{ traderInfo.cityName }}</text>
+              <div class="">
+                <text class="text-#777777">城市名：</text>
+                <text class="flex-1 leading-6">{{ traderInfo.cityName }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">联合国三字码:</text>
-                <text class="flex-1">{{ traderInfo.unCode }}</text>
+              <div class="">
+                <text class="text-#777777">联合国三字码：</text>
+                <text class="flex-1 leading-6">{{ traderInfo.unCode }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">国际航空运输协会三字码:</text>
-                <text class="flex-1">{{ traderInfo.iataCode }}</text>
+              <div class="">
+                <text class="text-#777777">国际航空运输协会三字码：</text>
+                <text class="flex-1 leading-6">{{ traderInfo.iataCode }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">国际民用航空组织四字代码:</text>
-                <text class="flex-1">{{ traderInfo.icaoCode }}</text>
+              <div class="">
+                <text class="text-#777777">国际民用航空组织四字代码：</text>
+                <text class="flex-1 leading-6">{{ traderInfo.icaoCode }}</text>
               </div>
             </div>
           </div>
@@ -161,33 +159,37 @@
           <div class="text-32rpx mb-30rpx">位置信息</div>
           <div class="bg-white rounded-16rpx p-30rpx">
             <div class="space-y-[16rpx] text-26rpx">
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">国家/地区:</text>
-                <text class="flex-1">{{ locationInfo.country }}</text>
+              <div class="flex justify-between">
+                <div class="">
+                  <text class="text-#777777">国家/地区：</text>
+                  <text class="flex-1 leading-6">{{ locationInfo.country }}</text>
+                </div>
+                <view class="custom-checkbox mr-15rpx" :class="{ selected: true }"></view>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">省份/州:</text>
-                <text class="flex-1">{{ locationInfo.province }}</text>
+
+              <div class="">
+                <text class="text-#777777">省份/州：</text>
+                <text class="flex-1 leading-6">{{ locationInfo.province }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">城市:</text>
-                <text class="flex-1">{{ locationInfo.city }}</text>
+              <div class="">
+                <text class="text-#777777">城市：</text>
+                <text class="flex-1 leading-6">{{ locationInfo.city }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">详细地址:</text>
-                <text class="flex-1">{{ locationInfo.address }}</text>
+              <div class="">
+                <text class="text-#777777">详细地址：</text>
+                <text class="flex-1 leading-6">{{ locationInfo.address }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">邮政编码:</text>
-                <text class="flex-1">{{ locationInfo.postalCode }}</text>
+              <div class="">
+                <text class="text-#777777">邮政编码：</text>
+                <text class="flex-1 leading-6">{{ locationInfo.postalCode }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">经度:</text>
-                <text class="flex-1">{{ locationInfo.longitude }}</text>
+              <div class="">
+                <text class="text-#777777">经度：</text>
+                <text class="flex-1 leading-6">{{ locationInfo.longitude }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">纬度:</text>
-                <text class="flex-1">{{ locationInfo.latitude }}</text>
+              <div class="">
+                <text class="text-#777777">纬度：</text>
+                <text class="flex-1 leading-6">{{ locationInfo.latitude }}</text>
               </div>
             </div>
           </div>
@@ -198,49 +200,52 @@
           <div class="text-32rpx mb-30rpx">船舶信息</div>
           <div class="bg-white rounded-16rpx p-30rpx">
             <div class="space-y-[16rpx] text-26rpx">
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">船舶名称:</text>
-                <text class="flex-1">{{ shipInfo.name }}</text>
+              <div class="flex justify-between">
+                <div class="">
+                  <text class="text-#777777">船舶名称：</text>
+                  <text class="flex-1 leading-6">{{ shipInfo.name }}</text>
+                </div>
+                <view class="custom-checkbox mr-15rpx" :class="{ selected: true }"></view>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">建造年份:</text>
-                <text class="flex-1">{{ shipInfo.buildYear }}</text>
+              <div class="">
+                <text class="text-#777777">建造年份：</text>
+                <text class="flex-1 leading-6">{{ shipInfo.buildYear }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">船舶类型:</text>
-                <text class="flex-1">{{ shipInfo.type }}</text>
+              <div class="">
+                <text class="text-#777777">船舶类型：</text>
+                <text class="flex-1 leading-6">{{ shipInfo.type }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">IMO编号:</text>
-                <text class="flex-1">{{ shipInfo.imoNumber }}</text>
+              <div class="">
+                <text class="text-#777777">IMO编号：</text>
+                <text class="flex-1 leading-6">{{ shipInfo.imoNumber }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">许可:</text>
-                <text class="flex-1">{{ shipInfo.permit }}</text>
+              <div class="">
+                <text class="text-#777777">许可：</text>
+                <text class="flex-1 leading-6">{{ shipInfo.permit }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">总拟:</text>
-                <text class="flex-1">{{ shipInfo.proposal }}</text>
+              <div class="">
+                <text class="text-#777777">总拟：</text>
+                <text class="flex-1 leading-6">{{ shipInfo.proposal }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">是否管制的:</text>
-                <text class="flex-1">{{ shipInfo.isControlled }}</text>
+              <div class="">
+                <text class="text-#777777">是否管制的：</text>
+                <text class="flex-1 leading-6">{{ shipInfo.isControlled }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">制裁时间:</text>
-                <text class="flex-1">{{ shipInfo.sanctionTime }}</text>
+              <div class="">
+                <text class="text-#777777">制裁时间：</text>
+                <text class="flex-1 leading-6">{{ shipInfo.sanctionTime }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">制裁发布国家:</text>
-                <text class="flex-1">{{ shipInfo.sanctionCountry }}</text>
+              <div class="">
+                <text class="text-#777777">制裁发布国家：</text>
+                <text class="flex-1 leading-6">{{ shipInfo.sanctionCountry }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">制裁原因:</text>
-                <text class="flex-1">{{ shipInfo.sanctionReason }}</text>
+              <div class="">
+                <text class="text-#777777">制裁原因：</text>
+                <text class="flex-1 leading-6">{{ shipInfo.sanctionReason }}</text>
               </div>
-              <div class="flex">
-                <text class="w-150rpx text-gray-600">类型类清单:</text>
-                <text class="flex-1">{{ shipInfo.typeList }}</text>
+              <div class="">
+                <text class="text-#777777">类型类清单：</text>
+                <text class="flex-1 leading-6">{{ shipInfo.typeList }}</text>
               </div>
             </div>
           </div>

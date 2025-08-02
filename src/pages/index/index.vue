@@ -169,6 +169,60 @@ const fileList = ref([
   },
 ])
 
+const takePhoto = () => {
+  // 显示选择图片的选项
+  uni.showActionSheet({
+    itemList: ['拍照', '从相册选择'],
+    success: (res) => {
+      if (res.tapIndex === 0) {
+        // 拍照
+        uni.chooseImage({
+          count: 1,
+          sourceType: ['camera'],
+          success: (result) => {
+            console.log('拍照成功', result.tempFilePaths[0])
+            // 跳转到预览页面
+            uni.navigateTo({
+              url:
+                '/pages-sub/shougongshaicha_xiangce/index?imagePath=' +
+                encodeURIComponent(result.tempFilePaths[0]),
+            })
+          },
+          fail: (err) => {
+            console.log('拍照失败', err)
+            uni.showToast({
+              title: '拍照失败',
+              icon: 'error',
+            })
+          },
+        })
+      } else if (res.tapIndex === 1) {
+        // 从相册选择
+        uni.chooseImage({
+          count: 1,
+          sourceType: ['album'],
+          success: (result) => {
+            console.log('选择相册图片成功', result.tempFilePaths[0])
+            // 跳转到预览页面
+            uni.navigateTo({
+              url:
+                '/pages-sub/shougongshaicha_xiangce/index?imagePath=' +
+                encodeURIComponent(result.tempFilePaths[0]),
+            })
+          },
+          fail: (err) => {
+            console.log('选择相册图片失败', err)
+            uni.showToast({
+              title: '选择图片失败',
+              icon: 'error',
+            })
+          },
+        })
+      }
+    },
+  })
+}
+
 // 文件夹选择切换
 const toggleSelectFolder = (folder) => {
   // 文件夹的选择逻辑（如果需要）
@@ -253,7 +307,9 @@ const functionItems = ref([
 
 // 处理功能项点击
 const handleFunctionItemClick = ({ item, index }) => {
-  console.log('点击功能按钮:', item.text, index)
+  if (item.text === '拍照') {
+    takePhoto()
+  }
   // 这里可以根据不同的功能执行不同的操作
 }
 

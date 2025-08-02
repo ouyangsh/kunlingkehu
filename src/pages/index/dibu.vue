@@ -34,8 +34,8 @@ const pages = [
   '/pages/index/index',
   '/pages/wendang/index',
   '/pages/shaicha/index',
-  '/pages/demo/index', // 资讯页面路径待定
-  '',
+  '/pages-sub/login/index', // 资讯页面路径待定
+  '/pages-sub/user-center/index',
 ]
 
 onShow(() => {

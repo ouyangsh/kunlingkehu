@@ -427,6 +427,14 @@
           }
         },
         {
+          "path": "login/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "登录",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "quanbu-wendang-xuanze/index",
           "type": "page",
           "style": {
@@ -443,6 +451,14 @@
           }
         },
         {
+          "path": "shaichaxiangqing/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "筛查详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "shougongshaicha/index",
           "type": "page",
           "style": {
@@ -455,6 +471,14 @@
           "type": "page",
           "style": {
             "navigationBarTitleText": "相册导入",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "user-center/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "用户中心",
             "navigationStyle": "custom"
           }
         },

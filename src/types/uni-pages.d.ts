@@ -55,10 +55,13 @@ interface NavigateToOptions {
        "/pages/demo/page/z-paging/index" |
        "/pages-sub/demo/index" |
        "/pages-sub/fenleishezhi/index" |
+       "/pages-sub/login/index" |
        "/pages-sub/quanbu-wendang-xuanze/index" |
        "/pages-sub/shaichajieguo/index" |
+       "/pages-sub/shaichaxiangqing/index" |
        "/pages-sub/shougongshaicha/index" |
        "/pages-sub/shougongshaicha_xiangce/index" |
+       "/pages-sub/user-center/index" |
        "/pages-sub/yidong/index" |
        "/pages-sub/yidong2/index";
 }

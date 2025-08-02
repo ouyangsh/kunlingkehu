@@ -1,12 +1,26 @@
-<script setup lang="ts">
+<script setup lang="js">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
+import { useUserStore } from '@/store'
+import { autoLogin } from '@/utils/autoLogin'
 
-onLaunch(() => {
+const userStore = useUserStore()
+
+onLaunch(async () => {
   console.log('App Launch')
+
+  // 应用启动时自动登录
+  try {
+    await autoLogin()
+    console.log('自动登录完成，当前登录状态：', userStore.isLogined)
+  } catch (error) {
+    console.log('自动登录失败：', error.message)
+  }
 })
+
 onShow(() => {
   console.log('App Show')
 })
+
 onHide(() => {
   console.log('App Hide')
 })

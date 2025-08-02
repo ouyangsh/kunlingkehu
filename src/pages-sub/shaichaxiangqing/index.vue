@@ -1,14 +1,14 @@
 <route lang="json5">
 {
   style: {
-    navigationBarTitleText: '筛查结果',
+    navigationBarTitleText: '筛查详情',
     navigationStyle: 'custom',
   },
 }
 </route>
 
 <template>
-  <buju title="手工筛查">
+  <buju title="合规筛查报告">
     <!-- 标签页 -->
     <div class="flex border-b border-gray-200 mx-30rpx fixed z10 bg-#f2f5fa wfull py2">
       <div
@@ -254,16 +254,73 @@
     </scroll-view>
 
     <template #footer>
-      <div class="bg-white p-30rpx pb-safe">
-        <div
-          @click="viewReport"
-          class="w-full h-88rpx bg-blue-600 rounded-16rpx flex justify-center items-center"
-        >
-          <text class="text-white text-32rpx font-500">查看筛查报告</text>
+      <div class="bottom-toolbar box-border">
+        <!-- 底部操作栏 -->
+        <div class="flex items-center justify-around h-full px-30rpx">
+          <div class="flex flex-col items-center justify-center" @click="editReport">
+            <i class="icon-icon-bianji font_family !text-35rpx"></i>
+            <text class="text-18rpx mt2 text-#444444">修改</text>
+          </div>
+
+          <div class="flex flex-col items-center" @click="guidang = true">
+            <i class="icon-icon-guidang font_family !text-35rpx"></i>
+            <text class="text-18rpx mt2 text-#444444">归档</text>
+          </div>
+
+          <div class="flex flex-col items-center" @click="exportReport">
+            <i class="icon-icon-daochu font_family !text-35rpx"></i>
+            <text class="text-18rpx mt2 text-#444444">导出筛查报告</text>
+          </div>
+
+          <div class="flex flex-col items-center" @click="shanchu = true">
+            <i class="icon-icon0shanchu font_family !text-35rpx text-red"></i>
+            <text class="text-18rpx mt2 text-red">删除</text>
+          </div>
         </div>
       </div>
     </template>
   </buju>
+
+  <wd-popup v-model="guidang" custom-style="height: 364rpx; width: 630rpx; border-radius: 20rpx ">
+    <div class="flex flex-col items-center">
+      <div class="text-32rpx my40rpx">归档</div>
+      <div class="text-32rpx my20rpx">确认归档？</div>
+      <div class="h-88rpx rounded-md flex items-center justify-evenly mt40rpx w-630rpx mb-20rpx">
+        <div
+          @click="guidanghanshu(false)"
+          class="text-32rpx w270rpx h88rpx bg-#F4F6FA flex justify-center items-center rounded-md"
+        >
+          取消
+        </div>
+        <div
+          @click="guidanghanshu(true)"
+          class="text-32rpx w270rpx h88rpx text-#fff bg-#2563EB flex justify-center items-center rounded-md"
+        >
+          确定
+        </div>
+      </div>
+    </div>
+  </wd-popup>
+  <wd-popup v-model="shanchu" custom-style="height: 364rpx; width: 630rpx; border-radius: 20rpx ">
+    <div class="flex flex-col items-center">
+      <div class="text-32rpx my40rpx">删除提示</div>
+      <div class="text-32rpx my20rpx">请确认是否删除此分类？</div>
+      <div class="h-88rpx rounded-md flex items-center justify-evenly mt40rpx w-630rpx mb-20rpx">
+        <div
+          @click="shanchuhanshu(false)"
+          class="text-32rpx w270rpx h88rpx bg-#F4F6FA flex justify-center items-center rounded-md"
+        >
+          取消
+        </div>
+        <div
+          @click="shanchuhanshu(true)"
+          class="text-32rpx w270rpx h88rpx text-#fff bg-#2563EB flex justify-center items-center rounded-md"
+        >
+          确定
+        </div>
+      </div>
+    </div>
+  </wd-popup>
 </template>
 <script setup lang="js">
 const statusBarHeight = ref(0)
@@ -276,9 +333,23 @@ const endDate = ref('') // For display
 // scroll-view相关
 const scrollViewRef = ref()
 const scrollIntoViewId = ref('')
+const guidang = ref(false)
+const guidanghanshu = (value) => {
+  guidang.value = false
+  if (value) {
+    // 归档操作
+  }
+}
+const shanchu = ref(false)
+const shanchuhanshu = (value) => {
+  shanchu.value = false
+  if (value) {
+    // 删除操作
+  }
+}
 
 // 标签页数据
-const tabs = ['商品信息', '交易方信息', '位置信息', '船舶']
+const tabs = ['查询对象基本信息', '提取对象提取信息', '合规筛查结果详情', '船舶']
 
 // 商品信息数据
 const goodsInfo = ref([
@@ -408,22 +479,103 @@ const countryInfo = ref({
   typeList: '',
 })
 
-// 查看筛查报告
-const viewReport = () => {
-  uni.showToast({
-    title: '正在生成报告...',
-    icon: 'loading',
-    duration: 2000,
+// 修改报告
+const editReport = () => {
+  uni.showModal({
+    title: '修改报告',
+    content: '确定要修改这份筛查报告吗？',
+    confirmText: '确认',
+    cancelText: '取消',
+    success: (res) => {
+      if (res.confirm) {
+        uni.showToast({
+          title: '正在进入编辑模式...',
+          icon: 'loading',
+          duration: 1500,
+        })
+        // 这里可以跳转到编辑页面
+        // uni.navigateTo({ url: '/pages-sub/edit-report/index' })
+      }
+    },
   })
+}
 
-  setTimeout(() => {
-    uni.showToast({
-      title: '报告生成完成',
-      icon: 'success',
-    })
-  }, 2000)
-  uni.navigateTo({
-    url: '/pages-sub/shaichaxiangqing/index',
+// 归档报告
+const archiveReport = () => {
+  uni.showModal({
+    title: '归档报告',
+    content: '确定要将这份报告归档吗？归档后可在历史记录中查看。',
+    confirmText: '归档',
+    cancelText: '取消',
+    success: (res) => {
+      if (res.confirm) {
+        uni.showToast({
+          title: '正在归档...',
+          icon: 'loading',
+          duration: 1500,
+        })
+        setTimeout(() => {
+          uni.showToast({
+            title: '归档成功',
+            icon: 'success',
+          })
+        }, 1500)
+      }
+    },
+  })
+}
+
+// 导出筛查报告
+const exportReport = () => {
+  uni.showActionSheet({
+    itemList: ['导出为PDF', '导出为Excel', '导出为Word'],
+    success: (res) => {
+      const formats = ['PDF', 'Excel', 'Word']
+      const selectedFormat = formats[res.tapIndex]
+
+      uni.showToast({
+        title: `正在生成${selectedFormat}报告...`,
+        icon: 'loading',
+        duration: 2000,
+      })
+
+      setTimeout(() => {
+        uni.showToast({
+          title: `${selectedFormat}报告生成完成`,
+          icon: 'success',
+        })
+      }, 2000)
+    },
+  })
+}
+
+// 删除报告
+const deleteReport = () => {
+  uni.showModal({
+    title: '删除报告',
+    content: '确定要删除这份筛查报告吗？删除后无法恢复。',
+    confirmText: '删除',
+    confirmColor: '#ff4d4f',
+    cancelText: '取消',
+    success: (res) => {
+      if (res.confirm) {
+        uni.showToast({
+          title: '正在删除...',
+          icon: 'loading',
+          duration: 1500,
+        })
+        setTimeout(() => {
+          uni.showToast({
+            title: '删除成功',
+            icon: 'success',
+          })
+          // 删除成功后可以返回上一页
+          setTimeout(() => {
+            uni.navigateBack()
+          }, 1000)
+        }, 1500)
+      }
+    },
   })
 }
 
@@ -501,5 +653,13 @@ onMounted(() => {
 
 :deep(.uni-scroll-view-content) {
   min-height: 100%;
+}
+/* 底部工具栏 */
+.bottom-toolbar {
+  width: 750rpx;
+  height: 180rpx;
+  padding-bottom: 35rpx;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
 }
 </style>

@@ -9,13 +9,16 @@
 
 <template>
   <buju>
-    <view class="page flex-col">
+    <template #header>
       <view class="group_1 flex-col fixed-header">
         <view class="block_8 flex-row justify-between">
           <text class="text_2">文档</text>
           <image class="image_1" referrerpolicy="no-referrer" />
         </view>
       </view>
+    </template>
+
+    <view class="page flex-col">
       <view class="box_12 flex-col">
         <function-grid :items="functionItems" @itemClick="handleFunctionItemClick" />
       </view>

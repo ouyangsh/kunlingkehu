@@ -9,8 +9,7 @@
 </route>
 <template>
   <buju title="首页">
-    <view class="page flex-col">
-      <view class="h-80rpx"></view>
+    <template #header>
       <view class="box_1 flex-col fixed top-0 left-0 z-10">
         <image class="box_1_background" src="@/static/lanhu_shouye/qwer.png" mode="" />
         <view class="box_1_content flex-col">
@@ -29,6 +28,9 @@
           </view>
         </view>
       </view>
+    </template>
+    <view class="page flex-col">
+      <view class="h-80rpx"></view>
       <view class="box_25 flex-col">
         <function-grid :items="functionItems" @itemClick="handleFunctionItemClick" />
       </view>

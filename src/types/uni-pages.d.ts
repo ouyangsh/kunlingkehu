@@ -11,7 +11,9 @@ interface NavigateToOptions {
        "/pages/login/index" |
        "/pages/my/index" |
        "/pages/shaicha/index" |
+       "/pages/user-center/index" |
        "/pages/wendang/index" |
+       "/pages/zixun/index" |
        "/pages/demo/base/auto-import" |
        "/pages/demo/base/css" |
        "/pages/demo/base/enum" |
@@ -55,15 +57,17 @@ interface NavigateToOptions {
        "/pages/demo/page/z-paging/index" |
        "/pages-sub/demo/index" |
        "/pages-sub/fenleishezhi/index" |
+       "/pages-sub/fuwuxieyi/index" |
        "/pages-sub/login/index" |
        "/pages-sub/quanbu-wendang-xuanze/index" |
        "/pages-sub/shaichajieguo/index" |
        "/pages-sub/shaichaxiangqing/index" |
        "/pages-sub/shougongshaicha/index" |
        "/pages-sub/shougongshaicha_xiangce/index" |
-       "/pages-sub/user-center/index" |
+       "/pages-sub/user-center/user-info" |
        "/pages-sub/yidong/index" |
-       "/pages-sub/yidong2/index";
+       "/pages-sub/yidong2/index" |
+       "/pages-sub/zixunxiangqing/index";
 }
 interface RedirectToOptions extends NavigateToOptions {}
 

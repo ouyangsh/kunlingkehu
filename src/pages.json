@@ -67,10 +67,26 @@
       }
     },
     {
+      "path": "pages/user-center/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "用户中心",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/wendang/index",
       "type": "page",
       "style": {
         "navigationBarTitleText": "文档",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/zixun/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "筛查详情",
         "navigationStyle": "custom"
       }
     },
@@ -427,6 +443,14 @@
           }
         },
         {
+          "path": "fuwuxieyi/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "服务协议",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "login/index",
           "type": "page",
           "style": {
@@ -475,10 +499,10 @@
           }
         },
         {
-          "path": "user-center/index",
+          "path": "user-center/user-info",
           "type": "page",
           "style": {
-            "navigationBarTitleText": "用户中心",
+            "navigationBarTitleText": "个人信息",
             "navigationStyle": "custom"
           }
         },
@@ -495,6 +519,14 @@
           "type": "page",
           "style": {
             "navigationBarTitleText": "全部文档",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "zixunxiangqing/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "资讯详情",
             "navigationStyle": "custom"
           }
         }

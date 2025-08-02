@@ -1,16 +1,23 @@
 <template>
-  <view class="smart-layout-container">
-    <view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
-    <view class="header">
-      <slot name="header">
-        <view class="default-header-content mx-[30rpx]">
-          <uni-icons v-if="pageslength > 1" type="left" size="22" @click="navigateBack"></uni-icons>
-          <uni-icons v-else type="home" size="22" @click="navigateBack"></uni-icons>
-          <text class="title">{{ title }}</text>
-          <uni-icons class="opacity-0" type="left" size="22" @click="navigateBack"></uni-icons>
-        </view>
-      </slot>
-    </view>
+  <view class="smart-layout-container" :class="quanjucolor">
+    <div :class="headerClass">
+      <view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
+      <view class="header">
+        <slot name="header">
+          <view class="mx-[30rpx] flex justify-between w100vw">
+            <uni-icons
+              v-if="pageslength > 1"
+              type="left"
+              size="22"
+              @click="navigateBack"
+            ></uni-icons>
+            <uni-icons v-else type="home" size="22" @click="navigateBack"></uni-icons>
+            <text class="title">{{ title }}</text>
+            <uni-icons class="opacity-0" type="left" size="22" @click="navigateBack"></uni-icons>
+          </view>
+        </slot>
+      </view>
+    </div>
     <view class="content">
       <slot></slot>
     </view>
@@ -24,6 +31,14 @@
 import { ref, onMounted } from 'vue'
 
 defineProps({
+  quanjucolor: {
+    type: String,
+    default: '',
+  },
+  headerClass: {
+    type: String,
+    default: '',
+  },
   title: {
     type: String,
     default: '默认标题',
@@ -56,23 +71,15 @@ onMounted(() => {
   height: 100vh;
   background-color: #f2f5fa;
 
-  .status-bar {
-    background-color: #f2f5fa;
-  }
-
   .header {
-    background-color: #f2f5fa;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
 
-    .default-header-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 44px;
-
-      .title {
-        font-size: 16px;
-        font-weight: bold;
-      }
+    .title {
+      font-size: 16px;
+      font-weight: bold;
     }
   }
 
@@ -82,15 +89,15 @@ onMounted(() => {
   }
 
   .footer {
-    //display: flex;
-    //align-items: center;
-    //justify-content: center;
-    //height: 50px;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    // height: 50px;
     /* #ifdef MP-WEIXIN */
     /* stylelint-disable-next-line declaration-property-value-no-unknown */
-    //margin-bottom: constant(safe-area-inset-bottom);
-    //margin-bottom: env(safe-area-inset-bottom);
-    //background-color: #fff;
+    // margin-bottom: constant(safe-area-inset-bottom);
+    // margin-bottom: env(safe-area-inset-bottom);
+    // background-color: #fff;
     /* #endif */
   }
 }

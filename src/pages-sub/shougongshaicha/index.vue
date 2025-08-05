@@ -247,13 +247,13 @@
               class="w210rpx h158rpx flex flex-col justify-evenly items-center bg-#FFFFFF rounded-16rpx"
             >
               <i class="font_family icon-icon-xiangcedaoru text-#2563EB !text-60rpx"></i>
-              <div>相册导入</div>
+              <div class="text-24rpx">相册导入</div>
             </div>
             <div
               class="w210rpx h158rpx flex flex-col justify-evenly items-center bg-#FFFFFF rounded-16rpx"
             >
               <i class="font_family icon-icon-paizhao text-#37C3C8 !text-60rpx"></i>
-              <div>拍照</div>
+              <div class="text-24rpx">拍照</div>
             </div>
           </view>
         </view>

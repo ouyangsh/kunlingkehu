@@ -428,6 +428,14 @@
       "root": "pages-sub",
       "pages": [
         {
+          "path": "changjianwenti/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "常见问题",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "demo/index",
           "type": "page",
           "style": {

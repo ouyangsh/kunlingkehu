@@ -55,6 +55,7 @@ interface NavigateToOptions {
        "/pages/demo/page/sp-editor/index" |
        "/pages/demo/page/ucharts/index" |
        "/pages/demo/page/z-paging/index" |
+       "/pages-sub/changjianwenti/index" |
        "/pages-sub/demo/index" |
        "/pages-sub/fenleishezhi/index" |
        "/pages-sub/fuwuxieyi/index" |

@@ -92,8 +92,7 @@ const loopData1 = ref([
 .dibuggao {
   /* #ifdef MP-WEIXIN */
   /* stylelint-disable-next-line declaration-property-value-no-unknown */
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: 60rpx;
 
   // background-color: #fff;
   /* #endif */

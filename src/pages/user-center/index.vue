@@ -149,11 +149,8 @@ const viewServiceAgreement = () => {
 
 // 常见问题
 const viewFAQ = () => {
-  uni.showModal({
-    title: '常见问题',
-    content: '1. 如何使用筛查功能？\n2. 如何查看历史记录？\n3. 如何联系客服？\n...',
-    showCancel: false,
-    confirmText: '我知道了',
+  uni.navigateTo({
+    url: '/pages-sub/changjianwenti/index',
   })
 }
 

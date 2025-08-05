@@ -8,7 +8,7 @@
 </route>
 
 <template>
-  <buju title="全部文档">
+  <buju title="全部文档" headerClass="bg-[#ffffffff]">
     <view class="overflow-auto">
       <view
         class="inline-block h-80rpx bg-[#ffffffff] mt--3rpx z-10 justify-between px-30rpx box-border fixed items-center w-full"

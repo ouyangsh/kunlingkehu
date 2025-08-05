@@ -8,7 +8,7 @@
 </route>
 
 <template>
-  <buju>
+  <buju headerClass="bg-[#ffffffff]">
     <view class="box_2 flex-col">
       <view class="list_7 flex-col">
         <view

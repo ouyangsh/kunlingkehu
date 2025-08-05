@@ -7,7 +7,9 @@
             <image class="image_6" referrerpolicy="no-referrer" :src="item.icon" />
           </view>
           <view class="text-group_36 flex-col">
-            <text class="text_15">{{ item.name }}</text>
+            <text class="text_15 w410rpx whitespace-nowrap overflow-hidden text-ellipsis">
+              {{ item.name }}
+            </text>
             <text class="text_16">{{ item.date }}</text>
           </view>
         </view>

@@ -43,7 +43,7 @@
       </div>
     </div>
     <template #footer>
-      <div class="p-30rpx">
+      <div class="p-30rpx pb-safe">
         <div
           @click="viewReport"
           class="w-full h-88rpx bg-blue-600 rounded-16rpx flex justify-center items-center"

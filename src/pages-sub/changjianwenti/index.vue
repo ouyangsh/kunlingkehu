@@ -103,13 +103,13 @@
     <template #footer>
       <div class="h180rpx box-border wfull flex justify-evenly pt30rpx">
         <div class="flex items-center flex-col">
-          <div>
+          <div @click="navigateTo('/pages-sub/yijianfankui/index')">
             <i class="font_family icon-icon-lianxikefu !text-40rpx text-#19213D"></i>
           </div>
           <div class="text-18rpx">意见反馈</div>
         </div>
         <div class="flex items-center flex-col">
-          <div>
+          <div @click="navigateTo('/pages-sub/lianxikefu/index')">
             <i class="font_family icon-icon-lianxikefu !text-40rpx text-#19213D"></i>
           </div>
           <div class="text-18rpx">联系客服</div>
@@ -123,6 +123,12 @@
 import { useUserStore } from '@/store'
 
 const userStore = useUserStore()
+
+const navigateTo = (url) => {
+  uni.navigateTo({
+    url,
+  })
+}
 
 // 计算属性
 const pageslength = computed(() => getCurrentPages().length)

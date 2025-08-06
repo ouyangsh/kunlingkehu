@@ -531,6 +531,14 @@
           }
         },
         {
+          "path": "yijianfankui/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "意见反馈",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "zixunxiangqing/index",
           "type": "page",
           "style": {

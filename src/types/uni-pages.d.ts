@@ -68,6 +68,7 @@ interface NavigateToOptions {
        "/pages-sub/user-center/user-info" |
        "/pages-sub/yidong/index" |
        "/pages-sub/yidong2/index" |
+       "/pages-sub/yijianfankui/index" |
        "/pages-sub/zixunxiangqing/index";
 }
 interface RedirectToOptions extends NavigateToOptions {}

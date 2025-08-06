@@ -10,13 +10,15 @@
 <template>
   <buju title="合规筛查报告">
     <!-- 标签页 -->
-    <div class="flex border-b border-gray-200 mx-30rpx fixed z10 bg-#f2f5fa wfull py2">
+    <div
+      class="flex border-b border-gray-200 mx-30rpx fixed w-100vw z10 bg-#f2f5fa py2 overflow-auto"
+    >
       <div
         v-for="(tab, index) in tabs"
         :key="index"
         @click="scrollToSection(index)"
         :class="[
-          'flex justify-center items-center mr4 text-center px2 h60rpx  text-28rpx relative transition-all rounded-8rpx duration-200',
+          'flex justify-center whitespace-nowrap items-center mr4 text-center px2 h60rpx  text-28rpx relative transition-all rounded-8rpx duration-200',
           activeTab === index
             ? 'text-blue-600 font-600 bg-#DDE6F9'
             : 'text-gray-600 font-400 bg-#FFFFFF',

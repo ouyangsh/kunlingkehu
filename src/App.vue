@@ -10,7 +10,7 @@ onLaunch(async () => {
 
   // 应用启动时自动登录
   try {
-    // await autoLogin()
+    await autoLogin()
     console.log('自动登录完成，当前登录状态：', userStore.isLogined)
   } catch (error) {
     console.log('自动登录失败：', error.message)

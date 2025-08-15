@@ -9,22 +9,32 @@
 
 <template>
   <buju title="手工筛查">
-    <!-- 标签页 -->
-    <div class="flex border-b border-gray-200 mx-30rpx fixed z10 bg-#f2f5fa wfull py2">
-      <div
-        v-for="(tab, index) in tabs"
-        :key="index"
-        @click="scrollToSection(index)"
-        :class="[
-          'flex justify-center items-center mr4 text-center px2 h60rpx  text-28rpx relative transition-all rounded-8rpx duration-200',
-          activeTab === index
-            ? 'text-blue-600 font-600 bg-#DDE6F9'
-            : 'text-gray-600 font-400 bg-#FFFFFF',
-        ]"
-      >
-        {{ tab }}
+    <template #header>
+      <div class="h44px flex items-center px-[30rpx] w100vw box-border">
+        <view class="flex justify-between w100vw box-border">
+          <uni-icons v-if="pageslength > 1" type="left" size="22" @click="navigateBack"></uni-icons>
+          <uni-icons v-else type="home" size="22" @click="navigateBack"></uni-icons>
+          <text class="text-38rpx font500">手工筛查</text>
+          <uni-icons class="opacity-0" type="left" size="22" @click="navigateBack"></uni-icons>
+        </view>
       </div>
-    </div>
+      <div class="flex border-b border-gray-200 mx-30rpx z10 bg-#f2f5fa wfull py2">
+        <div
+          v-for="(tab, index) in tabs"
+          :key="index"
+          @click="scrollToSection(index)"
+          :class="[
+            'flex justify-center items-center mr4 text-center px2 h60rpx  text-28rpx relative transition-all rounded-8rpx duration-200',
+            activeTab === index
+              ? 'text-blue-600 font-600 bg-#DDE6F9'
+              : 'text-gray-600 font-400 bg-#FFFFFF',
+          ]"
+        >
+          {{ tab }}
+        </div>
+      </div>
+    </template>
+    <!-- 标签页 -->
 
     <!-- 内容区域 -->
     <scroll-view
@@ -34,8 +44,8 @@
       :scroll-into-view="scrollIntoViewId"
       :scroll-with-animation="true"
     >
-      <div id="section-0" class="px-30rpx mb-3 mt13">
-        <div class="text-32rpx mt40rpx">商品信息</div>
+      <div id="section-0" class="px-30rpx mb-3">
+        <div class="text-32rpx pt25rpx">商品信息</div>
         <div
           class="w92rpx h60rpx my30rpx bg-#DDE6F9 text-#2866EB flex justify-center items-center rounded-30rpx"
         >
@@ -275,7 +285,18 @@ const endDate = ref('') // For display
 
 // scroll-view相关
 const scrollViewRef = ref()
+const pageslength = computed(() => getCurrentPages().length)
+
 const scrollIntoViewId = ref('')
+const navigateBack = () => {
+  if (getCurrentPages().length > 1) {
+    uni.navigateBack()
+  } else {
+    uni.reLaunch({
+      url: '/pages/index/index',
+    })
+  }
+}
 
 // 标签页数据
 const tabs = ['商品信息', '交易方信息', '位置信息', '船舶']

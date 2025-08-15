@@ -5,13 +5,14 @@ console.log(pagesJson)
 
 /** 判断当前页面是否是tabbar页  */
 export const getIsTabbar = () => {
-  if (!Object.keys(pagesJson).includes('tabBar')) {
+  const pj = pagesJson as any
+  if (!pj || !pj.tabBar) {
     return false
   }
   const pages = getCurrentPages()
   const lastPage = getLastItem(pages)
   const currPath = lastPage.route
-  return !!pagesJson.tabBar.list.find((e) => e.pagePath === currPath)
+  return !!pj.tabBar.list.find((e: any) => e.pagePath === currPath)
 }
 
 /**
@@ -64,10 +65,15 @@ export const getUrlObj = (url: string) => {
   console.log(path, queryStr)
 
   const query: Record<string, string> = {}
+  if (!queryStr) {
+    return { path, query }
+  }
   queryStr.split('&').forEach((item) => {
+    if (!item) return
     const [key, value] = item.split('=')
     console.log(key, value)
-    query[key] = ensureDecodeURIComponent(value) // 这里需要统一 decodeURIComponent 一下，可以兼容h5和微信y
+    if (!key) return
+    query[key] = ensureDecodeURIComponent(value || '') // 这里需要统一 decodeURIComponent 一下，可以兼容h5和微信y
   })
   return { path, query }
 }

@@ -48,7 +48,7 @@
       "path": "pages/login/index",
       "type": "page",
       "style": {
-        "navigationBarTitleText": "登录"
+        "navigationBarTitleText": "账号登录"
       }
     },
     {

@@ -17,14 +17,6 @@ type IUniUploadFileOptions = {
   formData?: any
 }
 
-type IUserInfo = {
-  nickname?: string
-  avatar?: string
-  /** 微信的 openid，非微信没有这个字段 */
-  openid?: string
-  token?: string
-}
-
 enum TestEnum {
   A = 'a',
   B = 'b',

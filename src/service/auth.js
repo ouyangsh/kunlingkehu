@@ -15,7 +15,7 @@ import { http } from '@/utils/http'
  */
 export const wechatLoginAPI = (params) => {
   return http({
-    url: 'http://127.0.0.1:8000/api/wechat/login/',
+    url: '/auth/login',
     method: 'POST',
     data: params,
   })
@@ -40,5 +40,21 @@ export const getUserInfoAPI = () => {
   return http({
     url: '/user/info',
     method: 'GET',
+  })
+}
+
+export const accountLoginAPI = (params) => {
+  return http({
+    url: '/auth/login',
+    method: 'POST',
+    data: params,
+  })
+}
+
+export const bindMiniProgramAccountAPI = (params) => {
+  return http({
+    url: '/auth/social/callback',
+    method: 'POST',
+    data: params,
   })
 }

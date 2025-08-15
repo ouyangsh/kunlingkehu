@@ -167,21 +167,19 @@ const wechatLogin = async () => {
 
     console.log('登录API响应:', response)
 
-    if (response.data && response.data.access) {
+    const accessToken = response && response.data && response.data.access_token
+    const refreshToken = response && response.data && response.data.refresh_token
+    if (accessToken) {
       // 保存用户信息
       userStore.setUserInfo({
-        nickname: response.data.name || userInfo.nickName,
-        avatar: response.data.avatar || userInfo.avatarUrl,
-        token: response.data.access,
-        refreshToken: response.data.refresh,
+        token: accessToken,
+        refreshToken,
         userId: response.data.userId,
-        username: response.data.username,
-        userType: response.data.user_type,
-        roleInfo: response.data.role_info,
-        gender: userInfo.gender,
-        city: userInfo.city,
-        province: userInfo.province,
-        country: userInfo.country,
+        openid: response.data.openid ?? null,
+        scope: response.data.scope ?? null,
+        expireIn: response.data.expire_in,
+        refreshExpireIn: response.data.refresh_expire_in ?? null,
+        clientId: response.data.client_id,
       })
 
       uni.showToast({
@@ -273,7 +271,8 @@ const redirectToTarget = () => {
       url: decodeURIComponent(options.redirect),
     })
   } else {
-    console.log('跳转失败')
+    // 未带 redirect，使用 reLaunch 进入首页，避免非 tabBar 页切换报错
+    uni.reLaunch({ url: '/pages/index/index' })
   }
 }
 

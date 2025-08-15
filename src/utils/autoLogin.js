@@ -30,41 +30,58 @@ export const autoLogin = async () => {
 
     // 2. 尝试静默登录（不获取用户信息，使用默认信息）
     const loginParams = {
-      code: loginRes.code,
-      user_info: {
-        nickName: '微信用户',
-        avatarUrl: '',
-        gender: 0,
-        city: '',
-        province: '',
-        country: '',
-      },
+      source: 'wechat_mini_program', // 固定
+      socialCode: loginRes.code, // 授权code
+      socialState: 'state', // 固定
+      clientId: 'e5cd7e4891bf95d1d19206ce24a7b32e', // 固定
+      grantType: 'social', // 固定
     }
 
     console.log('准备调用自动登录API:', loginParams)
 
     const response = await wechatLoginAPI(loginParams)
-
+    // response = {
+    //   code: 200,
+    //   msg: '操作成功',
+    //   data: {
+    //     scope: null,
+    //     openid: null,
+    //     userId: 1,
+    //     access_token:
+    //       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblR5cGUiOiJsb2dpbiIsImxvZ2luSWQiOiJzeXNfdXNlcjoxIiwicm5TdHIiOiJLQW1JcDZmUGNoZkJSdUpOdHpxRENlTzFxd1FzNE1oTyIsImNsaWVudGlkIjoiZTVjZDdlNDg5MWJmOTVkMWQxOTIwNmNlMjRhN2IzMmUiLCJ0ZW5hbnRJZCI6IjAwMDAwMCIsImNvbXBhbnlOYW1lIjoi5rW35ZCM56eR5oqAIiwidXNlcklkIjoxLCJ1c2VyTmFtZSI6ImFkbWluIiwiZGVwdElkIjoxMDMsImRlcHROYW1lIjoi56CU5Y-R6YOo6ZeoIiwiZGVwdENhdGVnb3J5IjoiIn0.tj46gpPQAuQN0xBk_l4MOC9mOW7xMaypmh8UBToD4lk',
+    //     refresh_token: null,
+    //     expire_in: 604799,
+    //     refresh_expire_in: null,
+    //     client_id: 'e5cd7e4891bf95d1d19206ce24a7b32e',
+    //   },
+    // }
     console.log('自动登录API响应:', response)
 
-    if (response.data && response.data.access) {
-      // 保存用户信息
+    const accessToken = response && response.data && response.data.access_token
+    const refreshToken = response && response.data && response.data.refresh_token
+
+    if (accessToken) {
+      // 保存用户信息（仅保存接口返回字段，做驼峰映射）
       userStore.setUserInfo({
-        nickname: response.data.name || '微信用户',
-        avatar: response.data.avatar || '',
-        token: response.data.access,
-        refreshToken: response.data.refresh,
+        token: accessToken,
+        refreshToken,
         userId: response.data.userId,
-        username: response.data.username,
-        userType: response.data.user_type,
-        roleInfo: response.data.role_info || [],
-        isAutoLogin: true, // 标记为自动登录
+        openid: response.data.openid ?? null,
+        scope: response.data.scope ?? null,
+        expireIn: response.data.expire_in,
+        refreshExpireIn: response.data.refresh_expire_in ?? null,
+        clientId: response.data.client_id,
+        isAutoLogin: true,
       })
 
       console.log('自动登录成功')
-      return { success: true, message: '自动登录成功' }
+      return { success: true, message: response.msg || '登录成功' }
     } else {
-      throw new Error(response.msg || '自动登录失败')
+      // 登录失败 跳转到登录页面
+      uni.navigateTo({
+        url: '/pages/login/index',
+      })
+      throw new Error(response?.msg || '自动登录失败')
     }
   } catch (error) {
     console.error('自动登录失败:', error)
@@ -139,21 +156,19 @@ export const manualWechatLogin = async () => {
 
     console.log('手动登录API响应:', response)
 
-    if (response.data && response.data.access) {
-      // 保存完整用户信息
+    const accessToken = response && response.data && response.data.access_token
+    const refreshToken = response && response.data && response.data.refresh_token
+    if (accessToken) {
+      // 保存用户信息（仅保存接口返回字段，做驼峰映射）
       userStore.setUserInfo({
-        nickname: response.data.name || userInfo.nickName,
-        avatar: response.data.avatar || userInfo.avatarUrl,
-        token: response.data.access,
-        refreshToken: response.data.refresh,
+        token: accessToken,
+        refreshToken,
         userId: response.data.userId,
-        username: response.data.username,
-        userType: response.data.user_type,
-        roleInfo: response.data.role_info || [],
-        gender: userInfo.gender,
-        city: userInfo.city,
-        province: userInfo.province,
-        country: userInfo.country,
+        openid: response.data.openid ?? null,
+        scope: response.data.scope ?? null,
+        expireIn: response.data.expire_in,
+        refreshExpireIn: response.data.refresh_expire_in ?? null,
+        clientId: response.data.client_id,
         isAutoLogin: false,
       })
 

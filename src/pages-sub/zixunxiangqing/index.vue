@@ -8,7 +8,7 @@
 </route>
 
 <template>
-  <buju title="资讯详情">
+  <buju title="资讯详情" quanjucolor="!bg-#fff">
     <!-- 标签页 -->
     <div class="p-30rpx">
       <div>
@@ -46,7 +46,7 @@
           中文
         </div>
         <div
-          class="w92rpx h60rpx bg-#FFFFFF text-#333333 text-26rpx flex justify-center items-center rounded-8rpx"
+          class="w92rpx h60rpx bg-#F4F6FA text-#333333 text-26rpx flex justify-center items-center rounded-8rpx"
         >
           原文
         </div>

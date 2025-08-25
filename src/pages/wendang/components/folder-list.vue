@@ -10,22 +10,17 @@
         }"
         @click="handleFolderClick(item)"
       >
-        <image class="image_3" referrerpolicy="no-referrer" :src="item.icon" />
+        <i class="font_family icon-icon-wenjianjia text-#37C3C8 !text-70rpx"></i>
         <view class="text-group_33 flex-col">
           <text class="text_6">{{ item.name }}</text>
-          <text class="text_7">{{ item.date }}</text>
+          <div class="flex">
+            <text class="text_7">{{ item.date }}</text>
+            <i class="font_family icon-icon-wenjian text-60rpx !text-25rpx mt-16rpx ml-2 mr-1"></i>
+            <text class="text-24rpx mt-12rpx">{{ item.count }}</text>
+          </div>
         </view>
-        <image
-          class="label_6"
-          referrerpolicy="no-referrer"
-          src="/static/lanhu_wendang/SketchPng02436086c2092674a945161418af30e40396dd2e3262527fbdd0f29f81760ea6.png"
-        />
-        <text class="text_8">{{ item.count }}</text>
-        <image
-          class="label_7"
-          referrerpolicy="no-referrer"
-          src="/static/lanhu_wendang/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
-        />
+
+        <i class="font_family icon-sangedian text-60rpx !text-25rpx mt-20rpx"></i>
       </view>
     </template>
   </view>

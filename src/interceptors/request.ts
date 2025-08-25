@@ -32,6 +32,7 @@ const httpInterceptor = {
     // 3. 添加小程序端请求头标识
     options.header = {
       platform: 'mp-weixin', // 可选值与 uniapp 定义的平台一致，告诉后台来源
+      clientid: 'e5cd7e4891bf95d1d19206ce24a7b32e',
       ...options.header,
     }
     // 4. 添加 token 请求头标识

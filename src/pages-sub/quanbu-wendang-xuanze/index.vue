@@ -116,6 +116,7 @@
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
 import { folderList, fileList } from './zhuangtai'
+import { getDirectoryListAPI } from '@/service/foo'
 
 // 计算属性：是否全部选中
 const isAllSelected = computed(() => {

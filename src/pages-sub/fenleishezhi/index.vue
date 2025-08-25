@@ -8,7 +8,7 @@
 </route>
 
 <template>
-  <buju headerClass="bg-[#ffffffff]">
+  <buju headerClass="bg-[#ffffffff]" title="分类设置">
     <view class="box_2 flex-col">
       <view class="list_7 flex-col">
         <view
@@ -190,28 +190,31 @@
 
 <script setup>
 import { ref } from 'vue'
+import { addCategoryAPI, getDirectoryListAPI } from '@/service/foo'
 
 const inputValue = ref('')
 
 // 数据定义，使用ref替代data选项
-const loopData0 = ref([
-  {
-    lanhuimage0:
-      'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c',
-    lanhutext0: '分类2',
-  },
-  {
-    lanhuimage0:
-      'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c',
-    lanhutext0: '分类2',
-  },
-  {
-    lanhuimage0:
-      'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c',
-    lanhutext0: '分类3',
-    slot3: 3,
-  },
-])
+const loopData0 = ref([])
+
+// 获取分类列表
+const getCategoryList = async () => {
+  try {
+    const res = await getDirectoryListAPI()
+    if (res.code === 200) {
+      loopData0.value = res.data.dirs.map((dir) => ({
+        lanhuimage0:
+          'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c',
+        lanhutext0: dir.dirName,
+        id: dir.id,
+      }))
+    }
+  } catch (error) {
+    console.error('获取分类列表失败', error)
+  }
+}
+
+getCategoryList()
 
 // 方法定义，直接作为函数
 const handleClose = () => {
@@ -258,13 +261,12 @@ const handleAddCategory = () => {
   inputValue.value = ''
   // 这里可以添加新建分类的逻辑
 }
-const handleConfirm = () => {
+const handleConfirm = async () => {
   if (inputValue.value) {
-    loopData0.value.push({
-      lanhuimage0:
-        'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c',
-      lanhutext0: inputValue.value,
-    })
+    const res = await addCategoryAPI(inputValue.value)
+    if (res.code === 200) {
+      getCategoryList() // Refresh the list after adding a new category
+    }
   }
   show.value = false
 }

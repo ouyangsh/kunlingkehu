@@ -1,5 +1,5 @@
 import { http, uniFileUpload } from '@/utils/http'
-import type { IFooItem } from './foo.d'
+import type { IFooItem, IAddCategoryResult, IDirectoryItem, IGetDirectoryListResult } from './foo.d'
 
 export { IFooItem }
 
@@ -37,5 +37,22 @@ export const getList = (page = 1, pageSize = 10) => {
     url: `/queryList`,
     method: 'GET',
     query: { page, pageSize },
+  })
+}
+
+/** 新建分类 */
+export const addCategoryAPI = (dirName: string) => {
+  return http<IAddCategoryResult>({
+    url: '/tscc/attachment-directory/add',
+    method: 'POST',
+    data: { dirName },
+  })
+}
+
+/** 获取分类列表 */
+export const getDirectoryListAPI = () => {
+  return http<IGetDirectoryListResult>({
+    url: '/tscc/attachment-directory/last',
+    method: 'POST',
   })
 }

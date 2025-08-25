@@ -109,6 +109,7 @@ const fetchData = async () => {
 
     if (res.code === 200) {
       folderList.value = res.data.dirs.map((dir) => ({
+        id: dir.id,
         icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png', // 默认图标
         name: dir.dirName,
         date: '' + new Date().toLocaleString(), // 假设使用当前日期时间

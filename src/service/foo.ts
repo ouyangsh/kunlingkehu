@@ -8,6 +8,10 @@ import type {
   IUpdateCategoryResult,
   IDeleteCategoryRequest,
   IDeleteCategoryResult,
+  IDownloadAttachmentRequest,
+  IGetDocumentListRequest,
+  IDocumentItem,
+  IGetDocumentListResult,
 } from './foo.d'
 
 export { IFooItem }
@@ -79,6 +83,30 @@ export const updateCategoryAPI = (data: IUpdateCategoryRequest) => {
 export const deleteCategoryAPI = (data: IDeleteCategoryRequest) => {
   return http<IDeleteCategoryResult>({
     url: '/tscc/attachment-directory/delete',
+    method: 'POST',
+    data,
+  })
+}
+
+export const downloadAttachmentAPI = (data: IDownloadAttachmentRequest) => {
+  const params = new URLSearchParams()
+  params.append('attachmentId', data.attachmentId)
+
+  return http<ArrayBuffer>({
+    url: '/tscc/document-attachment/download',
+    method: 'POST',
+    data: params.toString(),
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    responseType: 'arraybuffer',
+  })
+}
+
+/** 获取文档列表 */
+export const getDocumentListAPI = (data: IGetDocumentListRequest) => {
+  return http<IGetDocumentListResult>({
+    url: '/tscc/document-attachment/list',
     method: 'POST',
     data,
   })

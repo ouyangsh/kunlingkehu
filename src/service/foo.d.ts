@@ -48,3 +48,29 @@ export interface IDeleteCategoryResult {
   msg: string
   data: null
 }
+
+export interface IDownloadAttachmentRequest {
+  attachmentId: string
+}
+
+export interface IGetDocumentListRequest {
+  pageNum: number
+  pageSize: number
+  dirId?: string
+}
+
+export interface IDocumentItem {
+  id: string
+  fileSize: number
+  fileName: string
+  fileType: string
+  source: string | null
+  directoryId: number
+}
+
+export interface IGetDocumentListResult {
+  total: number
+  rows: IDocumentItem[]
+  code: number
+  msg: string
+}

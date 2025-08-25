@@ -41,6 +41,9 @@ const props = defineProps({
 const emit = defineEmits(['folderClick'])
 
 const handleFolderClick = (folder) => {
+  uni.navigateTo({
+    url: `/pages-sub/danju/index?id=${folder.id}&name=${folder.name}`,
+  })
   emit('folderClick', folder)
 }
 </script>

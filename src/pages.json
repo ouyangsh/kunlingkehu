@@ -436,6 +436,14 @@
           }
         },
         {
+          "path": "danju/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "全部文档",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "demo/index",
           "type": "page",
           "style": {

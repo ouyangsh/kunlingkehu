@@ -190,7 +190,13 @@
 
 <script setup>
 import { ref } from 'vue'
-import { addCategoryAPI, getDirectoryListAPI } from '@/service/foo'
+import { onShow } from '@dcloudio/uni-app'
+import {
+  addCategoryAPI,
+  getDirectoryListAPI,
+  updateCategoryAPI,
+  deleteCategoryAPI,
+} from '@/service/foo'
 
 const inputValue = ref('')
 
@@ -214,7 +220,9 @@ const getCategoryList = async () => {
   }
 }
 
-getCategoryList()
+onShow(() => {
+  getCategoryList()
+})
 
 // 方法定义，直接作为函数
 const handleClose = () => {
@@ -228,16 +236,84 @@ const xuanzhong = (item, index) => {
   console.log(xuanzhongindex.value)
 }
 
-const shanchuhanshu = (can) => {
-  if (can) {
-    loopData0.value.splice(xuanzhongindex.value, 1)
+const shanchuhanshu = async (can) => {
+  if (!can) {
+    shanchu.value = false
+    showfenlei.value = false
+    return
   }
+
+  const selectedCategory = loopData0.value[xuanzhongindex.value]
+  if (!selectedCategory) return
+
+  if (selectedCategory.fileCount && selectedCategory.fileCount > 0) {
+    shanchutishi.value = true
+    shanchu.value = false
+    return
+  }
+
+  try {
+    const res = await deleteCategoryAPI({ id: selectedCategory.id.toString() })
+    if (res.code === 200) {
+      getCategoryList() // Refresh the list after deleting
+      uni.showToast({
+        title: '删除成功',
+        icon: 'success',
+      })
+    } else {
+      uni.showToast({
+        title: res.msg || '删除失败',
+        icon: 'none',
+      })
+    }
+  } catch (error) {
+    console.error('删除分类失败', error)
+    uni.showToast({
+      title: '删除失败',
+      icon: 'none',
+    })
+  }
+
   shanchu.value = false
   showfenlei.value = false
 }
 
-const chongmingfun = () => {
-  loopData0.value[xuanzhongindex.value].lanhutext0 = chongmingvalue.value
+const chongmingfun = async () => {
+  if (!chongmingvalue.value) {
+    uni.showToast({
+      title: '分类名称不能为空',
+      icon: 'none',
+    })
+    return
+  }
+
+  const categoryId = loopData0.value[xuanzhongindex.value].id
+  if (categoryId) {
+    try {
+      const res = await updateCategoryAPI({
+        id: categoryId.toString(),
+        dirName: chongmingvalue.value,
+      })
+      if (res.code === 200) {
+        getCategoryList() // Refresh the list after updating
+        uni.showToast({
+          title: '重命名成功',
+          icon: 'success',
+        })
+      } else {
+        uni.showToast({
+          title: res.msg || '重命名失败',
+          icon: 'none',
+        })
+      }
+    } catch (error) {
+      console.error('重命名分类失败', error)
+      uni.showToast({
+        title: '重命名失败',
+        icon: 'none',
+      })
+    }
+  }
   chongming.value = false
 }
 

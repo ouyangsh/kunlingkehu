@@ -113,10 +113,11 @@
   </wd-popup>
 </template>
 <script setup lang="js">
+import { ref, computed } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
-import { folderList, fileList } from './zhuangtai'
-import { getDirectoryListAPI } from '@/service/foo'
+import { folderList, fileList, fetchData } from './zhuangtai'
 
 // 计算属性：是否全部选中
 const isAllSelected = computed(() => {
@@ -125,6 +126,10 @@ const isAllSelected = computed(() => {
   return (
     foldersSelected && filesSelected && (folderList.value.length > 0 || fileList.value.length > 0)
   )
+})
+
+onShow(() => {
+  fetchData()
 })
 
 // 返回首页

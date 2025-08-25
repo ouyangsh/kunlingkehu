@@ -1,5 +1,14 @@
 import { http, uniFileUpload } from '@/utils/http'
-import type { IFooItem, IAddCategoryResult, IDirectoryItem, IGetDirectoryListResult } from './foo.d'
+import type {
+  IFooItem,
+  IAddCategoryResult,
+  IDirectoryItem,
+  IGetDirectoryListResult,
+  IUpdateCategoryRequest,
+  IUpdateCategoryResult,
+  IDeleteCategoryRequest,
+  IDeleteCategoryResult,
+} from './foo.d'
 
 export { IFooItem }
 
@@ -54,5 +63,23 @@ export const getDirectoryListAPI = () => {
   return http<IGetDirectoryListResult>({
     url: '/tscc/attachment-directory/last',
     method: 'POST',
+  })
+}
+
+/** 修改分类 */
+export const updateCategoryAPI = (data: IUpdateCategoryRequest) => {
+  return http<IUpdateCategoryResult>({
+    url: '/tscc/attachment-directory/update',
+    method: 'POST',
+    data,
+  })
+}
+
+/** 删除分类 */
+export const deleteCategoryAPI = (data: IDeleteCategoryRequest) => {
+  return http<IDeleteCategoryResult>({
+    url: '/tscc/attachment-directory/delete',
+    method: 'POST',
+    data,
   })
 }

@@ -27,3 +27,24 @@ export interface IGetDirectoryListResult {
     files: any[] // Assuming files can be of any type for now, adjust if needed
   }
 }
+
+export interface IUpdateCategoryRequest {
+  id: string
+  dirName: string
+}
+
+export interface IUpdateCategoryResult {
+  code: number
+  msg: string
+  data: null
+}
+
+export interface IDeleteCategoryRequest {
+  id: string
+}
+
+export interface IDeleteCategoryResult {
+  code: number
+  msg: string
+  data: null
+}

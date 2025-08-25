@@ -58,6 +58,7 @@
 </template>
 <script setup lang="js">
 import { ref } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 import buju from '@/components/buju/buju.vue'
 import dibu from '../index/dibu.vue'
 import FolderList from './components/folder-list.vue'
@@ -134,7 +135,9 @@ const fetchData = async () => {
   }
 }
 
-fetchData()
+onShow(() => {
+  fetchData()
+})
 
 // 文件夹选择切换
 const toggleSelectFolder = (folder) => {

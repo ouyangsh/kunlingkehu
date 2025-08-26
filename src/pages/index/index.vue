@@ -67,6 +67,7 @@ import FileList from '@/pages/wendang/components/file-list.vue'
 import FunctionGrid from '@/pages/wendang/components/function-grid.vue'
 import { onMounted } from 'vue'
 import { http } from '@/utils/http'
+import { downloadAttachmentAPI } from '@/service/foo'
 const { footerHeight } = useLayout()
 const loopData0 = ref([
   {
@@ -150,6 +151,9 @@ const takePhoto = () => {
 const toggleSelectFolder = (folder) => {
   // 文件夹的选择逻辑（如果需要）
   console.log('点击文件夹:', folder.name)
+  const data = downloadAttachmentAPI({
+    attachmentId: '1955895317105487874',
+  })
   // uni.navigateTo({
   //   url: '/pages-sub/fenleishezhi/index',
   // })

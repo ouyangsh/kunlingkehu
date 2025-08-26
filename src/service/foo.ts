@@ -90,14 +90,16 @@ export const deleteCategoryAPI = (data: IDeleteCategoryRequest) => {
   })
 }
 
+/** 下载附件 */
 export const downloadAttachmentAPI = (data: IDownloadAttachmentRequest) => {
-  const params = new URLSearchParams()
-  params.append('attachmentId', data.attachmentId)
+  // const params = new URLSearchParams()
+  // params.append('attachmentId', data.attachmentId)
+  const formData = `attachmentId=${data.attachmentId}`
 
   return http<ArrayBuffer>({
     url: '/tscc/document-attachment/download',
     method: 'POST',
-    data: params.toString(),
+    data: formData,
     header: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },

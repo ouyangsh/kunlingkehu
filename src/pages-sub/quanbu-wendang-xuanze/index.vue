@@ -159,6 +159,9 @@ const toggleSelectAll = () => {
 // 文件夹选择切换
 const toggleSelectFolder = (folder) => {
   folder.selected = !folder.selected
+  uni.navigateTo({
+    url: '/pages-sub/danju/index?id' + folder.id,
+  })
   console.log('切换文件夹选择状态:', folder.name, folder.selected)
 }
 

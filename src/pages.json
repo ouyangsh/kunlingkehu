@@ -439,7 +439,7 @@
           "path": "danju/index",
           "type": "page",
           "style": {
-            "navigationBarTitleText": "文档详情",
+            "navigationBarTitleText": "全部文档",
             "navigationStyle": "custom"
           }
         },

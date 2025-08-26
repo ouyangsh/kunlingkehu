@@ -8,7 +8,7 @@
 </route>
 
 <template>
-  <buju :title="folder.name">
+  <buju title="单据">
     <view class="overflow-auto">
       <!--      <view-->
       <!--        class="inline-block h-80rpx bg-[#ffffffff] mt&#45;&#45;3rpx z-10 justify-between px-30rpx box-border fixed items-center w-full"-->
@@ -27,11 +27,7 @@
         <!--          @folder-click="toggleSelectFolder"-->
         <!--        />-->
         <!--        使用文件列表组件-->
-        <file-list
-          :isShowIcon="false"
-          :file-list="folder.fileList"
-          @file-click="toggleSelectFile"
-        />
+        <file-list :isShowIcon="false" :file-list="fileLista" @file-click="toggleSelectFile" />
       </view>
     </view>
     <template #footer>
@@ -40,6 +36,7 @@
           新建文件夹
         </div>
         <div
+          @click="yidongClick"
           class="w-330rpx h-88rpx bg-[#2563EB] text-[#ffffff] rounded-1 flex justify-center items-center"
         >
           移动({{ selectedCount }})
@@ -52,6 +49,7 @@
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
 import { folder, fileList, folderList } from '../quanbu-wendang-xuanze/zhuangtai'
+import { getDocumentListAPI, moveDocumentAPI } from '@/service/foo'
 
 // 计算属性：是否全部选中
 const isAllSelected = computed(() => {
@@ -84,6 +82,34 @@ const toggleSelectAll = () => {
   })
 
   console.log('全选/取消全选状态:', newStatus)
+}
+const selectedFolderId = ref(0)
+
+onLoad((options) => {
+  console.log('optionsaaa', options.targetDirId)
+  selectedFolderId.value = options.targetDirId
+  getDocumentList()
+})
+
+const fileLista = ref([])
+const getDocumentList = async () => {
+  const res = await getDocumentListAPI({
+    pageNum: 1,
+    pageSize: 10,
+    dirId: selectedFolderId.value,
+  })
+  console.log('res', res)
+  if (res.code === 200) {
+    fileLista.value = res.rows.map((file) => {
+      return {
+        id: file.id,
+        icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
+        name: file.fileName,
+        date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
+        selected: false,
+      }
+    })
+  }
 }
 
 // 文件夹选择切换
@@ -138,6 +164,16 @@ const loopData0 = ref([
     lanhutext0: '保存到本地',
   },
 ])
+
+const yidongClick = () => {
+  const selectedFiles = fileList.value.filter((file) => file.selected)
+  console.log('移动')
+  // 调用移动接口
+  moveDocumentAPI({
+    ids: selectedFiles.map((file) => file.id),
+    targetDirId: selectedFolderId.value,
+  })
+}
 </script>
 <style lang="css" scoped>
 @import '../../static/common/common.css';

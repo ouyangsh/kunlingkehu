@@ -219,9 +219,6 @@ const tiaozhuan = () => {
   background-color: rgb(255 255 255 / 100%);
 }
 
-.block_9 {
-}
-
 .text-wrapper_1 {
   width: 151rpx;
   height: 32rpx;

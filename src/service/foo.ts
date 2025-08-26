@@ -12,6 +12,8 @@ import type {
   IGetDocumentListRequest,
   IDocumentItem,
   IGetDocumentListResult,
+  IMoveDocumentRequest,
+  IMoveDocumentResult,
 } from './foo.d'
 
 export { IFooItem }
@@ -107,6 +109,15 @@ export const downloadAttachmentAPI = (data: IDownloadAttachmentRequest) => {
 export const getDocumentListAPI = (data: IGetDocumentListRequest) => {
   return http<IGetDocumentListResult>({
     url: '/tscc/document-attachment/list',
+    method: 'POST',
+    data,
+  })
+}
+
+/** 移动文档 */
+export const moveDocumentAPI = (data: IMoveDocumentRequest) => {
+  return http<IMoveDocumentResult>({
+    url: '/tscc/document-attachment/move',
     method: 'POST',
     data,
   })

@@ -86,7 +86,7 @@ const toggleSelectAll = () => {
 // 进入文件夹
 const toggleSelectFolder = (folder) => {
   uni.navigateTo({
-    url: '/pages-sub/yidong2/index',
+    url: '/pages-sub/yidong2/index?targetDirId=' + folder.id,
   })
 }
 

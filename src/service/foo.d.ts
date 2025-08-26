@@ -74,3 +74,14 @@ export interface IGetDocumentListResult {
   code: number
   msg: string
 }
+
+export interface IMoveDocumentRequest {
+  ids: string[]
+  targetDirId: string
+}
+
+export interface IMoveDocumentResult {
+  code: number
+  msg: string
+  data: boolean
+}

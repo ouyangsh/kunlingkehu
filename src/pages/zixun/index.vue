@@ -370,9 +370,9 @@ function handleConfirm(e) {
   }
 }
 
-const tiaozhuan = () => {
+const tiaozhuan = (id) => {
   uni.navigateTo({
-    url: '/pages-sub/zixunxiangqing/index',
+    url: `/pages-sub/zixunxiangqing/index?id=${id}`,
   })
 }
 

@@ -56,7 +56,13 @@
       <div class="h10rpx bg-#F2F5FA"></div>
     </template>
 
-    <div>
+    <scroll-view
+      scroll-y="true"
+      class="news-list-scroll-view"
+      :scroll-into-view="scrollIntoViewId"
+      @scrolltolower="onScrollToLower"
+      style="height: calc(100vh - 350rpx)"
+    >
       <div
         @click="tiaozhuan(newsItem.id)"
         class="bg-#FFFFFF p30rpx box-border h184rpx mb-1px"
@@ -64,7 +70,9 @@
         :key="newsItem.id"
       >
         <div class="flex">
-          <div class="h80rpx text-30rpx text-#19213D min-w-560rpx">
+          <div
+            class="h80rpx text-30rpx text-#19213D min-w-560rpx overflow-hidden text-ellipsis line-clamp-2"
+          >
             {{ newsItem.tittleChn }}
           </div>
           <div v-if="newsItem.imageProperty" class="w120rpx h80rpx bg-#F4F6FA shrink-0 ml2"></div>
@@ -76,7 +84,14 @@
           <div>{{ newsItem.subjectType }}</div>
         </div>
       </div>
-    </div>
+      <div v-if="isLoading" class="text-center py-20rpx text-#666">加载中...</div>
+      <div
+        v-if="!hasMore && !isLoading && newsList.length > 0"
+        class="text-center py-20rpx text-#666"
+      >
+        没有更多数据了
+      </div>
+    </scroll-view>
     <template #footer>
       <dibu />
     </template>
@@ -397,7 +412,9 @@ function formatDate(timestamp) {
   return `${year}-${month}-${day}`
 }
 
-const fetchNewsList = async () => {
+const fetchNewsList = async (append = false) => {
+  if (isLoading.value || (append && !hasMore.value)) return
+  isLoading.value = true
   try {
     const res = await http({
       url: '/tscc/news/list',
@@ -405,11 +422,28 @@ const fetchNewsList = async () => {
       data: queryParams,
     })
     if (res.code === 200 && res.rows) {
-      newsList.value = res.rows
+      if (append) {
+        newsList.value = [...newsList.value, ...res.rows]
+      } else {
+        newsList.value = res.rows
+      }
       total.value = res.total
+      hasMore.value = newsList.value.length < total.value
     }
   } catch (error) {
     console.error('获取新闻列表失败', error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const isLoading = ref(false)
+const hasMore = ref(true)
+
+const onScrollToLower = () => {
+  if (hasMore.value) {
+    queryParams.pageNum++
+    fetchNewsList(true)
   }
 }
 
@@ -440,10 +474,10 @@ onMounted(() => {
   border: 2px solid rgb(37 99 235 / 100%);
 }
 /* scroll-view样式 */
-.scroll-container {
-  width: 100%;
+.news-list-scroll-view {
   height: 100%;
 }
+
 /* 确保scroll-view有合适的高度 */
 :deep(.uni-scroll-view) {
   height: 100% !important;

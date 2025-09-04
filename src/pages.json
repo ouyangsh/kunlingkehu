@@ -515,6 +515,14 @@
           }
         },
         {
+          "path": "shougongshaicha_xiangce_daoru/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "相册导入",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "user-center/user-info",
           "type": "page",
           "style": {

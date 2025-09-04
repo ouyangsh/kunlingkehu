@@ -41,7 +41,45 @@
       <!-- 底部区域 -->
       <div class="bg-white pt-20rpx pb-30rpx pb-safe">
         <!-- 缩略图选择区域 -->
+        <div
+          class="flex justify-start gap-[20rpx] mb-30rpx border-b-solid border-b-1px border-#DDDDDD p30rpx"
+        >
+          <!-- 原图 -->
+          <div
+            @click="selectImageType(0)"
+            :class="[
+              'w-120rpx h-120rpx rounded-12rpx overflow-hidden relative',
+              selectedImageType === 0
+                ? 'border-[4rpx] border-gray-400'
+                : 'border-[2rpx] border-gray-200',
+            ]"
+          >
+            <image :src="previewImagePath" mode="aspectFill" class="w-full h-full" />
+            <div
+              class="absolute bottom-0 left-0 right-0 bg-[#0000006e] text-white text-20rpx text-center py-8rpx"
+            >
+              原图
+            </div>
+          </div>
 
+          <!-- 增强文本解析 -->
+          <div
+            @click="selectImageType(1)"
+            :class="[
+              'w-120rpx h-120rpx rounded-12rpx overflow-hidden relative border-solid border-1px border-blue-500',
+              selectedImageType === 1
+                ? 'border-[4rpx] border-blue-500'
+                : 'border-[2rpx] border-gray-200',
+            ]"
+          >
+            <image :src="enhancedImagePath" mode="aspectFill" class="w-full h-full" />
+            <div
+              class="absolute bottom-0 left-0 right-0 bg-blue-500 text-white text-20rpx text-center py-8rpx"
+            >
+              增强文本解析
+            </div>
+          </div>
+        </div>
 
         <!-- 底部操作按钮区域 -->
         <div class="flex justify-between items-center px-30rpx">

@@ -66,6 +66,7 @@ interface NavigateToOptions {
        "/pages-sub/shaichaxiangqing/index" |
        "/pages-sub/shougongshaicha/index" |
        "/pages-sub/shougongshaicha_xiangce/index" |
+       "/pages-sub/shougongshaicha_xiangce_daoru/index" |
        "/pages-sub/user-center/user-info" |
        "/pages-sub/yidong/index" |
        "/pages-sub/yidong2/index" |

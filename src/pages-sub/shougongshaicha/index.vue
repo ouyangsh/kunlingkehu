@@ -134,7 +134,7 @@
                     : 'bg-gray-100 text-gray-600',
                 ]"
               >
-                {{ template }}
+                {{ template.templateName }}
               </view>
             </view>
           </view>
@@ -262,6 +262,8 @@
   </view>
 </template>
 <script setup lang="js">
+import { http } from '@/utils/http'
+
 const indexa = ref(0)
 const statusBarHeight = ref(0)
 const datetimePickerRef = ref()
@@ -277,7 +279,7 @@ const selectedUploadType = ref(0) // 上传方式索引：0-线上文件，1-本
 const selectedCategory = ref(0) // 选择的分类索引
 
 // 模板选项
-const templateOptions = ['出口报关单', '进口报关单', '提货单', '其它单据']
+const templateOptions = ref([])
 
 // 文件分类
 const fileCategories = ['分类1', '分类2']
@@ -345,7 +347,7 @@ const closeImportModal = () => {
 const confirmImport = () => {
   // 确定导入逻辑
   console.log('确定导入', {
-    template: templateOptions[selectedTemplate.value],
+    template: templateOptions.value[selectedTemplate.value].templateName,
     uploadType: selectedUploadType.value,
     selectedFiles: filteredFiles.value,
   })
@@ -379,7 +381,7 @@ const takePhoto = () => {
             // 跳转到预览页面
             uni.navigateTo({
               url:
-                '/pages-sub/shougongshaicha_xiangce/index?imagePath=' +
+                '/pages-sub/shougongshaicha_xiangce_daoru/index?imagePath=' +
                 encodeURIComponent(result.tempFilePaths[0]),
             })
           },
@@ -401,7 +403,7 @@ const takePhoto = () => {
             // 跳转到预览页面
             uni.navigateTo({
               url:
-                '/pages-sub/shougongshaicha_xiangce/index?imagePath=' +
+                '/pages-sub/shougongshaicha_xiangce_daoru/index?imagePath=' +
                 encodeURIComponent(result.tempFilePaths[0]),
             })
           },
@@ -418,9 +420,27 @@ const takePhoto = () => {
   })
 }
 
+const fetchTemplateOptions = async () => {
+  try {
+    const res = await http({
+      url: '/tscc/manage/document-template/all-list',
+      method: 'POST',
+      data: {
+        templateType: 'DOCUMENT',
+      },
+    })
+    if (res.code === 200 && res.data) {
+      templateOptions.value = res.data
+    }
+  } catch (error) {
+    console.error('获取模板选项失败', error)
+  }
+}
+
 onMounted(() => {
   const systemInfo = uni.getSystemInfoSync()
   statusBarHeight.value = systemInfo.statusBarHeight
+  fetchTemplateOptions()
 })
 </script>
 <style lang="scss" scoped>

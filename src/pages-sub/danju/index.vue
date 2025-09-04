@@ -113,7 +113,6 @@
   </wd-popup>
 </template>
 <script setup lang="js">
-import { ref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
@@ -157,7 +156,7 @@ const getDocumentList = async () => {
 }
 
 onShow(() => {
-  fetchData()
+  // fetchData()
 })
 
 // 返回首页

@@ -33,46 +33,30 @@
       </div>
       <div class="h100rpx"></div>
       <div
-        v-for="i in 10"
-        :key="i"
+        v-for="(items, category) in itemTemplates"
+        :key="category"
         class="w-690rpx bg-#fff rounded-16rpx m-30rpx p30rpx box-border"
       >
         <div class="not-first:mt24rpx text-28rpx">
-          <div class="mb-20rpx">交易方信息</div>
-          <div class="flex mb-10rpx justify-start items-center">
-            <div
-              class="w220rpx mr10rpx px-2 box-border rounded-8rpx h60rpx bg-#F4F6FA flex justify-between items-center color-[#333333]"
-            >
-              <div>境内发货人</div>
-              <i class="font_family icon-trangle-down text-20rpx"></i>
-            </div>
-            <input
-              class="w320rpx mr10rpx rounded-8rpx h60rpx bg-#F4F6FA pl-2"
-              type="text"
-              placeholder="请输入境内发货人"
-            />
-            <div
-              class="mr10rpx h60rpx bg-#F4F6FA rounded-8rpx px2 flex justify-center items-center"
-            >
-              <i class="font_family mr10rpx icon-icon0shanchu text-20rpx"></i>
-            </div>
-          </div>
-          <div class="flex justify-start items-center">
-            <div
-              class="w220rpx mr10rpx px-2 box-border rounded-8rpx h60rpx bg-#F4F6FA flex justify-between items-center color-[#333333]"
-            >
-              <div>境内发货人</div>
-              <i class="font_family icon-trangle-down text-20rpx"></i>
-            </div>
-            <input
-              class="w320rpx mr10rpx rounded-8rpx h60rpx bg-#F4F6FA pl-2"
-              type="text"
-              placeholder="请输入境内发货人"
-            />
-            <div
-              class="mr10rpx h60rpx bg-#F4F6FA rounded-8rpx px2 flex justify-center items-center"
-            >
-              <i class="font_family mr10rpx icon-icon-zengjia text-20rpx"></i>
+          <div class="mb-20rpx">{{ category }}</div>
+          <div v-for="(item, index) in items" :key="index">
+            <div class="flex mb-10rpx justify-start items-center">
+              <div
+                class="w220rpx mr10rpx px-2 box-border rounded-8rpx h60rpx bg-#F4F6FA flex justify-between items-center color-[#333333]"
+              >
+                <div>{{ item }}</div>
+                <i class="font_family icon-trangle-down text-20rpx"></i>
+              </div>
+              <input
+                class="w320rpx mr10rpx rounded-8rpx h60rpx bg-#F4F6FA pl-2"
+                type="text"
+                :placeholder="'请输入' + item"
+              />
+              <div
+                class="mr10rpx h60rpx bg-#F4F6FA rounded-8rpx px2 flex justify-center items-center"
+              >
+                <i class="font_family mr10rpx icon-icon0shanchu text-20rpx"></i>
+              </div>
             </div>
           </div>
           <div class="mt-20rpx color-[#999999] text-24rpx">提示:宁波杰腾科通讯设备有限公司R.F.</div>
@@ -272,6 +256,9 @@ const startDate = ref('') // For display
 const endDate = ref('') // For display
 const pageslength = computed(() => getCurrentPages().length)
 
+// 接口获取的单据项模板数据
+const itemTemplates = ref({})
+
 // 导入单据弹窗相关状态
 const showImportModal = ref(false)
 const selectedTemplate = ref(0) // 选择的模板索引
@@ -420,6 +407,23 @@ const takePhoto = () => {
   })
 }
 
+const fetchItemTemplates = async () => {
+  try {
+    const res = await http({
+      url: '/tscc/document/item-template-list',
+      method: 'POST',
+      data: {
+        templateType: 'DOCUMENT',
+      },
+    })
+    if (res.code === 200 && res.data) {
+      itemTemplates.value = res.data
+    }
+  } catch (error) {
+    console.error('获取单据项模板失败', error)
+  }
+}
+
 const fetchTemplateOptions = async () => {
   try {
     const res = await http({
@@ -441,6 +445,7 @@ onMounted(() => {
   const systemInfo = uni.getSystemInfoSync()
   statusBarHeight.value = systemInfo.statusBarHeight
   fetchTemplateOptions()
+  fetchItemTemplates()
 })
 </script>
 <style lang="scss" scoped>

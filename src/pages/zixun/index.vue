@@ -58,22 +58,22 @@
 
     <div>
       <div
-        @click="tiaozhuan"
+        @click="tiaozhuan(newsItem.id)"
         class="bg-#FFFFFF p30rpx box-border h184rpx mb-1px"
-        v-for="i in 10"
-        :key="i"
+        v-for="newsItem in newsList"
+        :key="newsItem.id"
       >
         <div class="flex">
-          <div class="h80rpx text-30rpx text-#19213D">
-            Der Zoll bundesweit im Einsatz im Friseur- und Kosmetikgewerbe
+          <div class="h80rpx text-30rpx text-#19213D min-w-560rpx">
+            {{ newsItem.tittleChn }}
           </div>
-          <div v-if="true" class="w120rpx h80rpx bg-#F4F6FA shrink-0 ml2"></div>
+          <div v-if="newsItem.imageProperty" class="w120rpx h80rpx bg-#F4F6FA shrink-0 ml2"></div>
         </div>
         <div class="text-24rpx flex justify-between mt-25rpx text-#666666">
-          <div>2025-04-17</div>
-          <div>美国盟友</div>
-          <div>德国海关</div>
-          <div>执法</div>
+          <div>{{ newsItem.publishDate.split(' ')[0] }}</div>
+          <div>{{ newsItem.publishCountry }}</div>
+          <div>{{ newsItem.publishOrg }}</div>
+          <div>{{ newsItem.subjectType }}</div>
         </div>
       </div>
     </div>
@@ -84,6 +84,7 @@
 </template>
 <script setup lang="js">
 import dibu from '../index/dibu.vue'
+import { http } from '@/utils/http'
 
 const statusBarHeight = ref(0)
 const activeTab = ref(0)
@@ -91,6 +92,24 @@ const datetimePickerRef = ref()
 const dateRange = ref(['', Date.now()]) // For v-model
 const startDate = ref('') // For display
 const endDate = ref('') // For display
+const pageslength = computed(() => getCurrentPages().length)
+
+// 新闻列表数据
+const newsList = ref([])
+const total = ref(0)
+const queryParams = reactive({
+  countryType: '',
+  keyword: '',
+  regionType: '',
+  subjectType: '',
+  industryType: '',
+  publishDateBegin: '',
+  publishDateEnd: '',
+  publishDate: [],
+  source: '',
+  pageNum: 1,
+  pageSize: 10,
+})
 
 // scroll-view相关
 const scrollViewRef = ref()
@@ -378,9 +397,26 @@ function formatDate(timestamp) {
   return `${year}-${month}-${day}`
 }
 
+const fetchNewsList = async () => {
+  try {
+    const res = await http({
+      url: '/tscc/news/list',
+      method: 'POST',
+      data: queryParams,
+    })
+    if (res.code === 200 && res.rows) {
+      newsList.value = res.rows
+      total.value = res.total
+    }
+  } catch (error) {
+    console.error('获取新闻列表失败', error)
+  }
+}
+
 onMounted(() => {
   const systemInfo = uni.getSystemInfoSync()
   statusBarHeight.value = systemInfo.statusBarHeight
+  fetchNewsList()
 })
 </script>
 <style lang="scss" scoped>

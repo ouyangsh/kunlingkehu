@@ -14,6 +14,8 @@ import type {
   IGetDocumentListResult,
   IMoveDocumentRequest,
   IMoveDocumentResult,
+  IDeleteDocumentRequest,
+  IDeleteDocumentResult,
 } from './foo.d'
 
 export { IFooItem }
@@ -120,6 +122,15 @@ export const getDocumentListAPI = (data: IGetDocumentListRequest) => {
 export const moveDocumentAPI = (data: IMoveDocumentRequest) => {
   return http<IMoveDocumentResult>({
     url: '/tscc/document-attachment/move',
+    method: 'POST',
+    data,
+  })
+}
+
+/** 删除文档 */
+export const deleteDocumentAPI = (data: IDeleteDocumentRequest) => {
+  return http<IDeleteDocumentResult>({
+    url: '/tscc/document-attachment/delete',
     method: 'POST',
     data,
   })

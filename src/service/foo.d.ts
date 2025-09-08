@@ -85,3 +85,13 @@ export interface IMoveDocumentResult {
   msg: string
   data: boolean
 }
+
+export interface IDeleteDocumentRequest {
+  ids: string[]
+}
+
+export interface IDeleteDocumentResult {
+  code: number
+  msg: string
+  data: null
+}

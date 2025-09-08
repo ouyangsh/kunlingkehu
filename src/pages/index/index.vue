@@ -150,46 +150,46 @@ const takePhoto = () => {
 // 文件夹选择切换
 const toggleSelectFolder = async (folder) => {
   // 文件夹的选择逻辑（如果需要）
-  console.log('点击文件夹:', folder.name)
-  const data = await downloadAttachmentAPI({
-    attachmentId: '1960616605069959170',
-  })
-  // 保存下载的文件data
-  if (data && data.byteLength > 0) {
-    const fs = uni.getFileSystemManager()
-    const filePath = `${uni.env.USER_DATA_PATH}/downloaded_file.pdf` // 假设文件名为 downloaded_file.pdf
+  // console.log('点击文件夹:', folder.name)
+  // const data = await downloadAttachmentAPI({
+  //   attachmentId: '1960616605069959170',
+  // })
+  // // 保存下载的文件data
+  // if (data && data.byteLength > 0) {
+  //   const fs = uni.getFileSystemManager()
+  //   const filePath = `${uni.env.USER_DATA_PATH}/downloaded_file.pdf` // 假设文件名为 downloaded_file.pdf
 
-    try {
-      const base64 = uni.arrayBufferToBase64(data) // 将 ArrayBuffer 转换为 Base64
-      fs.writeFileSync(filePath, base64, 'base64')
+  //   try {
+  //     const base64 = uni.arrayBufferToBase64(data) // 将 ArrayBuffer 转换为 Base64
+  //     fs.writeFileSync(filePath, base64, 'base64')
 
-      uni.showToast({
-        title: '文件已保存到本地',
-        icon: 'success',
-      })
+  //     uni.showToast({
+  //       title: '文件已保存到本地',
+  //       icon: 'success',
+  //     })
 
-      uni.openDocument({
-        filePath,
-        showMenu: true,
-        success: function (res) {
-          console.log('打开文档成功', res)
-        },
-        fail: function (err) {
-          console.error('打开文档失败', err)
-          uni.showToast({
-            title: '打开文件失败',
-            icon: 'none',
-          })
-        },
-      })
-    } catch (e) {
-      console.error('文件保存失败', e)
-      uni.showToast({
-        title: '文件保存失败',
-        icon: 'none',
-      })
-    }
-  }
+  //     uni.openDocument({
+  //       filePath,
+  //       showMenu: true,
+  //       success: function (res) {
+  //         console.log('打开文档成功', res)
+  //       },
+  //       fail: function (err) {
+  //         console.error('打开文档失败', err)
+  //         uni.showToast({
+  //           title: '打开文件失败',
+  //           icon: 'none',
+  //         })
+  //       },
+  //     })
+  //   } catch (e) {
+  //     console.error('文件保存失败', e)
+  //     uni.showToast({
+  //       title: '文件保存失败',
+  //       icon: 'none',
+  //     })
+  //   }
+  // }
   // uni.navigateTo({
   //   url: '/pages-sub/fenleishezhi/index',
   // })

@@ -117,7 +117,7 @@ import { onShow } from '@dcloudio/uni-app'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
 import { folderList, fileList, fetchData } from '../quanbu-wendang-xuanze/zhuangtai'
-import { downloadAttachmentAPI, getDocumentListAPI } from '@/service/foo'
+import { deleteDocumentAPI, downloadAttachmentAPI, getDocumentListAPI } from '@/service/foo'
 
 // 计算属性：是否全部选中
 const isAllSelected = computed(() => {
@@ -220,10 +220,44 @@ const chongmingfun = () => {
   chongming.value = false
 }
 
-const shanchuwendang = () => {
-  // 删除选中
-  fileList.value = fileList.value.filter((file) => !file.selected)
-  shanchu.value = false
+const shanchuwendang = async () => {
+  const selectedFileIds = fileList.value.filter((file) => file.selected).map((file) => file.id)
+
+  if (selectedFileIds.length === 0) {
+    uni.showToast({
+      title: '请先选择要删除的文档',
+      icon: 'none',
+    })
+    shanchu.value = false
+    return
+  }
+
+  try {
+    uni.showLoading({
+      title: '删除中...',
+    })
+    const res = await deleteDocumentAPI({ ids: selectedFileIds })
+    if (res.code === 200) {
+      fileList.value = fileList.value.filter((file) => !file.selected)
+      uni.showToast({
+        title: '删除成功',
+        icon: 'success',
+      })
+    } else {
+      uni.showToast({
+        title: res.msg || '删除失败',
+        icon: 'none',
+      })
+    }
+  } catch (error) {
+    uni.showToast({
+      title: error.message || '删除失败',
+      icon: 'none',
+    })
+  } finally {
+    uni.hideLoading()
+    shanchu.value = false
+  }
 }
 
 const loopData0 = ref([

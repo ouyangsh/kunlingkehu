@@ -42,7 +42,7 @@ export const postFooAPI = (name: string) => {
 // 文件上传
 export const fileUpload = (data: IUniUploadFileOptions) => {
   return uniFileUpload({
-    url: `/foo/upload`,
+    url: `/tscc/document-attachment/upload`,
     method: 'POST',
     ...data,
   })

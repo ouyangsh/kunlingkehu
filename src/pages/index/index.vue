@@ -67,14 +67,9 @@ import FileList from '@/pages/wendang/components/file-list.vue'
 import FunctionGrid from '@/pages/wendang/components/function-grid.vue'
 import { onMounted } from 'vue'
 import { http } from '@/utils/http'
-import { downloadAttachmentAPI } from '@/service/foo'
+import { downloadAttachmentAPI, fileUpload } from '@/service/foo'
 const { footerHeight } = useLayout()
 const loopData0 = ref([
-  {
-    lanhuimage0: 'icon-icon-xiangcedaoru',
-    lanhutext0: '相册导入',
-    yanse0: '#2563EB',
-  },
   {
     lanhuimage0: 'icon-icon-paizhao',
     lanhutext0: '拍照',
@@ -255,23 +250,76 @@ const functionItems = ref([
     icon: 'icon-icon-xiangcedaoru',
     text: '相册导入',
     color: '#2563EB',
+    fun: () => {
+      uni.chooseImage({
+        count: 1,
+        sourceType: ['album'], // 只允许从相册选择
+        success: async (res) => {
+          const tempFilePath = res.tempFilePaths[0]
+          uni.showLoading({
+            title: '上传中...',
+          })
+          try {
+            const uploadRes = await fileUpload({
+              filePath: tempFilePath,
+              name: 'file', // 后端接收文件的字段名
+              formData: {},
+            })
+
+            if (uploadRes.code === 200) {
+              uni.showToast({
+                title: '上传成功',
+                icon: 'success',
+              })
+              // 上传成功后可以刷新数据或者进行其他操作
+              fetchData()
+            } else {
+              uni.showToast({
+                title: uploadRes.msg || '上传失败',
+                icon: 'none',
+              })
+            }
+          } catch (error) {
+            uni.showToast({
+              title: error.message || '上传失败',
+              icon: 'none',
+            })
+          } finally {
+            uni.hideLoading()
+          }
+        },
+        fail: (err) => {
+          console.log('选择图片失败', err)
+          uni.showToast({
+            title: '选择图片失败',
+            icon: 'none',
+          })
+        },
+      })
+    },
   },
   {
     icon: 'icon-icon-paizhao',
     text: '拍照',
     color: '#37C3C8',
+    fun: () => {
+      takePhoto()
+    },
   },
   {
     icon: 'icon-icon-zhishiku',
     text: '知识库',
     color: '#F45C27',
+    fun: () => {
+      // 知识库逻辑
+    },
   },
 ])
 
 // 处理功能项点击
 const handleFunctionItemClick = ({ item, index }) => {
-  if (item.text === '拍照') {
-    takePhoto()
+  if (item.fun) {
+    item.fun()
   }
   // 这里可以根据不同的功能执行不同的操作
 }

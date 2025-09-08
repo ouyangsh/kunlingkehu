@@ -9,10 +9,10 @@ export const autoLogin = async () => {
   const userStore = useUserStore()
 
   // 如果已经登录，直接返回
-  if (userStore.isLogined) {
-    console.log('用户已登录，跳过自动登录')
-    return { success: true, message: '用户已登录' }
-  }
+  // if (userStore.isLogined) {
+  //   console.log('用户已登录，跳过自动登录')
+  //   return { success: true, message: '用户已登录' }
+  // }
 
   try {
     console.log('开始自动登录...')

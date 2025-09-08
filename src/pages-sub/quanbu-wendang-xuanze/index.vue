@@ -118,6 +118,7 @@ import { onShow } from '@dcloudio/uni-app'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
 import { folderList, fileList, fetchData } from './zhuangtai'
+import { downloadAttachmentAPI } from '@/service/foo'
 
 // 计算属性：是否全部选中
 const isAllSelected = computed(() => {
@@ -160,7 +161,7 @@ const toggleSelectAll = () => {
 const toggleSelectFolder = (folder) => {
   folder.selected = !folder.selected
   uni.navigateTo({
-    url: '/pages-sub/danju/index?id' + folder.id,
+    url: '/pages-sub/danju/index?id=' + folder.id,
   })
   console.log('切换文件夹选择状态:', folder.name, folder.selected)
 }
@@ -248,35 +249,46 @@ const loopData0 = ref([
       const downloadTasks = selectedFiles.map((file) => {
         return new Promise((resolve, reject) => {
           // #ifdef MP-WEIXIN || APP-PLUS
-          uni.downloadFile({
-            // H5端暂不支持，可自行实现
-            url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', // 使用一个公开的PDF文件作为测试下载地址
-            success: (res) => {
-              if (res.statusCode === 200) {
-                uni.saveFile({
-                  tempFilePath: res.tempFilePath,
-                  success: (saveRes) => {
-                    uni.openDocument({
-                      filePath: saveRes.savedFilePath,
-                      showMenu: true,
-                      success: function (res) {
-                        console.log('打开文档成功')
-                      },
-                    })
-                    resolve(saveRes.savedFilePath)
-                  },
-                  fail: () => {
-                    reject(new Error('保存失败'))
-                  },
-                })
-              } else {
-                reject(new Error('下载失败'))
-              }
-            },
-            fail: () => {
-              reject(new Error('下载失败'))
-            },
-          })
+          downloadAttachmentAPI({ attachmentId: file.id })
+            .then((res) => {
+              const fs = uni.getFileSystemManager()
+              // Sanitize the file name to remove problematic characters
+              const originalFileName = file.name || 'downloaded_file' // Fallback if file.name is empty
+              const fileExtension = originalFileName.split('.').pop() || 'tmp'
+              const baseFileName =
+                originalFileName.substring(0, originalFileName.lastIndexOf('.')) || originalFileName
+
+              // Remove invalid characters and replace spaces
+              const cleanBaseFileName = baseFileName.replace(/[^\w.-]/g, '_').replace(/\s/g, '_')
+              const fileName = `${cleanBaseFileName}.${fileExtension}`
+
+              const filePath = `${uni.env.USER_DATA_PATH}/${fileName}`
+              fs.writeFile({
+                filePath,
+                data: res, // res is ArrayBuffer
+                encoding: 'binary',
+                success: () => {
+                  // File is already saved at filePath, so we can directly open it
+                  uni.openDocument({
+                    filePath, // Use the path where we just wrote the file
+                    showMenu: true,
+                    success: function (res) {
+                      console.log('打开文档成功')
+                    },
+                    fail: (error) => {
+                      reject(new Error(`打开文档失败: ${error.errMsg}`))
+                    },
+                  })
+                  resolve(filePath) // Resolve with the saved file path
+                },
+                fail: (error) => {
+                  reject(new Error(`写入文件失败: ${error.errMsg}`))
+                },
+              })
+            })
+            .catch((error) => {
+              reject(new Error(`下载失败: ${error.errMsg || error.message}`))
+            })
           // #endif
         })
       })

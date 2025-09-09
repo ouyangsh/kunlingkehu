@@ -1,4 +1,5 @@
 import { CustomRequestOptions } from '@/interceptors/request'
+import { autoLogin } from '@/utils/autoLogin'
 
 export const http = <T>(options: CustomRequestOptions) => {
   // 1. 返回 Promise 对象
@@ -10,12 +11,13 @@ export const http = <T>(options: CustomRequestOptions) => {
       responseType: 'json',
       // #endif
       // 响应成功
-      success(res) {
+      async success(res) {
         // 状态码 2xx，参考 axios 的设计
-        if (res.statusCode >= 200 && res.statusCode < 300) {
+        if (res.data.code >= 200 && res.data.code < 300) {
           // 2.1 提取核心数据 res.data
           resolve(res.data as IResData<T>)
-        } else if (res.statusCode === 401) {
+        } else if (res.data.code === 401) {
+          await autoLogin()
           // 401错误  -> 清理用户信息，跳转到登录页
           // userStore.clearUserInfo()
           // uni.navigateTo({ url: '/pages/login/login' })

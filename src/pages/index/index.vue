@@ -65,9 +65,10 @@ import dibu from './dibu.vue'
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
 import FunctionGrid from '@/pages/wendang/components/function-grid.vue'
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { http } from '@/utils/http'
 import { downloadAttachmentAPI, fileUpload } from '@/service/foo'
+import { useUserStore } from '@/store'
 const { footerHeight } = useLayout()
 const loopData0 = ref([
   {
@@ -331,7 +332,6 @@ const navigateToAllDocs = () => {
 const fetchData = async () => {
   try {
     const res = await http({ url: '/tscc/attachment-directory/last', method: 'POST' })
-    console.log(res)
 
     if (res.code === 200) {
       folderList.value = res.data.dirs.map((dir) => ({
@@ -342,7 +342,6 @@ const fetchData = async () => {
         count: dir.fileCount,
         selected: false,
       }))
-      console.log(fileList.value)
 
       fileList.value = res.data.files.map((file) => {
         return {
@@ -354,7 +353,6 @@ const fetchData = async () => {
         }
       })
     }
-    console.log(fileList.value)
   } catch (error) {
     console.error('获取数据失败', error)
     uni.showToast({
@@ -365,10 +363,22 @@ const fetchData = async () => {
 }
 
 onMounted(() => {
-  setTimeout(() => {
+  if (userStore.isLogined) {
     fetchData()
-  }, 1000)
+  }
 })
+
+const userStore = useUserStore()
+
+watch(
+  () => userStore.isLogined,
+  (newVal, oldVal) => {
+    if (newVal === true && oldVal === false) {
+      fetchData()
+    }
+  },
+  { immediate: false }, // 不在组件初始化时立即执行，只在变化时执行
+)
 </script>
 <style lang="css" scoped>
 @import '../../static/common/common.css';

@@ -153,16 +153,13 @@ const toggleSelectFolder = async (folder) => {
   // if (data && data.byteLength > 0) {
   //   const fs = uni.getFileSystemManager()
   //   const filePath = `${uni.env.USER_DATA_PATH}/downloaded_file.pdf` // 假设文件名为 downloaded_file.pdf
-
   //   try {
   //     const base64 = uni.arrayBufferToBase64(data) // 将 ArrayBuffer 转换为 Base64
   //     fs.writeFileSync(filePath, base64, 'base64')
-
   //     uni.showToast({
   //       title: '文件已保存到本地',
   //       icon: 'success',
   //     })
-
   //     uni.openDocument({
   //       filePath,
   //       showMenu: true,
@@ -368,7 +365,9 @@ const fetchData = async () => {
 }
 
 onMounted(() => {
-  fetchData()
+  setTimeout(() => {
+    fetchData()
+  }, 1000)
 })
 </script>
 <style lang="css" scoped>

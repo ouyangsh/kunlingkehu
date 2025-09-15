@@ -32,6 +32,7 @@
         </div>
       </div>
       <div class="h100rpx"></div>
+      <!-- 原有的模板数据 -->
       <div
         v-for="(items, category) in itemTemplates"
         :key="category"
@@ -50,6 +51,7 @@
               <input
                 class="w320rpx mr10rpx rounded-8rpx h60rpx bg-#F4F6FA pl-2"
                 type="text"
+                :value="analysisDataMap[item] || ''"
                 :placeholder="'请输入' + item"
               />
               <div
@@ -259,6 +261,12 @@ const pageslength = computed(() => getCurrentPages().length)
 // 接口获取的单据项模板数据
 const itemTemplates = ref({})
 
+// 存储从筛查页面传递过来的数据
+const analysisData = ref([])
+
+// 创建一个映射对象，方便根据key查找value
+const analysisDataMap = ref({})
+
 // 导入单据弹窗相关状态
 const showImportModal = ref(false)
 const selectedTemplate = ref(0) // 选择的模板索引
@@ -353,6 +361,21 @@ const selectCategory = (index) => {
   selectedCategory.value = index
 }
 
+// 处理显示值，如果是JSON字符串则解析并显示name
+const getDisplayValue = (value) => {
+  if (!value) return ''
+  
+  if (typeof value === 'string' && value.startsWith('{') && value.endsWith('}')) {
+    try {
+      const parsed = JSON.parse(value)
+      return parsed.name || value
+    } catch (e) {
+      return value
+    }
+  }
+  return String(value)
+}
+
 const takePhoto = () => {
   // 显示选择图片的选项
   uni.showActionSheet({
@@ -444,6 +467,55 @@ const fetchTemplateOptions = async () => {
 onMounted(() => {
   const systemInfo = uni.getSystemInfoSync()
   statusBarHeight.value = systemInfo.statusBarHeight
+  
+  // 获取从筛查页面传递的 analysisElement 数据
+  const analysisElement = uni.getStorageSync('analysisElement')
+  if (analysisElement) {
+    console.log('获取到的 analysisElement 数据：', analysisElement)
+    console.log('数据类型：', typeof analysisElement)
+    
+    let parsedData = analysisElement
+    
+    // 如果是字符串，尝试解析为JSON
+    if (typeof analysisElement === 'string') {
+      try {
+        parsedData = JSON.parse(analysisElement)
+        console.log('解析后的数据：', parsedData)
+        console.log('解析后是否为数组：', Array.isArray(parsedData))
+      } catch (e) {
+        console.error('JSON解析失败：', e)
+        parsedData = []
+      }
+    }
+    
+    // 确保数据是数组格式
+    if (Array.isArray(parsedData)) {
+      analysisData.value = parsedData
+      
+      // 创建key-value映射对象
+      const dataMap = {}
+      parsedData.forEach(item => {
+        if (item.key && item.value !== undefined) {
+          dataMap[item.key] = getDisplayValue(item.value)
+        }
+      })
+      analysisDataMap.value = dataMap
+      
+      console.log('成功设置 analysisData，长度：', parsedData.length)
+      console.log('数据映射：', dataMap)
+    } else {
+      console.log('数据格式不正确，期望数组格式')
+      analysisData.value = []
+      analysisDataMap.value = {}
+    }
+    
+    // 使用完后清除缓存
+    uni.removeStorageSync('analysisElement')
+  } else {
+    console.log('未获取到 analysisElement 数据')
+    analysisData.value = []
+  }
+  
   fetchTemplateOptions()
   fetchItemTemplates()
 })

@@ -286,8 +286,10 @@ const tiaozhuan = () => {
 }
 
 const jieguo = (item) => {
+  // 将 analysisElement 数据存储到本地缓存
+  uni.setStorageSync('analysisElement', item.analysisElement || {})
   uni.navigateTo({
-    url: `/pages-sub/shaichajieguo/index?id=${item.id}`,
+    url: '/pages-sub/shougongshaicha/index',
   })
 }
 

@@ -37,6 +37,160 @@
       :scroll-with-animation="true"
     >
       <div id="section-0" class="px-30rpx mb-3 mt13">
+        <!-- 查询信息 -->
+        <div v-if="reportDetail" class="bg-white rounded-16rpx p-30rpx mb-30rpx">
+          <div class="space-y-16rpx text-26rpx">
+            <div class="flex">
+              <span class="text-#777777 w-160rpx">查询机构：</span>
+              <span class="text-#333333">{{ reportDetail.tenantName || 'XXX有限公司' }}</span>
+            </div>
+            <div class="flex">
+              <span class="text-#777777 w-160rpx">查询账号：</span>
+              <span class="text-#333333">{{ reportDetail.loginUserName || 'admin' }}</span>
+            </div>
+            <div class="flex">
+              <span class="text-#777777 w-160rpx">查询时间：</span>
+              <span class="text-#333333">{{ reportDetail.riskDate || '2025-06-10 17:28:43' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 查询对象基本信息 -->
+        <div v-if="reportDetail && reportDetail.basicInfo" class="mb-30rpx">
+          <div class="text-32rpx mb-20rpx">查询对象基本信息</div>
+          <div class="bg-white rounded-16rpx p-30rpx">
+            <div class="space-y-16rpx text-26rpx">
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">单据文件名称：</span>
+                <span class="text-#333333">{{ reportDetail.basicInfo.fileName || '暂无' }}</span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">单据类型：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.basicInfo.documentTemplateName || '暂无' }}
+                </span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">客户名称：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.basicInfo.customerName || '暂无' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 查询对象提取信息 -->
+        <div v-if="reportDetail && reportDetail.retrieveInfo" class="mb-30rpx">
+          <div class="text-32rpx mb-20rpx">查询对象提取信息</div>
+          
+          <!-- 单据信息段 -->
+          <div class="bg-white rounded-16rpx p-30rpx mb-20rpx">
+            <div class="text-28rpx font-600 mb-20rpx">单据信息段</div>
+            <div class="space-y-16rpx text-26rpx">
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">海关编号：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.customsCode || '暂无' }}</span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">申报日期：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.declareDate || '暂无' }}</span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">提运单号：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.billOfLadingNo || '暂无' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 交易方信息段 -->
+          <div class="bg-white rounded-16rpx p-30rpx mb-20rpx">
+            <div class="text-28rpx font-600 mb-20rpx">交易方信息段</div>
+            <div class="space-y-16rpx text-26rpx">
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">境内发货人：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.domesticConsignor || '暂无' }}</span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">境外收货人：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.overseasConsignee || '暂无' }}</span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">生产销售单位：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.productionSalesCompany || '暂无' }}</span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">申报单位：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.declareCompany || '暂无' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 物流信息段 -->
+          <div class="bg-white rounded-16rpx p-30rpx mb-20rpx">
+            <div class="text-28rpx font-600 mb-20rpx">物流信息段</div>
+            <div class="space-y-16rpx text-26rpx">
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">运输方式：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.transportMode || '暂无' }}</span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">运输工具名称：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.transportToolName || '暂无' }}</span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">航次号：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.voyageNo || '暂无' }}</span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">集装箱号：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.containerNo || '暂无' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 位置信息段 -->
+          <div class="bg-white rounded-16rpx p-30rpx mb-20rpx">
+            <div class="text-28rpx font-600 mb-20rpx">位置信息段</div>
+            <div class="space-y-16rpx text-26rpx">
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">境内发货人城市：</span>
+                <span class="text-#333333">{{ reportDetail.retrieveInfo.senderCity || '暂无' }}</span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">离境口岸：</span>
+                <span class="text-#333333">
+                  {{ getDeparturePortName() || '暂无' }}
+                </span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">贸易国(地区)：</span>
+                <span class="text-#333333">
+                  {{ getTradeCountryName() || '暂无' }}
+                </span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">指运港：</span>
+                <span class="text-#333333">
+                  {{ getDestinationPortName() || '暂无' }}
+                </span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">原产国(地区)：</span>
+                <span class="text-#333333">
+                  {{ getOriginCountryName() || '暂无' }}
+                </span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777 w-160rpx">最终目的国(地区)：</span>
+                <span class="text-#333333">
+                  {{ getFinalDestinationCountryName() || '暂无' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="text-32rpx mt40rpx">商品信息</div>
         <div
           class="w92rpx h60rpx my30rpx bg-#DDE6F9 text-#2866EB flex justify-center items-center rounded-30rpx"
@@ -325,7 +479,11 @@
   </wd-popup>
 </template>
 <script setup lang="js">
+import { ref, onMounted, computed } from 'vue'
+
 const statusBarHeight = ref(0)
+// 报告详情数据
+const reportDetail = ref(null)
 const activeTab = ref(0)
 const datetimePickerRef = ref()
 const dateRange = ref(['', Date.now()]) // For v-model
@@ -621,7 +779,99 @@ function formatDate(timestamp) {
 onMounted(() => {
   const systemInfo = uni.getSystemInfoSync()
   statusBarHeight.value = systemInfo.statusBarHeight
+
+  // 获取报告详情数据
+  const reportData = uni.getStorageSync('reportDetail')
+  if (reportData) {
+    reportDetail.value = reportData
+    console.log('获取到报告详情数据:', reportData)
+
+    // 更新页面数据
+    updatePageData()
+
+    // 清除存储的数据
+    uni.removeStorageSync('reportDetail')
+  } else {
+    console.log('没有找到报告详情数据')
+  }
 })
+
+// 更新页面数据的函数
+const updatePageData = () => {
+  if (!reportDetail.value) return
+
+  // 更新商品信息
+  if (reportDetail.value.commodityList) {
+    goodsInfo.value = reportDetail.value.commodityList.map((item, index) => ({
+      checked: index === 0,
+      name: item.itemValue || '',
+      category: item.itemCategoryDes || '',
+      code: item.itemCode || '',
+      description: item.itemDesCn || item.itemDes || '',
+      publishCountry: item.countryName || '',
+      controlList: item.keywordShortNameCn || '',
+      searchCode: item.searchWordsCn || '',
+      customsCode: item.taricCode || '',
+      controlCountry: item.restrictedRegionName || '',
+      tariffCode: item.taricCode || '',
+      chemicalCode: item.casCode || '',
+      supervisionGroup: item.matchScore || '',
+    }))
+  }
+
+  // 更新交易方信息 - 使用trades数组
+  if (reportDetail.value.trades && reportDetail.value.trades.length > 0) {
+    // 从trades数组中提取交易方信息
+    const tradeMap = {}
+    reportDetail.value.trades.forEach((trade) => {
+      tradeMap[trade.key] = trade.value
+    })
+
+    traderInfo.value = {
+      domesticCountry: tradeMap['境内发货人'] || '',
+      locationType: tradeMap['境外收货人'] || '',
+      entityName: tradeMap['申报单位'] || '',
+      entityAlias: reportDetail.value.counterpartyList?.[0]?.matchScore || '非敏感名单',
+      domesticProvince: '',
+      cityName: '',
+      unCode: '',
+      iataCode: '',
+      icaoCode: '',
+    }
+  }
+
+  // 更新位置信息
+  if (reportDetail.value.locationList && reportDetail.value.locationList.length > 0) {
+    const location = reportDetail.value.locationList[0]
+    locationInfo.value = {
+      country: location.countryName || '',
+      province: location.province || '',
+      city: location.city || '',
+      address: location.locationName || location.itemValue || '',
+      postalCode: location.caccPortCode || '',
+      longitude: '',
+      latitude: '',
+    }
+  }
+
+  // 更新船舶信息
+  if (reportDetail.value.logisticsList && reportDetail.value.logisticsList.length > 0) {
+    const ship = reportDetail.value.logisticsList[0]
+    shipInfo.value = {
+      name: ship.shipname || ship.itemValue || '',
+      buildYear: ship.builddate || '',
+      type: ship.shiptype || '',
+      imoNumber: ship.imo || '',
+      permit: ship.callsign || '',
+      proposal: ship.mmsi || '',
+      isControlled: ship.isSan ? '是' : '否',
+      sanctionTime: ship.sanDate || '',
+      sanctionCountry: ship.sanPublishCountry || '',
+      sanctionReason: ship.sanReason || '',
+      typeList: ship.restrictionNames || '',
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .pb-safe {

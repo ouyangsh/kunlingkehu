@@ -46,13 +46,25 @@
     >
       <div id="section-0" class="px-30rpx mb-3">
         <div class="text-32rpx pt25rpx">商品信息</div>
-        <div
-          class="w92rpx h60rpx my30rpx bg-#DDE6F9 text-#2866EB flex justify-center items-center rounded-30rpx"
-        >
-          欧盟
+        <div class="flex items-center flex-wrap mb-3">
+          <div
+            v-for="country in uniqueCountries"
+            :key="country.code"
+            @click="filterCommodityByCountry(country.code + '#' + country.name)"
+            class="my-10rpx bg-#DDE6F9 text-#2866EB rounded-30rpx mr-20rpx px-20rpx flex items-center cursor-pointer hover:bg-#C5D4F7 transition-colors"
+          >
+            {{ country.name }}
+          </div>
         </div>
         <!-- 商品信息 -->
         <div class="space-y-[20rpx] mb-60rpx">
+          <!-- 暂无数据提示 -->
+          <div
+            v-if="!goodsInfo || goodsInfo.length === 0"
+            class="bg-white rounded-16rpx p-30rpx text-center text-#999"
+          >
+            暂无
+          </div>
           <!-- 商品信息卡片 -->
           <div
             v-for="(item, index) in goodsInfo"
@@ -379,6 +391,8 @@
   </buju>
 </template>
 <script setup lang="js">
+import { http } from '@/utils/http'
+
 const statusBarHeight = ref(0)
 const activeTab = ref(0)
 const datetimePickerRef = ref()
@@ -587,22 +601,51 @@ const countryInfo = ref({
 })
 
 // 查看筛查报告
-const viewReport = () => {
-  uni.showToast({
-    title: '正在生成报告...',
-    icon: 'loading',
-    duration: 2000,
-  })
-
-  setTimeout(() => {
-    uni.showToast({
-      title: '报告生成完成',
-      icon: 'success',
+const viewReport = async () => {
+  try {
+    uni.showLoading({
+      title: '正在生成报告...',
     })
-  }, 2000)
-  uni.navigateTo({
-    url: '/pages-sub/shaichaxiangqing/index',
-  })
+
+    const response = await http({
+      url: '/tscc/document/query-detail',
+      method: 'POST',
+      data: {
+        id: searchResultData.value?.documentId || '',
+      },
+    })
+
+    uni.hideLoading()
+
+    if (response.code === 200) {
+      uni.showToast({
+        title: '报告生成完成',
+        icon: 'success',
+      })
+
+      // 可以在这里处理返回的报告数据
+      console.log('报告详情:', response.data)
+
+      // 将数据存储到本地，供详情页面使用
+      uni.setStorageSync('reportDetail', response.data)
+
+      uni.navigateTo({
+        url: '/pages-sub/shaichaxiangqing/index',
+      })
+    } else {
+      uni.showToast({
+        title: '获取报告失败',
+        icon: 'error',
+      })
+    }
+  } catch (error) {
+    uni.hideLoading()
+    console.error('查看报告失败:', error)
+    uni.showToast({
+      title: '网络错误，请重试',
+      icon: 'error',
+    })
+  }
 }
 
 // 原有的方法保留
@@ -627,6 +670,64 @@ const jieguo = () => {
   })
 }
 
+// 按国家筛选商品
+const filterCommodityByCountry = async (countryString) => {
+  try {
+    // 提取国家编码（#前面的部分）
+    const countryCode = countryString.split('#')[0]
+
+    console.log('筛选国家:', countryString, '国家编码:', countryCode)
+
+    // 显示加载提示
+    uni.showLoading({
+      title: '筛选中...',
+    })
+
+    const response = await http({
+      url: '/tscc/document/filter-commodity',
+      method: 'POST',
+      data: {
+        documentId: searchResultData.value?.documentId || '',
+        countryCode3: [countryCode],
+      },
+    })
+
+    uni.hideLoading()
+
+    if (response.code === 200) {
+      console.log('筛选结果:', response.data)
+
+      // 更新商品信息
+      if (response.data.commodityList) {
+        goodsInfo.value = response.data.commodityList.map((item) => ({
+          name: item.itemValue || '',
+          category: item.itemCategoryDes || '',
+          code: item.itemCode || '',
+          hsCode: item.taricCode || '',
+          tariffCode: item.taricCode || '',
+          chemicalCode: item.casCode || '',
+          supervisionGroup: item.matchScore || '',
+          checked: false,
+        }))
+      }
+
+      uni.showToast({
+        title: '筛选完成',
+        icon: 'success',
+      })
+    } else {
+      throw new Error('筛选失败')
+    }
+  } catch (error) {
+    uni.hideLoading()
+    console.error('筛选商品失败:', error)
+    uni.showToast({
+      title: '筛选失败，请重试',
+      icon: 'error',
+    })
+  }
+}
+
 function openPicker() {
   if (datetimePickerRef.value) {
     datetimePickerRef.value.open()
@@ -646,6 +747,26 @@ function formatDate(timestamp) {
 const searchResultData = ref(null)
 const basicInfo = ref({})
 const retrieveInfo = ref({})
+
+// 计算唯一的国家列表
+const uniqueCountries = computed(() => {
+  if (!searchResultData.value?.commodityList || searchResultData.value.commodityList.length === 0) {
+    return []
+  }
+
+  const countryMap = new Map()
+  searchResultData.value.commodityList.forEach((item) => {
+    if (item.countryName && item.restrictedRegionName) {
+      // 使用 restrictedRegionName 作为 code，countryName 作为显示名称
+      countryMap.set(item.restrictedRegionName, {
+        code: item.restrictedRegionName,
+        name: item.countryName,
+      })
+    }
+  })
+
+  return Array.from(countryMap.values())
+})
 
 // 解析JSON字符串的辅助函数
 const parseJsonValue = (value) => {

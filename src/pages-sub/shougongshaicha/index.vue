@@ -34,7 +34,7 @@
       <div class="h100rpx"></div>
       <!-- 原有的模板数据 -->
       <div
-        v-for="(items, category) in itemTemplates"
+        v-for="(items, category) in displayItems"
         :key="category"
         class="w-690rpx bg-#fff rounded-16rpx m-30rpx p30rpx box-border"
       >
@@ -42,12 +42,18 @@
           <div class="mb-20rpx">{{ category }}</div>
           <div v-for="(item, index) in items" :key="index">
             <div class="flex mb-10rpx justify-start items-center">
-              <div
-                class="w220rpx mr10rpx px-2 box-border rounded-8rpx h60rpx bg-#F4F6FA flex justify-between items-center color-[#333333]"
-              >
-                <div>{{ item }}</div>
-                <i class="font_family icon-trangle-down text-20rpx"></i>
-              </div>
+              <view class="w220rpx mr10rpx relative">
+                <picker 
+                  :value="getSelectedIndex(category, item)"
+                  :range="getPickerOptions(category)"
+                  @change="onPickerChange($event, category, item, index)"
+                >
+                  <view class="px-2 box-border rounded-8rpx h60rpx bg-#F4F6FA flex justify-between items-center color-[#333333]">
+                    <view class="text-24rpx">{{ getSelectedValue(category, item) || item }}</view>
+                    <i class="font_family icon-trangle-down text-20rpx"></i>
+                  </view>
+                </picker>
+              </view>
               <input
                 class="w320rpx mr10rpx rounded-8rpx h60rpx bg-#F4F6FA pl-2"
                 type="text"
@@ -267,6 +273,37 @@ const analysisData = ref([])
 // 创建一个映射对象，方便根据key查找value
 const analysisDataMap = ref({})
 
+// 存储选中的下拉框值
+const selectedValues = ref({})
+
+// 计算需要显示的表单项
+const displayItems = computed(() => {
+  const result = {}
+  
+  // 如果有筛查数据，显示所有有数据的项
+  if (Object.keys(analysisDataMap.value).length > 0) {
+    Object.keys(itemTemplates.value).forEach(category => {
+      const categoryItems = itemTemplates.value[category]
+      const matchedItems = categoryItems.filter(item => analysisDataMap.value[item])
+      
+      if (matchedItems.length > 0) {
+        result[category] = matchedItems
+      }
+    })
+  } else {
+    // 如果没有筛查数据，每个类别显示两条
+    Object.keys(itemTemplates.value).forEach(category => {
+      const categoryItems = itemTemplates.value[category]
+      if (categoryItems && categoryItems.length > 0) {
+        // 每个类别显示前两条
+        result[category] = categoryItems.slice(0, 2)
+      }
+    })
+  }
+  
+  return result
+})
+
 // 导入单据弹窗相关状态
 const showImportModal = ref(false)
 const selectedTemplate = ref(0) // 选择的模板索引
@@ -374,6 +411,41 @@ const getDisplayValue = (value) => {
     }
   }
   return String(value)
+}
+
+// 获取下拉框选项
+const getPickerOptions = (category) => {
+  if (!itemTemplates.value[category]) return []
+  return itemTemplates.value[category]
+}
+
+// 获取选中的索引
+const getSelectedIndex = (category, item) => {
+  const key = `${category}_${item}`
+  const selectedValue = selectedValues.value[key]
+  if (!selectedValue) return 0
+  
+  const options = getPickerOptions(category)
+  const index = options.findIndex(option => option === selectedValue)
+  return index >= 0 ? index : 0
+}
+
+// 获取选中的值
+const getSelectedValue = (category, item) => {
+  const key = `${category}_${item}`
+  return selectedValues.value[key] || item
+}
+
+// 下拉框选择事件
+const onPickerChange = (event, category, item, index) => {
+  const selectedIndex = event.detail.value
+  const options = getPickerOptions(category)
+  const selectedOption = options[selectedIndex]
+  
+  const key = `${category}_${item}`
+  selectedValues.value[key] = selectedOption
+  
+  console.log('选择了：', selectedOption, '分类：', category, '项目：', item)
 }
 
 const takePhoto = () => {

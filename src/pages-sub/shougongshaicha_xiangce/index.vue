@@ -27,12 +27,32 @@
     <!-- 主要内容区域 -->
     <div class="h-full p-20rpx">
       <!-- 文档预览区域 -->
-      <div class="w-full h-full rounded-16rpx p-20rpx flex justify-center items-center">
+      <div
+        v-if="!isCropping"
+        class="w-full h-full rounded-16rpx p-20rpx flex justify-center items-center relative"
+      >
         <image
           :src="currentDisplayImage"
           mode="aspectFit"
           class="w-full h-full"
-          @click="previewFullScreen"
+          :style="{ transform: `rotate(${rotationAngle}deg)` }"
+          @click="previewFullScreen()"
+          @load="onImageLoad"
+        />
+      </div>
+
+      <!-- 裁剪区域 -->
+      <div v-else class="w-full h-full">
+        <qf-image-cropper
+          ref="imageCropper"
+          :src="currentDisplayImage"
+          :width="400"
+          :height="400"
+          :showBorder="true"
+          :showGrid="true"
+          :showAngle="true"
+          :choosable="true"
+          @crop="onCropComplete"
         />
       </div>
     </div>
@@ -42,19 +62,30 @@
       <div class="bg-white pt-20rpx pb-30rpx pb-safe">
         <!-- 缩略图选择区域 -->
 
-
         <!-- 底部操作按钮区域 -->
         <div class="flex justify-between items-center px-30rpx">
-          <div class="flex gap-[80rpx] ml2">
+          <!-- 裁剪模式下的操作按钮 -->
+          <div v-if="isCropping" class="flex justify-between items-center w-full">
+            <view @click="cancelCrop" class="flex flex-col items-center">
+              <i class="font_family icon-icon-quxiao !text-45rpx text-gray-600"></i>
+              <text class="text-18rpx text-gray-600">取消</text>
+            </view>
+
+            <view @click="confirmCrop" class="flex flex-col items-center">
+              <i class="font_family icon-icon-queding !text-45rpx text-blue-600"></i>
+              <text class="text-18rpx text-blue-600">确认裁剪</text>
+            </view>
+          </div>
+
+          <!-- 正常模式下的操作按钮 -->
+          <div v-else class="flex gap-[80rpx] ml2">
             <view @click="retakePhoto" class="flex flex-col items-center">
               <i class="font_family icon-icon-zhongpai !text-45rpx text-gray-600"></i>
-
               <text class="text-18rpx text-gray-600">重拍这张</text>
             </view>
 
             <view @click="rotateImage" class="flex flex-col items-center">
               <i class="font_family icon-icon-zuozhuan !text-45rpx text-gray-600"></i>
-
               <text class="text-18rpx text-gray-600">左转</text>
             </view>
 
@@ -71,6 +102,7 @@
 
           <!-- 确认按钮 -->
           <view
+            v-if="!isCropping"
             @click="confirmImage"
             class="w-122rpx h-60rpx bg-blue-600 rounded-8rpx flex justify-center items-center"
           >
@@ -83,6 +115,7 @@
 </template>
 <script setup lang="js">
 import { correctDocumentAPI } from '@/service/foo'
+import QfImageCropper from '@/uni_modules/qf-image-cropper/components/qf-image-cropper/qf-image-cropper.vue'
 
 const statusBarHeight = ref(0)
 const pageslength = computed(() => getCurrentPages().length)
@@ -104,6 +137,11 @@ const selectedImageType = ref(1) // 默认选择增强文本解析
 const enhancedImagePath = ref('')
 const fileId = ref('') // 存储文件ID
 
+// 裁剪相关状态
+const isCropping = ref(false) // 是否处于裁剪模式
+const imageCropper = ref(null) // 裁剪组件引用
+const rotationAngle = ref(0) // 图片旋转角度
+
 // 当前显示的图片
 const currentDisplayImage = computed(() => {
   return selectedImageType.value === 0 ? previewImagePath.value : enhancedImagePath.value
@@ -121,7 +159,7 @@ const getImagePath = () => {
     enhancedImagePath.value = previewImagePath.value
     console.log('接收到图片路径：', previewImagePath.value)
   }
-  
+
   if (options.fileId) {
     fileId.value = decodeURIComponent(options.fileId)
     console.log('接收到文件ID：', fileId.value)
@@ -152,6 +190,9 @@ const retakePhoto = () => {
         sourceType,
         success: (result) => {
           previewImagePath.value = result.tempFilePaths[0]
+          enhancedImagePath.value = result.tempFilePaths[0]
+          // 重置旋转角度
+          rotationAngle.value = 0
           uni.showToast({
             title: '图片已更新',
             icon: 'success',
@@ -162,20 +203,61 @@ const retakePhoto = () => {
   })
 }
 
-// 旋转图片
+// 旋转图片（左旋90度）
 const rotateImage = () => {
+  rotationAngle.value = (rotationAngle.value - 90) % 360
   uni.showToast({
-    title: '图片已旋转',
+    title: '图片已左转90度',
     icon: 'success',
   })
 }
 
-// 裁剪图片
+// 图片加载完成事件
+const onImageLoad = (e) => {
+  // 获取图片实际显示尺寸（如果需要的话）
+  console.log('图片加载完成', e.detail)
+}
+
+// 进入裁剪模式
 const cropImage = () => {
+  isCropping.value = true
   uni.showToast({
     title: '进入裁剪模式',
     icon: 'none',
   })
+}
+
+// 取消裁剪
+const cancelCrop = () => {
+  isCropping.value = false
+  uni.showToast({
+    title: '已取消裁剪',
+    icon: 'none',
+  })
+}
+
+// 裁剪完成回调
+const onCropComplete = (e) => {
+  console.log('裁剪完成:', e)
+  // 更新图片显示为裁剪后的图片
+  enhancedImagePath.value = e.tempFilePath
+  selectedImageType.value = 1
+
+  // 退出裁剪模式
+  isCropping.value = false
+
+  uni.showToast({
+    title: '裁剪完成',
+    icon: 'success',
+  })
+}
+
+// 确认裁剪
+const confirmCrop = () => {
+  // 触发裁剪组件的裁剪方法
+  if (imageCropper.value) {
+    imageCropper.value.crop()
+  }
 }
 
 // 矫正图片
@@ -194,13 +276,13 @@ const enhanceImage = async () => {
 
   try {
     const result = await correctDocumentAPI(fileId.value)
-    
+
     if (result.code === 200 && result.data && result.data.length > 0) {
       // 使用返回的base64图片数据替换增强图片
       enhancedImagePath.value = result.data[0]
       // 自动切换到增强图片显示
       selectedImageType.value = 1
-      
+
       uni.showToast({
         title: '矫正完成',
         icon: 'success',
@@ -255,4 +337,5 @@ onMounted(() => {
 .pb-safe {
   padding-bottom: env(safe-area-inset-bottom);
 }
+/* 保留必要的样式 */
 </style>

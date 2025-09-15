@@ -81,7 +81,7 @@
           <div v-else class="flex gap-[80rpx] ml2">
             <view @click="retakePhoto" class="flex flex-col items-center">
               <i class="font_family icon-icon-zhongpai !text-45rpx text-gray-600"></i>
-              <text class="text-18rpx text-gray-600">重拍这张</text>
+              <text class="text-18rpx text-gray-600">重拍</text>
             </view>
 
             <view @click="rotateImage" class="flex flex-col items-center">
@@ -114,7 +114,7 @@
   </buju>
 </template>
 <script setup lang="js">
-import { correctDocumentAPI } from '@/service/foo'
+import { correctDocumentAPI, fileUpload } from '@/service/foo'
 import QfImageCropper from '@/uni_modules/qf-image-cropper/components/qf-image-cropper/qf-image-cropper.vue'
 
 const statusBarHeight = ref(0)
@@ -173,9 +173,25 @@ const selectImageType = (type) => {
 
 // 全屏预览
 const previewFullScreen = () => {
+  const imageUrl = currentDisplayImage.value
+  if (!imageUrl) {
+    uni.showToast({
+      title: '暂无图片可预览',
+      icon: 'none',
+    })
+    return
+  }
+
   uni.previewImage({
-    urls: [previewImagePath.value],
-    current: previewImagePath.value,
+    urls: [imageUrl],
+    current: imageUrl,
+    fail: (error) => {
+      console.error('预览失败：', error)
+      uni.showToast({
+        title: '预览失败',
+        icon: 'error',
+      })
+    },
   })
 }
 
@@ -185,20 +201,151 @@ const retakePhoto = () => {
     itemList: ['拍照', '从相册选择'],
     success: (res) => {
       const sourceType = res.tapIndex === 0 ? ['camera'] : ['album']
+
+      // 显示加载提示
+      uni.showLoading({
+        title: res.tapIndex === 0 ? '正在打开相机...' : '正在打开相册...',
+        mask: true,
+      })
+
       uni.chooseImage({
         count: 1,
         sourceType,
-        success: (result) => {
-          previewImagePath.value = result.tempFilePaths[0]
-          enhancedImagePath.value = result.tempFilePaths[0]
-          // 重置旋转角度
-          rotationAngle.value = 0
+        sizeType: ['original', 'compressed'], // 支持原图和压缩图
+        success: async (result) => {
+          try {
+            // 验证图片是否有效
+            if (!result.tempFilePaths || result.tempFilePaths.length === 0) {
+              throw new Error('未选择有效图片')
+            }
+
+            const newImagePath = result.tempFilePaths[0]
+
+            // 更新图片路径
+            previewImagePath.value = newImagePath
+            enhancedImagePath.value = newImagePath
+
+            // 重置所有状态
+            rotationAngle.value = 0
+            selectedImageType.value = 0 // 重置为原图显示
+            isCropping.value = false // 退出裁剪模式
+
+            // 显示上传提示
+            uni.showLoading({
+              title: '正在上传图片...',
+              mask: true,
+            })
+
+            // 调用上传接口获取新图片ID
+            console.log('开始上传图片，路径：', newImagePath)
+
+            const uploadResult = await fileUpload({
+              filePath: newImagePath,
+              name: 'file',
+              formData: {
+                // 可以添加其他需要的参数
+              },
+            })
+
+            console.log('上传原始结果：', uploadResult)
+
+            if (uploadResult && uploadResult.data) {
+              let responseData
+              try {
+                responseData =
+                  typeof uploadResult.data === 'string'
+                    ? JSON.parse(uploadResult.data)
+                    : uploadResult.data
+                console.log('解析后的响应数据：', responseData)
+              } catch (parseError) {
+                console.error('解析上传响应失败：', parseError)
+                console.error('原始数据：', uploadResult.data)
+                throw new Error('响应数据格式错误')
+              }
+
+              console.log('检查响应码：', responseData.code)
+              console.log('检查数据：', responseData.data)
+
+              // 检查两种可能的响应格式
+              if (responseData.code === 200) {
+                // 标准格式：{code: 200, data: {id: "xxx"}}
+                if (responseData.data && responseData.data.id) {
+                  fileId.value = responseData.data.id
+                  console.log('重拍上传成功，新文件ID：', fileId.value)
+
+                  uni.hideLoading()
+                  uni.showToast({
+                    title: '图片已更新',
+                    icon: 'success',
+                    duration: 1500,
+                  })
+                } else {
+                  console.error('数据结构异常：', responseData.data)
+                  throw new Error('上传成功但未返回文件ID')
+                }
+              } else if (responseData.id) {
+                // 直接返回数据格式：{id: "xxx", fileName: "xxx", ...}
+                fileId.value = responseData.id
+                console.log('重拍上传成功（直接格式），新文件ID：', fileId.value)
+
+                uni.hideLoading()
+                uni.showToast({
+                  title: '图片已更新',
+                  icon: 'success',
+                  duration: 1500,
+                })
+              } else {
+                console.error('响应格式不匹配：', responseData)
+                throw new Error(responseData.msg || '上传失败')
+              }
+            } else {
+              console.error('上传结果异常：', uploadResult)
+              throw new Error('上传响应异常')
+            }
+
+            console.log('重拍成功，新图片路径：', newImagePath)
+          } catch (error) {
+            uni.hideLoading()
+            console.error('重拍处理失败：', error)
+
+            // 如果上传失败，清空文件ID
+            fileId.value = ''
+
+            uni.showToast({
+              title: error.message || '图片处理失败',
+              icon: 'error',
+            })
+          }
+        },
+        fail: (error) => {
+          uni.hideLoading()
+          console.error('重拍失败：', error)
+
+          // 根据不同错误类型给出不同提示
+          let errorMessage = '操作失败'
+          if (error.errMsg) {
+            if (error.errMsg.includes('cancel')) {
+              errorMessage = '已取消选择'
+            } else if (error.errMsg.includes('permission')) {
+              errorMessage = '请授权相机或相册权限'
+            } else if (error.errMsg.includes('camera')) {
+              errorMessage = '相机启动失败'
+            } else if (error.errMsg.includes('album')) {
+              errorMessage = '相册打开失败'
+            }
+          }
+
           uni.showToast({
-            title: '图片已更新',
-            icon: 'success',
+            title: errorMessage,
+            icon: 'none',
+            duration: 2000,
           })
         },
       })
+    },
+    fail: () => {
+      // 用户取消选择操作方式
+      console.log('用户取消选择操作方式')
     },
   })
 }
@@ -306,23 +453,87 @@ const enhanceImage = async () => {
 }
 
 // 确认图片
-const confirmImage = () => {
-  uni.showModal({
-    title: '确认',
-    content: '确定要使用这张图片吗？',
-    success: (res) => {
-      if (res.confirm) {
-        uni.showToast({
-          title: '图片处理完成',
-          icon: 'success',
-        })
+const confirmImage = async () => {
+  try {
+    // 获取当前显示的图片路径
+    const currentImagePath = currentDisplayImage.value
 
-        setTimeout(() => {
-          uni.navigateBack()
-        }, 1500)
+    if (!currentImagePath) {
+      uni.showToast({
+        title: '没有可确认的图片',
+        icon: 'error',
+      })
+      return
+    }
+
+    // 显示上传提示
+    uni.showLoading({
+      title: '正在上传图片...',
+      mask: true,
+    })
+
+    console.log('开始确认上传图片，路径：', currentImagePath)
+
+    // 调用上传接口
+    const uploadResult = await fileUpload({
+      filePath: currentImagePath,
+      name: 'file',
+      formData: {
+        // 可以添加其他需要的参数
+      },
+    })
+
+    console.log('确认上传原始结果：', uploadResult)
+
+    if (uploadResult && uploadResult.data) {
+      let responseData
+      try {
+        responseData =
+          typeof uploadResult.data === 'string' ? JSON.parse(uploadResult.data) : uploadResult.data
+        console.log('确认上传解析后的响应数据：', responseData)
+      } catch (parseError) {
+        console.error('解析确认上传响应失败：', parseError)
+        throw new Error('响应数据格式错误')
       }
-    },
-  })
+
+      // 检查两种可能的响应格式
+      if (responseData.code === 200) {
+        // 标准格式：{code: 200, data: {id: "xxx"}}
+        if (responseData.data && responseData.data.id) {
+          fileId.value = responseData.data.id
+          console.log('确认上传成功，文件ID：', fileId.value)
+        }
+      } else if (responseData.id) {
+        // 直接返回数据格式：{id: "xxx", fileName: "xxx", ...}
+        fileId.value = responseData.id
+        console.log('确认上传成功（直接格式），文件ID：', fileId.value)
+      } else {
+        throw new Error(responseData.msg || '上传失败')
+      }
+
+      uni.hideLoading()
+      uni.showToast({
+        title: '图片上传完成',
+        icon: 'success',
+        duration: 1500,
+      })
+
+      setTimeout(() => {
+        uni.navigateBack()
+      }, 1500)
+    } else {
+      throw new Error('上传响应异常')
+    }
+  } catch (error) {
+    uni.hideLoading()
+    console.error('确认上传失败：', error)
+
+    uni.showToast({
+      title: error.message || '上传失败',
+      icon: 'error',
+      duration: 2000,
+    })
+  }
 }
 
 onMounted(() => {

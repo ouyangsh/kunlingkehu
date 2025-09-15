@@ -90,12 +90,12 @@
       class="w-690rpx bg-#fff rounded-16rpx m-30rpx p-30rpx box-border"
     >
       <!-- ID和状态 -->
-      <div class="flex justify-between items-center mb-20rpx">
-        <div class="flex items-center">
+      <div class="flex justify-start items-center mb-20rpx">
+        <div class="flex items-center mr2">
           <text class="text-28rpx font-500 color-#333333">ID：{{ item.id }}</text>
         </div>
         <div
-          :class="item.status === 99 ? 'text-#10B981 bg-#D1FAE5' : 'text-#EF9913 bg-#FCEBD0'"
+          :class="item.status === 99 ? 'text-#37C3C8 bg-#D7F3F4' : 'text-#EF9913 bg-#FCEBD0'"
           class="px-16rpx py-8rpx text-22rpx rounded-8rpx"
         >
           {{ item.status === 99 ? '已归档' : '未归档' }}
@@ -121,7 +121,9 @@
       <!-- 国家信息 -->
       <div class="flex mb-16rpx">
         <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">国家信息：</text>
-        <text class="text-24rpx color-#333333 flex-1 break-all">{{ getCountryInfo(item.countryParam) }}</text>
+        <text class="text-24rpx color-#333333 flex-1 break-all">
+          {{ getCountryInfo(item.countryParam) }}
+        </text>
       </div>
 
       <!-- 船舶信息 -->

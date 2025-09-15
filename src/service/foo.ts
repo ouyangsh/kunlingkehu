@@ -144,3 +144,24 @@ export const correctDocumentAPI = (id: string) => {
     data: { id },
   })
 }
+
+/** 筛查列表查询 */
+export const getDocumentScreeningListAPI = (data: {
+  beginCreateTime?: string
+  endCreateTime?: string
+  status?: number
+  pageNum?: number
+  pageSize?: number
+  type?: number
+}) => {
+  return http<any>({
+    url: '/tscc/document/list',
+    method: 'POST',
+    data: {
+      type: 2, // 固定为 2
+      pageNum: 1,
+      pageSize: 20,
+      ...data,
+    },
+  })
+}

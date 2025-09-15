@@ -29,21 +29,21 @@
         <div class="bg-[D8B14A6B] flex">
           <div class="h-60rpx flex justify-center items-center mr-20rpx">状态：</div>
           <div
-            @click="indexa = 0"
+            @click="handleStatusChange(0)"
             :class="indexa === 0 ? 'bg-[#2563EB] text-[#ffffffff]' : 'bg-[#F4F6FA] '"
             class="h-60rpx flex rounded-1 justify-center mr-20rpx items-center px-2"
           >
             全部
           </div>
           <div
-            @click="indexa = 1"
+            @click="handleStatusChange(1)"
             :class="indexa === 1 ? 'bg-[#2563EB] text-[#ffffffff]' : 'bg-[#F4F6FA] '"
             class="h-60rpx rounded-1 flex justify-center mr-20rpx items-center px-2"
           >
             已归档
           </div>
           <div
-            @click="indexa = 2"
+            @click="handleStatusChange(2)"
             :class="indexa === 2 ? 'bg-[#2563EB] text-[#ffffffff]' : 'bg-[#F4F6FA] '"
             class="h-60rpx rounded-1 flex justify-center mr-20rpx items-center px-2"
           >
@@ -75,23 +75,90 @@
   </div>
 
   <buju title="筛查">
-    <div class="h200rpx"></div>
+    <div class="h220rpx"></div>
+
+    <!-- 加载提示 -->
+    <div v-if="loading && screeningList.length === 0" class="text-center py-8">
+      <text class="text-gray-500">加载中...</text>
+    </div>
+
+    <!-- 筛查列表 -->
     <div
-      @click="jieguo"
-      v-for="i in 10"
-      :key="i"
-      class="w-690rpx bg-#fff rounded-16rpx m-30rpx p30rpx box-border"
+      @click="jieguo(item)"
+      v-for="item in screeningList"
+      :key="item.id"
+      class="w-690rpx bg-#fff rounded-16rpx m-30rpx p-30rpx box-border"
     >
-      <div class="flex justify-start itcems-center not-first:mt24rpx" v-for="i in 6" :key="i">
-        <div class="h28rpx text-28rpx mr10rpx">ID：19269404193915576</div>
+      <!-- ID和状态 -->
+      <div class="flex justify-between items-center mb-20rpx">
+        <div class="flex items-center">
+          <text class="text-28rpx font-500 color-#333333">ID：{{ item.id }}</text>
+        </div>
         <div
-          class="text-#EF9913 bg-#FCEBD0 w82rpx h36rpx text-22rpx flex justify-center items-center rounded-1"
+          :class="item.status === 99 ? 'text-#10B981 bg-#D1FAE5' : 'text-#EF9913 bg-#FCEBD0'"
+          class="px-16rpx py-8rpx text-22rpx rounded-8rpx"
         >
-          未归档
+          {{ item.status === 99 ? '已归档' : '未归档' }}
         </div>
       </div>
+
+      <!-- 交易方信息 -->
+      <div class="flex mb-16rpx">
+        <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">交易方：</text>
+        <text class="text-24rpx color-#333333 flex-1 break-all">
+          {{ getTradePartyInfo(item.tradePartyParam) }}
+        </text>
+      </div>
+
+      <!-- 商品信息 -->
+      <div class="flex mb-16rpx">
+        <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">商品信息：</text>
+        <text class="text-24rpx color-#333333 flex-1 break-all">
+          {{ getCommodityInfo(item.commodityParam) }}
+        </text>
+      </div>
+
+      <!-- 国家信息 -->
+      <div class="flex mb-16rpx">
+        <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">国家信息：</text>
+        <text class="text-24rpx color-#333333 flex-1 break-all">{{ getCountryInfo(item.countryParam) }}</text>
+      </div>
+
+      <!-- 船舶信息 -->
+      <div class="flex mb-16rpx">
+        <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">船舶信息：</text>
+        <text class="text-24rpx color-#333333 flex-1 break-all">
+          {{ getTransportInfo(item.transportParam) }}
+        </text>
+      </div>
+
+      <!-- 机构名称 -->
+      <div class="flex">
+        <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">机构名称：</text>
+        <text class="text-24rpx color-#333333 flex-1">{{ item.tenantName || 'XXX有限公司' }}</text>
+      </div>
     </div>
-    <!--      <div :style="{ height: footerHeight }"></div>-->
+
+    <!-- 空状态 -->
+    <div v-if="!loading && screeningList.length === 0" class="text-center py-16">
+      <text class="text-gray-500">暂无数据</text>
+    </div>
+
+    <!-- 视口触发器 - 用于检测是否需要加载更多 -->
+    <div
+      v-if="screeningList.length > 0 && screeningList.length < total"
+      class="load-trigger text-center py-4"
+    >
+      <text v-if="loading" class="text-gray-500">加载中...</text>
+      <text v-else class="text-gray-400">上拉加载更多</text>
+    </div>
+
+    <!-- 没有更多数据提示 -->
+    <div v-if="screeningList.length > 0 && screeningList.length >= total" class="text-center py-4">
+      <text class="text-gray-400">没有更多数据了</text>
+    </div>
+
+    <!-- 浮动按钮 -->
     <div class="fixed bottom-190rpx right-30rpx">
       <image
         @click="tiaozhuan"
@@ -99,6 +166,7 @@
         src="@/static/lanhu_shaicha/SketchPng5f6fde3afd1ee831a9e0ca2a045fc7b393f024f4af7028a4efeb23de0580afb2.png"
       ></image>
     </div>
+
     <template #footer>
       <dibu />
     </template>
@@ -106,6 +174,7 @@
 </template>
 <script setup lang="js">
 import dibu from '../index/dibu.vue'
+import { getDocumentScreeningListAPI } from '@/service/foo'
 
 const indexa = ref(0)
 const statusBarHeight = ref(0)
@@ -114,6 +183,88 @@ const dateRange = ref(['', Date.now()]) // For v-model
 const startDate = ref('') // For display
 const endDate = ref('') // For display
 
+// 筛查列表数据
+const screeningList = ref([])
+const total = ref(0)
+const loading = ref(false)
+const pageNum = ref(1)
+const pageSize = ref(20)
+
+// Intersection Observer 实例
+let intersectionObserver = null
+
+// 获取筛查列表数据
+const getScreeningList = async (isRefresh = false) => {
+  if (loading.value) return
+
+  loading.value = true
+
+  try {
+    // 重置页码
+    if (isRefresh) {
+      pageNum.value = 1
+    }
+
+    // 构建请求参数
+    const params = {
+      pageNum: pageNum.value,
+      pageSize: pageSize.value,
+      type: 2,
+    }
+
+    // 添加状态筛选
+    if (indexa.value === 1) {
+      params.status = 99 // 已归档
+    } else if (indexa.value === 2) {
+      params.status = 1 // 未归档
+    }
+    // indexa.value === 0 时不添加status参数，表示全部
+
+    // 添加日期筛选
+    if (startDate.value && endDate.value) {
+      params.beginCreateTime = `${startDate.value} 00:00:00`
+      params.endCreateTime = `${endDate.value} 23:59:59`
+    }
+
+    console.log('筛查列表请求参数：', params)
+
+    const result = await getDocumentScreeningListAPI(params)
+
+    if (result.code === 200) {
+      if (isRefresh || pageNum.value === 1) {
+        screeningList.value = result.rows || []
+      } else {
+        screeningList.value = [...screeningList.value, ...(result.rows || [])]
+      }
+      total.value = result.total || 0
+
+      console.log('筛查列表获取成功：', result)
+
+      // 数据更新后重新初始化观察器
+      reinitObserver()
+    } else {
+      uni.showToast({
+        title: result.msg || '获取数据失败',
+        icon: 'error',
+      })
+    }
+  } catch (error) {
+    console.error('获取筛查列表失败：', error)
+    uni.showToast({
+      title: '网络错误',
+      icon: 'error',
+    })
+  } finally {
+    loading.value = false
+  }
+}
+
+// 状态切换
+const handleStatusChange = (status) => {
+  indexa.value = status
+  getScreeningList(true)
+}
+
 function handleConfirm(e) {
   if (Array.isArray(e.value) && e.value.length === 2) {
     const [start, end] = e.value
@@ -121,6 +272,9 @@ function handleConfirm(e) {
     startDate.value = formatDate(start)
     endDate.value = formatDate(end)
     dateRange.value = [start, end] // Update the model value
+
+    // 日期改变后重新获取数据
+    getScreeningList(true)
   }
 }
 const tiaozhuan = () => {
@@ -129,9 +283,70 @@ const tiaozhuan = () => {
   })
 }
 
-const jieguo = () => {
+const jieguo = (item) => {
   uni.navigateTo({
-    url: '/pages-sub/shaichajieguo/index',
+    url: `/pages-sub/shaichajieguo/index?id=${item.id}`,
+  })
+}
+
+// 数据处理函数
+const getTradePartyInfo = (tradePartyParam) => {
+  if (!tradePartyParam) return ''
+  const parties = tradePartyParam.split(';')
+  return parties.slice(0, 2).join(';') // 只显示前两个
+}
+
+const getCommodityInfo = (commodityParam) => {
+  if (!commodityParam) return ''
+  return commodityParam.replace(/;/g, ',') // 用逗号分隔
+}
+
+const getCountryInfo = (countryParam) => {
+  if (!countryParam) return ''
+  const countries = countryParam.split(';')
+  return countries.slice(0, 2).join(',') // 只显示前两个，用逗号分隔
+}
+
+const getTransportInfo = (transportParam) => {
+  if (!transportParam) return ''
+  return transportParam.replace(/;/g, ' ') // 用空格分隔
+}
+
+// 加载更多数据
+const loadMore = () => {
+  // 如果正在加载或已经没有更多数据，则不执行
+  if (loading.value || screeningList.value.length >= total.value) return
+
+  pageNum.value += 1
+  getScreeningList(false)
+}
+
+// 初始化 Intersection Observer
+const initIntersectionObserver = () => {
+  // 销毁之前的观察器
+  if (intersectionObserver) {
+    intersectionObserver.disconnect()
+  }
+
+  // 创建新的观察器
+  intersectionObserver = uni.createIntersectionObserver()
+
+  // 设置观察区域：距离视口底部 100px 时触发
+  intersectionObserver.relativeToViewport({ bottom: 100 })
+
+  // 观察 .load-trigger 元素
+  intersectionObserver.observe('.load-trigger', (res) => {
+    if (res.intersectionRatio > 0) {
+      // 元素进入视口，触发加载更多
+      loadMore()
+    }
+  })
+}
+
+// 重新初始化观察器（在数据更新后调用）
+const reinitObserver = () => {
+  nextTick(() => {
+    initIntersectionObserver()
   })
 }
 function openPicker() {
@@ -152,6 +367,17 @@ function formatDate(timestamp) {
 onMounted(() => {
   const systemInfo = uni.getSystemInfoSync()
   statusBarHeight.value = systemInfo.statusBarHeight
+
+  // 页面加载时获取筛查列表
+  getScreeningList(true)
+})
+
+// 页面卸载时清理观察器
+onUnmounted(() => {
+  if (intersectionObserver) {
+    intersectionObserver.disconnect()
+    intersectionObserver = null
+  }
 })
 </script>
 <style lang="scss" scoped></style>

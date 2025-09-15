@@ -95,7 +95,7 @@
           <text class="text-28rpx font-500 color-#333333">ID：{{ item.id }}</text>
         </div>
         <div
-          :class="item.status === 99 ? 'text-#37C3C8 bg-#D7F3F4' : 'text-#EF9913 bg-#FCEBD0'"
+          :class="item.status === 99 ? 'text-#6B7280 bg-#F3F4F6' : 'text-#EF9913 bg-#FCEBD0'"
           class="px-16rpx py-8rpx text-22rpx rounded-8rpx"
         >
           {{ item.status === 99 ? '已归档' : '未归档' }}

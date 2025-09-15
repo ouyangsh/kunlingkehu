@@ -43,12 +43,14 @@
           <div v-for="(item, index) in items" :key="index">
             <div class="flex mb-10rpx justify-start items-center">
               <view class="w220rpx mr10rpx relative">
-                <picker 
+                <picker
                   :value="getSelectedIndex(category, item)"
                   :range="getPickerOptions(category)"
                   @change="onPickerChange($event, category, item, index)"
                 >
-                  <view class="px-2 box-border rounded-8rpx h60rpx bg-#F4F6FA flex justify-between items-center color-[#333333]">
+                  <view
+                    class="px-2 box-border rounded-8rpx h60rpx bg-#F4F6FA flex justify-between items-center color-[#333333]"
+                  >
                     <view class="text-24rpx">{{ getSelectedValue(category, item) || item }}</view>
                     <i class="font_family icon-trangle-down text-20rpx"></i>
                   </view>
@@ -74,11 +76,14 @@
     </div>
     <template #footer>
       <div class="h-180rpx w-full bg-[#ffffffff] flex justify-evenly items-center pb-2 box-border">
-        <div class="w-330rpx h-88rpx bg-[#F2F5FA] rounded-1 flex justify-center items-center">
+        <div 
+          @click="handleSave"
+          class="w-330rpx h-88rpx bg-[#F2F5FA] rounded-1 flex justify-center items-center cursor-pointer">
           保存
         </div>
         <div
-          class="w-330rpx h-88rpx bg-[#2563EB] text-[#ffffff] rounded-1 flex justify-center items-center"
+          @click="handleSearch"
+          class="w-330rpx h-88rpx bg-[#2563EB] text-[#ffffff] rounded-1 flex justify-center items-center cursor-pointer"
         >
           搜索
         </div>
@@ -276,23 +281,30 @@ const analysisDataMap = ref({})
 // 存储选中的下拉框值
 const selectedValues = ref({})
 
+// 存储从跳转页面传递过来的参数
+const jumpParams = ref({
+  documentId: '0',
+  attachmentId: '',
+  templateCode: 'yulurudan',
+})
+
 // 计算需要显示的表单项
 const displayItems = computed(() => {
   const result = {}
-  
+
   // 如果有筛查数据，显示所有有数据的项
   if (Object.keys(analysisDataMap.value).length > 0) {
-    Object.keys(itemTemplates.value).forEach(category => {
+    Object.keys(itemTemplates.value).forEach((category) => {
       const categoryItems = itemTemplates.value[category]
-      const matchedItems = categoryItems.filter(item => analysisDataMap.value[item])
-      
+      const matchedItems = categoryItems.filter((item) => analysisDataMap.value[item])
+
       if (matchedItems.length > 0) {
         result[category] = matchedItems
       }
     })
   } else {
     // 如果没有筛查数据，每个类别显示两条
-    Object.keys(itemTemplates.value).forEach(category => {
+    Object.keys(itemTemplates.value).forEach((category) => {
       const categoryItems = itemTemplates.value[category]
       if (categoryItems && categoryItems.length > 0) {
         // 每个类别显示前两条
@@ -300,7 +312,7 @@ const displayItems = computed(() => {
       }
     })
   }
-  
+
   return result
 })
 
@@ -401,7 +413,7 @@ const selectCategory = (index) => {
 // 处理显示值，如果是JSON字符串则解析并显示name
 const getDisplayValue = (value) => {
   if (!value) return ''
-  
+
   if (typeof value === 'string' && value.startsWith('{') && value.endsWith('}')) {
     try {
       const parsed = JSON.parse(value)
@@ -424,9 +436,9 @@ const getSelectedIndex = (category, item) => {
   const key = `${category}_${item}`
   const selectedValue = selectedValues.value[key]
   if (!selectedValue) return 0
-  
+
   const options = getPickerOptions(category)
-  const index = options.findIndex(option => option === selectedValue)
+  const index = options.findIndex((option) => option === selectedValue)
   return index >= 0 ? index : 0
 }
 
@@ -441,11 +453,100 @@ const onPickerChange = (event, category, item, index) => {
   const selectedIndex = event.detail.value
   const options = getPickerOptions(category)
   const selectedOption = options[selectedIndex]
-  
+
   const key = `${category}_${item}`
   selectedValues.value[key] = selectedOption
-  
+
   console.log('选择了：', selectedOption, '分类：', category, '项目：', item)
+}
+
+// 通用的保存函数
+const saveDocument = async (opType, loadingTitle = '保存中...') => {
+  try {
+    // 构建筛查项目列表
+    const itemParamList = []
+
+    // 遍历所有显示的表单项，收集用户输入的数据
+    Object.keys(displayItems.value).forEach((category) => {
+      const items = displayItems.value[category]
+      items.forEach((item) => {
+        const key = `${category}_${item}`
+        const selectedValue = selectedValues.value[key] || item
+
+        // 获取对应的输入框值（这里需要根据实际的输入框实现来获取值）
+        // 暂时使用筛查数据中的值或空字符串
+        const inputValue = analysisDataMap.value[item] || ''
+
+        itemParamList.push({
+          key: selectedValue,
+          value: inputValue,
+        })
+      })
+    })
+
+    // 构建请求参数
+    const requestData = {
+      documentId: jumpParams.value.documentId,
+      attachmentId: jumpParams.value.attachmentId,
+      templateCode: jumpParams.value.templateCode,
+      itemParamList,
+      type: 2, // 类型，固定为 2
+      opType: opType, // 操作类型，1 仅保存，2 保存并且筛查
+    }
+
+    console.log('准备发送的数据:', requestData)
+
+    // 显示加载提示
+    uni.showLoading({
+      title: loadingTitle,
+    })
+
+    // 调用保存接口
+    const response = await http({
+      url: '/tscc/document/save',
+      method: 'POST',
+      data: requestData,
+    })
+
+    uni.hideLoading()
+
+    if (response.code === 200) {
+      uni.showToast({
+        title: '保存成功',
+        icon: 'success',
+      })
+
+      // 保存成功后可以选择返回上一页或其他操作
+      if (opType === 2) {
+        // 搜索操作成功后返回上一页
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 1500)
+      }
+    } else {
+      uni.showToast({
+        title: response.message || '保存失败',
+        icon: 'error',
+      })
+    }
+  } catch (error) {
+    uni.hideLoading()
+    console.error('保存失败:', error)
+    uni.showToast({
+      title: '保存失败，请重试',
+      icon: 'error',
+    })
+  }
+}
+
+// 保存按钮点击事件 - 仅保存
+const handleSave = async () => {
+  await saveDocument(1, '保存中...')
+}
+
+// 搜索按钮点击事件 - 保存并筛查
+const handleSearch = async () => {
+  await saveDocument(2, '筛查中...')
 }
 
 const takePhoto = () => {
@@ -539,55 +640,45 @@ const fetchTemplateOptions = async () => {
 onMounted(() => {
   const systemInfo = uni.getSystemInfoSync()
   statusBarHeight.value = systemInfo.statusBarHeight
-  
-  // 获取从筛查页面传递的 analysisElement 数据
-  const analysisElement = uni.getStorageSync('analysisElement')
-  if (analysisElement) {
-    console.log('获取到的 analysisElement 数据：', analysisElement)
-    console.log('数据类型：', typeof analysisElement)
-    
+
+  // 获取从筛查页面传递的数据
+  const jumpData = uni.getStorageSync('jumpData')
+  if (jumpData) {
+    console.log('获取到的跳转数据：', jumpData)
+
+    const analysisElement = jumpData.analysisElement || {}
+    console.log('analysisElement 数据：', analysisElement)
+    console.log('documentId：', jumpData.documentId)
+    console.log('attachmentId：', jumpData.attachmentId)
     let parsedData = analysisElement
-    
-    // 如果是字符串，尝试解析为JSON
     if (typeof analysisElement === 'string') {
       try {
         parsedData = JSON.parse(analysisElement)
-        console.log('解析后的数据：', parsedData)
-        console.log('解析后是否为数组：', Array.isArray(parsedData))
       } catch (e) {
-        console.error('JSON解析失败：', e)
         parsedData = []
       }
     }
-    
-    // 确保数据是数组格式
     if (Array.isArray(parsedData)) {
       analysisData.value = parsedData
-      
-      // 创建key-value映射对象
       const dataMap = {}
-      parsedData.forEach(item => {
+      parsedData.forEach((item) => {
         if (item.key && item.value !== undefined) {
           dataMap[item.key] = getDisplayValue(item.value)
         }
       })
       analysisDataMap.value = dataMap
-      
-      console.log('成功设置 analysisData，长度：', parsedData.length)
-      console.log('数据映射：', dataMap)
     } else {
-      console.log('数据格式不正确，期望数组格式')
       analysisData.value = []
       analysisDataMap.value = {}
     }
-    
-    // 使用完后清除缓存
-    uni.removeStorageSync('analysisElement')
+
+    console.log('跳转参数:', jumpParams.value)
+    uni.removeStorageSync('jumpData')
   } else {
-    console.log('未获取到 analysisElement 数据')
+    console.log('未获取到跳转数据')
     analysisData.value = []
   }
-  
+
   fetchTemplateOptions()
   fetchItemTemplates()
 })

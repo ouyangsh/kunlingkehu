@@ -287,7 +287,15 @@ const tiaozhuan = () => {
 
 const jieguo = (item) => {
   // 将 analysisElement 数据存储到本地缓存
-  uni.setStorageSync('analysisElement', item.analysisElement || {})
+  const jumpData = {
+    analysisElement: item.analysisElement || {},
+    documentId: item.documentId || '0', // 筛查记录ID，0 表示新增，如果有 ID 则是修改
+    attachmentId: item.attachmentId || '', // 附件ID，可以为空
+    // attachmentId: '', // 附件ID，可以为空
+    templateCode: item.templateCode || 'yulurudan', // 选择的文档解析模版
+  }
+
+  uni.setStorageSync('jumpData', jumpData)
   uni.navigateTo({
     url: '/pages-sub/shougongshaicha/index',
   })

@@ -512,15 +512,24 @@ const saveDocument = async (opType, loadingTitle = '保存中...') => {
 
     if (response.code === 200) {
       uni.showToast({
-        title: '保存成功',
+        title: opType === 1 ? '保存成功' : '筛查成功',
         icon: 'success',
       })
 
-      // 保存成功后可以选择返回上一页或其他操作
+      // 根据操作类型执行不同的后续操作
       if (opType === 2) {
-        // 搜索操作成功后返回上一页
+        // 搜索操作成功后跳转到筛查结果页面，传递返回的结果数据
         setTimeout(() => {
-          uni.navigateBack()
+          // 将筛查结果存储到本地存储中
+          uni.setStorageSync('searchResult', {
+            resultData: response.data || response,
+            searchParams: requestData
+          })
+          
+          // 跳转到筛查结果页面
+          uni.navigateTo({
+            url: '/pages-sub/shaichajieguo/index'
+          })
         }, 1500)
       }
     } else {

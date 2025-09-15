@@ -89,6 +89,51 @@ const folderList = ref([])
 // 文件列表
 const fileList = ref([])
 
+// 上传文件的通用函数
+const uploadFile = async (filePath) => {
+  uni.showLoading({
+    title: '上传中...',
+  })
+  
+  try {
+    const uploadRes = await fileUpload({
+      filePath: filePath,
+      name: 'file', // 后端接收文件的字段名
+      formData: {},
+    })
+
+    if (uploadRes.code === 200) {
+      uni.showToast({
+        title: '上传成功',
+        icon: 'success',
+      })
+      // 上传成功后刷新数据
+      fetchData()
+      // 跳转到预览页面，传递文件ID和图片路径
+      uni.navigateTo({
+        url:
+          '/pages-sub/shougongshaicha_xiangce/index?imagePath=' +
+          encodeURIComponent(filePath) +
+          '&fileId=' +
+          encodeURIComponent(uploadRes.data.id),
+      })
+    } else {
+      uni.showToast({
+        title: uploadRes.msg || '上传失败',
+        icon: 'none',
+      })
+    }
+  } catch (error) {
+    console.error('上传失败', error)
+    uni.showToast({
+      title: error.message || '上传失败',
+      icon: 'none',
+    })
+  } finally {
+    uni.hideLoading()
+  }
+}
+
 const takePhoto = () => {
   // 显示选择图片的选项
   uni.showActionSheet({
@@ -101,12 +146,8 @@ const takePhoto = () => {
           sourceType: ['camera'],
           success: (result) => {
             console.log('拍照成功', result.tempFilePaths[0])
-            // 跳转到预览页面
-            uni.navigateTo({
-              url:
-                '/pages-sub/shougongshaicha_xiangce/index?imagePath=' +
-                encodeURIComponent(result.tempFilePaths[0]),
-            })
+            // 上传文件
+            uploadFile(result.tempFilePaths[0])
           },
           fail: (err) => {
             console.log('拍照失败', err)
@@ -123,12 +164,8 @@ const takePhoto = () => {
           sourceType: ['album'],
           success: (result) => {
             console.log('选择相册图片成功', result.tempFilePaths[0])
-            // 跳转到预览页面
-            uni.navigateTo({
-              url:
-                '/pages-sub/shougongshaicha_xiangce/index?imagePath=' +
-                encodeURIComponent(result.tempFilePaths[0]),
-            })
+            // 上传文件
+            uploadFile(result.tempFilePaths[0])
           },
           fail: (err) => {
             console.log('选择相册图片失败', err)

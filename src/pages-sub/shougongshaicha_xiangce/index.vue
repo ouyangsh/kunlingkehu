@@ -82,6 +82,8 @@
   </buju>
 </template>
 <script setup lang="js">
+import { correctDocumentAPI } from '@/service/foo'
+
 const statusBarHeight = ref(0)
 const pageslength = computed(() => getCurrentPages().length)
 
@@ -100,13 +102,14 @@ const navigateBack = () => {
 const previewImagePath = ref('')
 const selectedImageType = ref(1) // 默认选择增强文本解析
 const enhancedImagePath = ref('')
+const fileId = ref('') // 存储文件ID
 
 // 当前显示的图片
 const currentDisplayImage = computed(() => {
   return selectedImageType.value === 0 ? previewImagePath.value : enhancedImagePath.value
 })
 
-// 获取传入的图片路径
+// 获取传入的图片路径和文件ID
 const getImagePath = () => {
   const pages = getCurrentPages()
   const currentPage = pages[pages.length - 1]
@@ -117,6 +120,11 @@ const getImagePath = () => {
     // 模拟增强图片（实际应该是处理后的图片）
     enhancedImagePath.value = previewImagePath.value
     console.log('接收到图片路径：', previewImagePath.value)
+  }
+  
+  if (options.fileId) {
+    fileId.value = decodeURIComponent(options.fileId)
+    console.log('接收到文件ID：', fileId.value)
   }
 }
 
@@ -170,19 +178,49 @@ const cropImage = () => {
   })
 }
 
-// 增强图片
-const enhanceImage = () => {
+// 矫正图片
+const enhanceImage = async () => {
+  if (!fileId.value) {
+    uni.showToast({
+      title: '文件ID不存在，无法矫正',
+      icon: 'error',
+    })
+    return
+  }
+
   uni.showLoading({
-    title: '正在增强...',
+    title: '正在矫正...',
   })
 
-  setTimeout(() => {
-    uni.hideLoading()
+  try {
+    const result = await correctDocumentAPI(fileId.value)
+    
+    if (result.code === 200 && result.data && result.data.length > 0) {
+      // 使用返回的base64图片数据替换增强图片
+      enhancedImagePath.value = result.data[0]
+      // 自动切换到增强图片显示
+      selectedImageType.value = 1
+      
+      uni.showToast({
+        title: '矫正完成',
+        icon: 'success',
+      })
+      console.log('矫正结果：', result)
+    } else {
+      uni.showToast({
+        title: result.msg || '矫正失败',
+        icon: 'error',
+      })
+    }
+  } catch (error) {
+    console.error('矫正失败：', error)
     uni.showToast({
-      title: '图片增强完成',
-      icon: 'success',
+      title: error.message || '矫正失败',
+      icon: 'error',
     })
-  }, 2000)
+  } finally {
+    uni.hideLoading()
+  }
 }
 
 // 确认图片

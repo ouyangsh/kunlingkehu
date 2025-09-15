@@ -135,3 +135,12 @@ export const deleteDocumentAPI = (data: IDeleteDocumentRequest) => {
     data,
   })
 }
+
+/** 文档矫正 */
+export const correctDocumentAPI = (id: string) => {
+  return http<any>({
+    url: '/tscc/document/v2-only-image-correct',
+    method: 'POST',
+    data: { id },
+  })
+}

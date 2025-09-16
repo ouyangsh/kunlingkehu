@@ -299,11 +299,13 @@ const jumpParams = ref({
 const displayItems = computed(() => {
   const result = {}
 
-  // 如果有筛查数据，显示所有有数据的项
+  // 如果有筛查数据，显示所有有key的项（无论value是否为空）
   if (Object.keys(analysisDataMap.value).length > 0) {
     Object.keys(itemTemplates.value).forEach((category) => {
       const categoryItems = itemTemplates.value[category]
-      const matchedItems = categoryItems.filter((item) => analysisDataMap.value[item])
+      const matchedItems = categoryItems.filter((item) =>
+        Object.prototype.hasOwnProperty.call(analysisDataMap.value, item),
+      )
 
       if (matchedItems.length > 0) {
         result[category] = matchedItems
@@ -800,8 +802,8 @@ const analyzeDocument = async (imageBase64) => {
           analysisData.value = parsedData
           const dataMap = {}
           parsedData.forEach((item) => {
-            if (item.key && item.value !== undefined) {
-              dataMap[item.key] = getDisplayValue(item.value)
+            if (item.key) {
+              dataMap[item.key] = getDisplayValue(item.value || '')
             }
           })
           analysisDataMap.value = dataMap
@@ -952,8 +954,8 @@ onMounted(() => {
       analysisData.value = parsedData
       const dataMap = {}
       parsedData.forEach((item) => {
-        if (item.key && item.value !== undefined) {
-          dataMap[item.key] = getDisplayValue(item.value)
+        if (item.key) {
+          dataMap[item.key] = getDisplayValue(item.value || '')
         }
       })
       analysisDataMap.value = dataMap

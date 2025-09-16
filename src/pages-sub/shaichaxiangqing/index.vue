@@ -38,7 +38,7 @@
     >
       <div id="section-0" class="px-30rpx mb-3 mt13">
         <!-- 查询信息 -->
-        <div v-if="reportDetail" class="bg-white rounded-16rpx p-30rpx mb-30rpx">
+        <div v-if="reportDetail" class="rounded-16rpx mb-30rpx">
           <div class="space-y-16rpx text-26rpx">
             <div class="flex">
               <span class="text-#777777 w-160rpx">查询机构：</span>
@@ -56,8 +56,8 @@
         </div>
 
         <!-- 查询对象基本信息 -->
-        <div v-if="reportDetail && reportDetail.basicInfo" class="mb-30rpx">
-          <div class="text-32rpx mb-20rpx">查询对象基本信息</div>
+        <div id="section-1" v-if="reportDetail && reportDetail.basicInfo" class="mb-30rpx">
+          <div class="text-32rpx mb-20rpx">一、查询对象基本信息</div>
           <div class="bg-white rounded-16rpx p-30rpx">
             <div class="space-y-16rpx text-26rpx">
               <div class="flex">
@@ -81,24 +81,30 @@
         </div>
 
         <!-- 查询对象提取信息 -->
-        <div v-if="reportDetail && reportDetail.retrieveInfo" class="mb-30rpx">
-          <div class="text-32rpx mb-20rpx">查询对象提取信息</div>
-          
+        <div id="section-2" v-if="reportDetail && reportDetail.retrieveInfo" class="mb-30rpx">
+          <div class="text-32rpx mb-20rpx">二、查询对象提取信息</div>
+
           <!-- 单据信息段 -->
           <div class="bg-white rounded-16rpx p-30rpx mb-20rpx">
             <div class="text-28rpx font-600 mb-20rpx">单据信息段</div>
             <div class="space-y-16rpx text-26rpx">
               <div class="flex">
-                <span class="text-#777777 w-160rpx">海关编号：</span>
-                <span class="text-#333333">{{ reportDetail.retrieveInfo.customsCode || '暂无' }}</span>
+                <span class="text-#777777">海关编号：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.retrieveInfo.customsCode || '暂无' }}
+                </span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">申报日期：</span>
-                <span class="text-#333333">{{ reportDetail.retrieveInfo.declareDate || '暂无' }}</span>
+                <span class="text-#777777">申报日期：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.retrieveInfo.declareDate || '暂无' }}
+                </span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">提运单号：</span>
-                <span class="text-#333333">{{ reportDetail.retrieveInfo.billOfLadingNo || '暂无' }}</span>
+                <span class="text-#777777">提运单号：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.retrieveInfo.billOfLadingNo || '暂无' }}
+                </span>
               </div>
             </div>
           </div>
@@ -108,20 +114,28 @@
             <div class="text-28rpx font-600 mb-20rpx">交易方信息段</div>
             <div class="space-y-16rpx text-26rpx">
               <div class="flex">
-                <span class="text-#777777 w-160rpx">境内发货人：</span>
-                <span class="text-#333333">{{ reportDetail.retrieveInfo.domesticConsignor || '暂无' }}</span>
+                <span class="text-#777777">境内发货人：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.retrieveInfo.domesticConsignor || '暂无' }}
+                </span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">境外收货人：</span>
-                <span class="text-#333333">{{ reportDetail.retrieveInfo.overseasConsignee || '暂无' }}</span>
+                <span class="text-#777777">境外收货人：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.retrieveInfo.overseasConsignee || '暂无' }}
+                </span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">生产销售单位：</span>
-                <span class="text-#333333">{{ reportDetail.retrieveInfo.productionSalesCompany || '暂无' }}</span>
+                <span class="text-#777777">生产销售单位：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.retrieveInfo.productionSalesCompany || '暂无' }}
+                </span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">申报单位：</span>
-                <span class="text-#333333">{{ reportDetail.retrieveInfo.declareCompany || '暂无' }}</span>
+                <span class="text-#777777">申报单位：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.retrieveInfo.declareCompany || '暂无' }}
+                </span>
               </div>
             </div>
           </div>
@@ -131,20 +145,26 @@
             <div class="text-28rpx font-600 mb-20rpx">物流信息段</div>
             <div class="space-y-16rpx text-26rpx">
               <div class="flex">
-                <span class="text-#777777 w-160rpx">运输方式：</span>
-                <span class="text-#333333">{{ reportDetail.retrieveInfo.transportMode || '暂无' }}</span>
+                <span class="text-#777777">运输方式：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.retrieveInfo.transportMode || '暂无' }}
+                </span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">运输工具名称：</span>
-                <span class="text-#333333">{{ reportDetail.retrieveInfo.transportToolName || '暂无' }}</span>
+                <span class="text-#777777">运输工具名称：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.retrieveInfo.transportToolName || '暂无' }}
+                </span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">航次号：</span>
+                <span class="text-#777777">航次号：</span>
                 <span class="text-#333333">{{ reportDetail.retrieveInfo.voyageNo || '暂无' }}</span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">集装箱号：</span>
-                <span class="text-#333333">{{ reportDetail.retrieveInfo.containerNo || '暂无' }}</span>
+                <span class="text-#777777">集装箱号：</span>
+                <span class="text-#333333">
+                  {{ reportDetail.retrieveInfo.containerNo || '暂无' }}
+                </span>
               </div>
             </div>
           </div>
@@ -154,254 +174,784 @@
             <div class="text-28rpx font-600 mb-20rpx">位置信息段</div>
             <div class="space-y-16rpx text-26rpx">
               <div class="flex">
-                <span class="text-#777777 w-160rpx">境内发货人城市：</span>
-                <span class="text-#333333">{{ reportDetail.retrieveInfo.senderCity || '暂无' }}</span>
-              </div>
-              <div class="flex">
-                <span class="text-#777777 w-160rpx">离境口岸：</span>
+                <span class="text-#777777">境内发货人城市：</span>
                 <span class="text-#333333">
-                  {{ getDeparturePortName() || '暂无' }}
+                  {{ reportDetail.retrieveInfo.senderCity || '暂无' }}
                 </span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">贸易国(地区)：</span>
-                <span class="text-#333333">
-                  {{ getTradeCountryName() || '暂无' }}
-                </span>
+                <span class="text-#777777">离境口岸：</span>
+                <span class="text-#333333">{{ getDeparturePortName() || '暂无' }}</span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">指运港：</span>
-                <span class="text-#333333">
-                  {{ getDestinationPortName() || '暂无' }}
-                </span>
+                <span class="text-#777777">贸易国(地区)：</span>
+                <span class="text-#333333">{{ getTradeCountryName() || '暂无' }}</span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">原产国(地区)：</span>
-                <span class="text-#333333">
-                  {{ getOriginCountryName() || '暂无' }}
-                </span>
+                <span class="text-#777777">指运港：</span>
+                <span class="text-#333333">{{ getDestinationPortName() || '暂无' }}</span>
               </div>
               <div class="flex">
-                <span class="text-#777777 w-160rpx">最终目的国(地区)：</span>
-                <span class="text-#333333">
-                  {{ getFinalDestinationCountryName() || '暂无' }}
-                </span>
+                <span class="text-#777777">原产国(地区)：</span>
+                <span class="text-#333333">{{ getOriginCountryName() || '暂无' }}</span>
+              </div>
+              <div class="flex">
+                <span class="text-#777777">最终目的国(地区)：</span>
+                <span class="text-#333333">{{ getFinalDestinationCountryName() || '暂无' }}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="text-32rpx mt40rpx">商品信息</div>
-        <div
-          class="w92rpx h60rpx my30rpx bg-#DDE6F9 text-#2866EB flex justify-center items-center rounded-30rpx"
-        >
-          欧盟
-        </div>
-        <!-- 商品信息 -->
-        <div class="space-y-[20rpx] mb-60rpx">
-          <!-- 商品信息卡片 -->
-          <div
-            v-for="(item, index) in goodsInfo"
-            :key="index"
-            class="bg-white rounded-16rpx p-30rpx"
-          >
-            <div
-              class="flex items-center justify-between mb-20rpx"
-              @click="toggleItemSelection(index)"
-            >
-              <text class="text-32rpx font-500 text-black">{{ item.name }}</text>
-              <view class="custom-checkbox mr-15rpx" :class="{ selected: item.checked }"></view>
+        <!-- 合规风险筛查结果 -->
+        <div class="mb-30rpx">
+          <div class="text-32rpx mb-20rpx">三、合规风险筛查结果</div>
+
+          <!-- 表格容器 -->
+          <div class="bg-white rounded-16rpx overflow-hidden border border-#E5E5E5">
+            <!-- 表格头部 -->
+            <div class="flex bg-#F5F5F5 text-28rpx font-600 text-#333333 border-b border-#E5E5E5">
+              <div class="w-120rpx p-20rpx text-center border-r border-#E5E5E5">标识</div>
+              <div class="flex-2 p-20rpx text-center border-r border-#E5E5E5">项目</div>
+              <div class="flex-1 p-20rpx text-center">筛查结果</div>
             </div>
 
-            <div class="space-y-[16rpx] text-26rpx">
-              <div class="">
-                <text class="text-#777777">物项/商品分类：</text>
-                <text class="flex-1 leading-6">{{ item.category }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">物项/商品编码：</text>
-                <text class="flex-1 leading-6">{{ item.code }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">物项/商品描述中文：</text>
-                <text class="flex-1 leading-6">{{ item.description }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">发布国家/地区：</text>
-                <text class="flex-1 leading-6">{{ item.publishCountry }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">管制清单中文：</text>
-                <text class="flex-1 leading-6">{{ item.controlList }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">检索码：</text>
-                <text class="flex-1 leading-6">{{ item.searchCode }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">海关商品编码：</text>
-                <text class="flex-1 leading-6">{{ item.customsCode }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">管制国家/地区：</text>
-                <text class="flex-1 leading-6">{{ item.controlCountry }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">综合关税编码：</text>
-                <text class="flex-1 leading-6">{{ item.tariffCode }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">化学品编码：</text>
-                <text class="flex-1 leading-6">{{ item.chemicalCode }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">监管分组：</text>
-                <text class="flex-1 leading-6">{{ item.supervisionGroup }}</text>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 交易方信息 -->
-        <div id="section-1" class="mb-60rpx">
-          <div class="text-32rpx mb-30rpx">交易方信息</div>
-          <div class="bg-white rounded-16rpx p-30rpx">
-            <div class="space-y-[16rpx] text-26rpx">
-              <div class="flex justify-between">
-                <div class="">
-                  <text class="text-#777777">内贸国家：</text>
-                  <text class="flex-1 leading-6">{{ traderInfo.domesticCountry }}</text>
+            <!-- 单据信息段 -->
+            <div class="border-b border-#E5E5E5">
+              <!-- 单据信息段标题行 -->
+              <div class="flex">
+                <div
+                  class="w-120rpx p-20rpx text-center bg-#FAFAFA border-r border-#E5E5E5 flex items-center justify-center text-26rpx text-#666666"
+                  style="writing-mode: vertical-rl"
+                >
+                  单据信息段
                 </div>
-                <view class="custom-checkbox mr-15rpx" :class="{ selected: true }"></view>
+                <div class="flex-1">
+                  <!-- 海关编号 -->
+                  <div class="flex border-b border-#E5E5E5">
+                    <div class="flex-2 p-20rpx text-26rpx text-#333333 border-r border-#E5E5E5">
+                      海关编号：{{ reportDetail.retrieveInfo.customsCode || '暂无' }}
+                    </div>
+                    <div class="flex-1 p-20rpx text-center text-26rpx text-#666666">
+                      <!-- 这里可以根据实际筛查结果显示 -->
+                    </div>
+                  </div>
+
+                  <!-- 申报日期 -->
+                  <div class="flex border-b border-#E5E5E5">
+                    <div class="flex-2 p-20rpx text-26rpx text-#333333 border-r border-#E5E5E5">
+                      申报日期：{{ reportDetail.retrieveInfo.declareDate || '暂无' }}
+                    </div>
+                    <div class="flex-1 p-20rpx text-center text-26rpx text-#666666">
+                      <!-- 这里可以根据实际筛查结果显示 -->
+                    </div>
+                  </div>
+
+                  <!-- 提运单号 -->
+                  <div class="flex border-b border-#E5E5E5">
+                    <div class="flex-2 p-20rpx text-26rpx text-#333333 border-r border-#E5E5E5">
+                      提运单号：{{ reportDetail.retrieveInfo.billOfLadingNo || '暂无' }}
+                    </div>
+                    <div class="flex-1 p-20rpx text-center text-26rpx text-#666666">
+                      <!-- 这里可以根据实际筛查结果显示 -->
+                    </div>
+                  </div>
+
+                  <!-- 运输方式 -->
+                  <div class="flex">
+                    <div class="flex-2 p-20rpx text-26rpx text-#333333 border-r border-#E5E5E5">
+                      运输方式：{{ reportDetail.retrieveInfo.transportMode || '暂无' }}
+                    </div>
+                    <div class="flex-1 p-20rpx text-center text-26rpx text-#666666">
+                      <!-- 这里可以根据实际筛查结果显示 -->
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="">
-                <text class="text-#777777">位置类型：</text>
-                <text class="flex-1 leading-6">{{ traderInfo.locationType }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">实体名称：</text>
-                <text class="flex-1 leading-6">{{ traderInfo.entityName }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">实体别名：</text>
-                <text class="flex-1 leading-6">{{ traderInfo.entityAlias }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">内贸省份：</text>
-                <text class="flex-1 leading-6">{{ traderInfo.domesticProvince }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">城市名：</text>
-                <text class="flex-1 leading-6">{{ traderInfo.cityName }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">联合国三字码：</text>
-                <text class="flex-1 leading-6">{{ traderInfo.unCode }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">国际航空运输协会三字码：</text>
-                <text class="flex-1 leading-6">{{ traderInfo.iataCode }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">国际民用航空组织四字代码：</text>
-                <text class="flex-1 leading-6">{{ traderInfo.icaoCode }}</text>
+            </div>
+
+            <!-- 物流信息段 -->
+            <div>
+              <!-- 物流信息段标题行 -->
+              <div class="flex">
+                <div
+                  class="w-120rpx p-20rpx text-center bg-#FAFAFA border-r border-#E5E5E5 flex items-center justify-center text-26rpx text-#666666"
+                  style="writing-mode: vertical-rl"
+                >
+                  物流信息段
+                </div>
+                <div class="flex-1">
+                  <!-- 运输工具名称 -->
+                  <div class="flex border-b border-#E5E5E5">
+                    <div class="flex-2 p-20rpx text-26rpx text-#333333 border-r border-#E5E5E5">
+                      运输工具名称：{{ reportDetail.retrieveInfo.transportToolName || '暂无' }}
+                    </div>
+                    <div class="flex-1 p-20rpx text-center text-26rpx text-#666666">
+                      不在敏感信息名单中
+                    </div>
+                  </div>
+
+                  <!-- 航次号 -->
+                  <div class="flex border-b border-#E5E5E5">
+                    <div class="flex-2 p-20rpx text-26rpx text-#333333 border-r border-#E5E5E5">
+                      航次号：{{ reportDetail.retrieveInfo.voyageNo || '暂无' }}
+                    </div>
+                    <div class="flex-1 p-20rpx text-center text-26rpx text-#666666">
+                      <!-- 这里可以根据实际筛查结果显示 -->
+                    </div>
+                  </div>
+
+                  <!-- 集装箱号 -->
+                  <div class="flex">
+                    <div class="flex-2 p-20rpx text-26rpx text-#333333 border-r border-#E5E5E5">
+                      集装箱号：{{ reportDetail.retrieveInfo.containerNo || '暂无' }}
+                    </div>
+                    <div class="flex-1 p-20rpx text-center text-26rpx text-#666666">
+                      <!-- 这里可以根据实际筛查结果显示 -->
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 位置信息 -->
-        <div id="section-2" class="mb-60rpx">
-          <div class="text-32rpx mb-30rpx">位置信息</div>
-          <div class="bg-white rounded-16rpx p-30rpx">
-            <div class="space-y-[16rpx] text-26rpx">
-              <div class="flex justify-between">
-                <div class="">
-                  <text class="text-#777777">国家/地区：</text>
-                  <text class="flex-1 leading-6">{{ locationInfo.country }}</text>
+        <!-- 合规筛查结果详情 -->
+        <div id="section-3" class="mb-30rpx">
+          <div class="text-32rpx mb-20rpx">三、合规筛查结果详情</div>
+
+          <!-- 4.1 交易方筛查 -->
+          <div class="mb-30rpx">
+            <div class="text-28rpx text-#2866EB mb-20rpx">4.1 交易方筛查</div>
+
+            <!-- 未命中显示 -->
+            <div class="text-26rpx text-#333333 mb-20rpx">未命中显示</div>
+
+            <!-- 交易方信息表格 -->
+            <div class="bg-white rounded-16rpx overflow-hidden border border-#E5E5E5">
+              <!-- 生产销售单位 -->
+              <div class="flex border-b border-#E5E5E5">
+                <div
+                  class="w-200rpx p-20rpx text-26rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                >
+                  生产销售单位
                 </div>
-                <view class="custom-checkbox mr-15rpx" :class="{ selected: true }"></view>
+                <div class="flex-1 p-20rpx text-26rpx text-#333333 border-r border-#E5E5E5">
+                  {{ reportDetail.retrieveInfo.productionSalesCompany || '暂无' }}
+                </div>
+                <div class="w-200rpx p-20rpx text-center text-26rpx text-#666666">
+                  不在敏感信息名单中
+                </div>
               </div>
 
-              <div class="">
-                <text class="text-#777777">省份/州：</text>
-                <text class="flex-1 leading-6">{{ locationInfo.province }}</text>
+              <!-- 境内发货人 -->
+              <div class="flex border-b border-#E5E5E5">
+                <div
+                  class="w-200rpx p-20rpx text-26rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                >
+                  境内发货人
+                </div>
+                <div class="flex-1 p-20rpx text-26rpx text-#333333 border-r border-#E5E5E5">
+                  {{ reportDetail.retrieveInfo.domesticConsignor || '暂无' }}
+                </div>
+                <div class="w-200rpx p-20rpx text-center text-26rpx text-#666666">
+                  不在敏感信息名单中
+                </div>
               </div>
-              <div class="">
-                <text class="text-#777777">城市：</text>
-                <text class="flex-1 leading-6">{{ locationInfo.city }}</text>
+
+              <!-- 申报单位 -->
+              <div class="flex border-b border-#E5E5E5">
+                <div
+                  class="w-200rpx p-20rpx text-26rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                >
+                  申报单位
+                </div>
+                <div class="flex-1 p-20rpx text-26rpx text-#333333 border-r border-#E5E5E5">
+                  {{ reportDetail.retrieveInfo.declareCompany || '暂无' }}
+                </div>
+                <div class="w-200rpx p-20rpx text-center text-26rpx text-#666666">
+                  不在敏感信息名单中
+                </div>
               </div>
-              <div class="">
-                <text class="text-#777777">详细地址：</text>
-                <text class="flex-1 leading-6">{{ locationInfo.address }}</text>
+
+              <!-- 境外收货人 -->
+              <div class="flex">
+                <div
+                  class="w-200rpx p-20rpx text-26rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                >
+                  境外收货人
+                </div>
+                <div class="flex-1 p-20rpx text-26rpx text-#333333 border-r border-#E5E5E5">
+                  {{ reportDetail.retrieveInfo.overseasConsignee || '暂无' }}
+                </div>
+                <div class="w-200rpx p-20rpx text-center text-26rpx text-#666666">
+                  不在敏感信息名单中
+                </div>
               </div>
-              <div class="">
-                <text class="text-#777777">邮政编码：</text>
-                <text class="flex-1 leading-6">{{ locationInfo.postalCode }}</text>
+            </div>
+
+            <!-- 未命中显示（底部） -->
+            <div class="text-26rpx text-#333333 mt-20rpx">未命中显示</div>
+          </div>
+
+          <!-- 4.2 物流筛查 -->
+          <div class="mb-30rpx">
+            <div class="text-28rpx text-#2866EB mb-20rpx">4.2 物流筛查</div>
+
+            <!-- 船舶基本信息 -->
+            <div class="bg-white rounded-16rpx p-30rpx mb-20rpx">
+              <div class="text-26rpx font-600 mb-20rpx">船舶基本信息</div>
+              <div class="space-y-16rpx text-24rpx">
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">船舶名称：</span>
+                  <span class="text-#333333">{{ getShipName() || '暂无' }}</span>
+                </div>
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">建造年份：</span>
+                  <span class="text-#333333">{{ getShipBuildDate() || '暂无' }}</span>
+                </div>
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">船舶类型：</span>
+                  <span class="text-#333333">{{ getShipType() || '暂无' }}</span>
+                </div>
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">IMO 编号：</span>
+                  <span class="text-#333333">{{ getShipImo() || '暂无' }}</span>
+                </div>
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">MMSI：</span>
+                  <span class="text-#333333">{{ getShipMmsi() || '暂无' }}</span>
+                </div>
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">呼号：</span>
+                  <span class="text-#333333">{{ getShipCallsign() || '暂无' }}</span>
+                </div>
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">船旗：</span>
+                  <span class="text-#333333">{{ getShipFlag() || '暂无' }}</span>
+                </div>
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">总吨位：</span>
+                  <span class="text-#333333">{{ getShipGt() || '暂无' }}</span>
+                </div>
               </div>
-              <div class="">
-                <text class="text-#777777">经度：</text>
-                <text class="flex-1 leading-6">{{ locationInfo.longitude }}</text>
+            </div>
+
+            <!-- 船舶制裁信息 -->
+            <div class="bg-white rounded-16rpx p-30rpx mb-20rpx">
+              <div class="text-26rpx font-600 mb-20rpx">船舶制裁信息</div>
+              <div class="space-y-16rpx text-24rpx">
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">是否被制裁：</span>
+                  <span class="text-#333333">否</span>
+                </div>
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">制裁时间：</span>
+                  <span class="text-#333333">暂无</span>
+                </div>
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">制裁发布国家：</span>
+                  <span class="text-#333333">暂无</span>
+                </div>
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">被制裁原因：</span>
+                  <span class="text-#333333">暂无</span>
+                </div>
               </div>
-              <div class="">
-                <text class="text-#777777">纬度：</text>
-                <text class="flex-1 leading-6">{{ locationInfo.latitude }}</text>
+            </div>
+
+            <!-- 船舶限制信息 -->
+            <div class="bg-white rounded-16rpx p-30rpx mb-20rpx">
+              <div class="text-26rpx font-600 mb-20rpx">船舶限制信息</div>
+              <div class="space-y-16rpx text-24rpx">
+                <div class="flex">
+                  <span class="text-#777777 w-120rpx">限制来源：</span>
+                  <span class="text-#333333">暂无</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 船舶公司 -->
+            <div class="bg-white rounded-16rpx p-30rpx mb-20rpx">
+              <div class="text-26rpx font-600 mb-20rpx">船舶公司</div>
+
+              <!-- 船舶公司表格 -->
+              <div class="bg-white rounded-16rpx overflow-hidden border border-#E5E5E5">
+                <!-- 船舶所有公司 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    船舶所有公司
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getShipOwner() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- 船舶所有公司国家 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    船舶所有公司国家
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getShipOwnerCountry() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- 船舶管理公司 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    船舶管理公司
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getShipManager() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- 船舶管理公司国家 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    船舶管理公司国家
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getShipManagerCountry() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- 船舶经营公司 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    船舶经营公司
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getShipOperator() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- 船舶经营公司国家 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    船舶经营公司国家
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getShipOperatorCountry() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- DOC公司 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    DOC公司
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getDocCompany() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- DOC公司国家 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    DOC公司国家
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getDocCompanyCountry() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- DOC公司IMO编号 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    DOC公司IMO编号
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getDocImo() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- 船舶注册公司 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    船舶注册公司
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getShipRegisterCompany() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- 船舶注册公司国家 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    船舶注册公司国家
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getShipRegisterCompanyCountry() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- 船舶注册公司IMO编号 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    船舶注册公司IMO编号
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getShipRegisterImo() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- 技术管理公司 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    技术管理公司
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getTechManager() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- 技术管理公司国家 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    技术管理公司国家
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getTechManagerCountry() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+
+                <!-- 船舶租家 -->
+                <div class="flex">
+                  <div
+                    class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                  >
+                    船舶租家
+                  </div>
+                  <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                    {{ getShipCharterer() || '暂无' }}
+                  </div>
+                  <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 船舶公司轨迹 -->
+            <div class="bg-white rounded-16rpx p-30rpx mb-20rpx">
+              <div class="text-26rpx font-600 mb-20rpx">船舶公司轨迹</div>
+              <div class="text-24rpx text-#333333 mb-20rpx">
+                本船舶于 90 天前到达过制裁国家。
+                <br />
+                该船近一年前未发现到达制裁国家/经停指定的敏感国家港口或。
+              </div>
+
+              <!-- 轨迹表格 -->
+              <div class="bg-white rounded-16rpx overflow-hidden border border-#E5E5E5">
+                <!-- 表头 -->
+                <div
+                  class="flex bg-#F5F5F5 text-24rpx font-600 text-#333333 border-b border-#E5E5E5"
+                >
+                  <div class="flex-1 p-20rpx text-center border-r border-#E5E5E5">日期</div>
+                  <div class="flex-1 p-20rpx text-center border-r border-#E5E5E5">停靠港</div>
+                  <div class="flex-1 p-20rpx text-center border-r border-#E5E5E5">停靠国家</div>
+                  <div class="flex-1 p-20rpx text-center">风险信息</div>
+                </div>
+
+                <!-- 数据行 -->
+                <div class="flex border-b border-#E5E5E5">
+                  <div
+                    class="flex-1 p-20rpx text-center text-24rpx text-#333333 border-r border-#E5E5E5"
+                  >
+                    2025.05.10
+                  </div>
+                  <div
+                    class="flex-1 p-20rpx text-center text-24rpx text-#333333 border-r border-#E5E5E5"
+                  >
+                    宁波港
+                  </div>
+                  <div
+                    class="flex-1 p-20rpx text-center text-24rpx text-#333333 border-r border-#E5E5E5"
+                  >
+                    中国
+                  </div>
+                  <div class="flex-1 p-20rpx text-center text-24rpx text-#666666">
+                    不在敏感信息名单中
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4.3 位置筛查 -->
+          <div class="mb-30rpx">
+            <div class="text-28rpx text-#2866EB mb-20rpx">4.3 位置筛查</div>
+
+            <!-- 位置筛查表格 -->
+            <div class="bg-white rounded-16rpx overflow-hidden border border-#E5E5E5">
+              <!-- 离境口岸代码 -->
+              <div class="flex border-b border-#E5E5E5">
+                <div
+                  class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                >
+                  离境口岸代码
+                </div>
+                <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                  {{ getDeparturePortCode() || 'CAN426' }}
+                </div>
+                <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                  不在敏感信息名单中
+                </div>
+              </div>
+
+              <!-- 指运港代码 -->
+              <div class="flex">
+                <div
+                  class="w-200rpx p-20rpx text-24rpx text-#2866EB bg-#F8F9FF border-r border-#E5E5E5"
+                >
+                  指运港代码
+                </div>
+                <div class="flex-1 p-20rpx text-24rpx text-#333333 border-r border-#E5E5E5">
+                  {{ getDestinationPortCode() || 'CHN126' }}
+                </div>
+                <div class="w-200rpx p-20rpx text-center text-24rpx text-#666666">
+                  不在敏感信息名单中
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4.4 商品筛查 -->
+          <div class="mb-30rpx">
+            <div class="text-28rpx text-#2866EB mb-20rpx">4.4 商品筛查</div>
+
+            <!-- 商品信息列表 -->
+            <div class="space-y-20rpx">
+              <!-- 商品信息1 -->
+              <div class="bg-white rounded-16rpx p-30rpx">
+                <div class="text-26rpx font-600 mb-20rpx text-#333333">商品信息</div>
+                <div class="space-y-16rpx text-24rpx">
+                  <div class="flex">
+                    <span class="text-#777777 w-120rpx">商品名称：</span>
+                    <span class="text-#333333">其他贵金属；陶瓷；及其制品</span>
+                  </div>
+                  <div class="flex">
+                    <span class="text-#777777 w-120rpx">商品编码：</span>
+                    <span class="text-#333333">Chapter 81</span>
+                  </div>
+                  <div class="text-24rpx text-#E74C3C font-500">欧盟特定限制</div>
+                </div>
+              </div>
+
+              <!-- 商品信息2 -->
+              <div class="bg-white rounded-16rpx p-30rpx">
+                <div class="text-26rpx font-600 mb-20rpx text-#333333">商品信息</div>
+                <div class="space-y-16rpx text-24rpx">
+                  <div class="flex">
+                    <span class="text-#777777 w-120rpx">商品名称：</span>
+                    <span class="text-#333333">
+                      化钨和合金，不受1C117 (3)、1C226 (4)、II.A1.013 (5)或II.A1.017
+                      (6)的控制，含钨量超过90%
+                      （按重量计）。注1：出于本控制目的，电线被排除在外。注2：出于本控制目的，手术或医疗器具被排除在外。
+                    </span>
+                  </div>
+                  <div class="flex">
+                    <span class="text-#777777 w-120rpx">商品编码：</span>
+                    <span class="text-#333333">ex 8101 94</span>
+                  </div>
+                  <div class="text-24rpx text-#E74C3C font-500">欧盟特定限制</div>
+                </div>
+              </div>
+
+              <!-- 商品信息3 -->
+              <div class="bg-white rounded-16rpx p-30rpx">
+                <div class="text-26rpx font-600 mb-20rpx text-#333333">商品信息</div>
+                <div class="space-y-16rpx text-24rpx">
+                  <div class="flex">
+                    <span class="text-#777777 w-120rpx">商品名称：</span>
+                    <span class="text-#333333">其他贵金属；陶瓷；</span>
+                  </div>
+                  <div class="flex">
+                    <span class="text-#777777 w-120rpx">商品编码：</span>
+                    <span class="text-#333333">81</span>
+                  </div>
+                  <div class="text-24rpx text-#E74C3C font-500">欧盟特定限制</div>
+                </div>
+              </div>
+
+              <!-- 注释信息 -->
+              <div class="bg-#F8F9FA rounded-16rpx p-30rpx">
+                <div class="text-24rpx text-#666666">
+                  注：商品详细信息描述，可以通过文字列示在下面，等补充
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 船舶信息 -->
-        <div id="section-3" class="mb-60rpx">
-          <div class="text-32rpx mb-30rpx">船舶信息</div>
+        <!-- 五、处理意见 -->
+        <div id="section-4" class="mb-60rpx">
+          <div class="text-32rpx mb-30rpx">五、处理意见</div>
+
+          <!-- 处理意见表格 -->
+          <div class="bg-white rounded-16rpx overflow-hidden border border-#E5E5E5">
+            <!-- 表头 -->
+            <div class="flex bg-#F5F5F5 text-24rpx font-600 text-#333333 border-b border-#E5E5E5">
+              <div class="w-120rpx p-20rpx text-center border-r border-#E5E5E5">处理人</div>
+              <div class="w-140rpx p-20rpx text-center border-r border-#E5E5E5">处理状态</div>
+              <div class="w-160rpx p-20rpx text-center border-r border-#E5E5E5">认定风险等级</div>
+              <div class="w-180rpx p-20rpx text-center border-r border-#E5E5E5">处理时间</div>
+              <div class="flex-1 p-20rpx text-center">备注</div>
+            </div>
+
+            <!-- 数据行 -->
+            <div class="flex">
+              <div
+                class="w-120rpx p-20rpx text-center text-24rpx text-#333333 border-r border-#E5E5E5"
+              >
+                XXX
+              </div>
+              <div
+                class="w-140rpx p-20rpx text-center text-24rpx text-#333333 border-r border-#E5E5E5"
+              >
+                状态1
+              </div>
+              <div
+                class="w-160rpx p-20rpx text-center text-24rpx text-#333333 border-r border-#E5E5E5"
+              >
+                等级1
+              </div>
+              <div
+                class="w-180rpx p-20rpx text-center text-24rpx text-#333333 border-r border-#E5E5E5"
+              >
+                2025.05.21
+                <br />
+                12:55
+              </div>
+              <div class="flex-1 p-20rpx text-center text-24rpx text-#333333">XXXX</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 六、单据附件 -->
+        <div id="section-5" class="mb-60rpx">
+          <div class="text-32rpx mb-30rpx">六、单据附件</div>
+
+          <!-- 附件展示 -->
           <div class="bg-white rounded-16rpx p-30rpx">
-            <div class="space-y-[16rpx] text-26rpx">
-              <div class="flex justify-between">
-                <div class="">
-                  <text class="text-#777777">船舶名称：</text>
-                  <text class="flex-1 leading-6">{{ shipInfo.name }}</text>
+            <!-- 附件图片 -->
+            <div class="relative">
+              <image
+                src="/static/customs-form.png"
+                mode="widthFix"
+                class="w-full rounded-8rpx border border-#E5E5E5"
+                @error="onImageError"
+              />
+              <!-- 如果图片加载失败，显示占位符 -->
+              <div
+                class="absolute inset-0 flex items-center justify-center bg-#F8F9FA rounded-8rpx border border-#E5E5E5"
+                v-if="imageLoadError"
+              >
+                <div class="text-center">
+                  <i class="icon-icon-wenjian text-60rpx text-#CCCCCC mb-20rpx"></i>
                 </div>
-                <view class="custom-checkbox mr-15rpx" :class="{ selected: true }"></view>
               </div>
-              <div class="">
-                <text class="text-#777777">建造年份：</text>
-                <text class="flex-1 leading-6">{{ shipInfo.buildYear }}</text>
+            </div>
+          </div>
+        </div>
+
+        <!-- 七、附注 -->
+        <div id="section-6" class="mb-60rpx">
+          <div class="text-32rpx mb-30rpx">七、附注</div>
+
+          <!-- 附注内容 -->
+          <div class="bg-white rounded-16rpx p-30rpx">
+            <div class="space-y-24rpx text-26rpx text-#333333 leading-relaxed">
+              <div>
+                <span class="font-600">1.</span>
+                本合规建议模板仅供参考，具体操作需遵循公司合规政策和相关法律法规。
               </div>
-              <div class="">
-                <text class="text-#777777">船舶类型：</text>
-                <text class="flex-1 leading-6">{{ shipInfo.type }}</text>
+              <div>
+                <span class="font-600">2.</span>
+                本合规建议模板的解释权归公司合规部门所有
               </div>
-              <div class="">
-                <text class="text-#777777">IMO编号：</text>
-                <text class="flex-1 leading-6">{{ shipInfo.imoNumber }}</text>
+              <div>
+                <span class="font-600">3.</span>
+                本合规建议模板自发布之日起实施，如有变更，以最新版本为准。
               </div>
-              <div class="">
-                <text class="text-#777777">许可：</text>
-                <text class="flex-1 leading-6">{{ shipInfo.permit }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">总拟：</text>
-                <text class="flex-1 leading-6">{{ shipInfo.proposal }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">是否管制的：</text>
-                <text class="flex-1 leading-6">{{ shipInfo.isControlled }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">制裁时间：</text>
-                <text class="flex-1 leading-6">{{ shipInfo.sanctionTime }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">制裁发布国家：</text>
-                <text class="flex-1 leading-6">{{ shipInfo.sanctionCountry }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">制裁原因：</text>
-                <text class="flex-1 leading-6">{{ shipInfo.sanctionReason }}</text>
-              </div>
-              <div class="">
-                <text class="text-#777777">类型类清单：</text>
-                <text class="flex-1 leading-6">{{ shipInfo.typeList }}</text>
+            </div>
+
+            <!-- 底部说明 -->
+            <div class="mt-40rpx pt-30rpx border-t border-#E5E5E5">
+              <div class="text-24rpx text-#E74C3C text-center">
+                *请根据实际查询结果和公司政策，填写并执行相应措施。
               </div>
             </div>
           </div>
@@ -509,7 +1059,14 @@ const shanchuhanshu = (value) => {
 }
 
 // 标签页数据
-const tabs = ['查询对象基本信息', '提取对象提取信息', '合规筛查结果详情', '船舶']
+const tabs = [
+  '一、查询对象基本信息',
+  '二、查询对象提取信息',
+  '三、合规筛查结果详情',
+  '五、处理意见',
+  '六、单据附件',
+  '七、附注',
+]
 
 // 商品信息数据
 const goodsInfo = ref([
@@ -795,6 +1352,240 @@ onMounted(() => {
     console.log('没有找到报告详情数据')
   }
 })
+
+// 解析JSON字符串的辅助函数
+const parseJsonString = (jsonStr) => {
+  if (!jsonStr) return null
+  try {
+    return JSON.parse(jsonStr)
+  } catch (e) {
+    return null
+  }
+}
+
+// 获取离境口岸名称
+const getDeparturePortName = () => {
+  // 优先从 locationList 中查找离境口岸信息
+  if (reportDetail.value?.locationList) {
+    const departurePort = reportDetail.value.locationList.find(
+      (item) => item.itemName === '离境口岸',
+    )
+    if (departurePort) {
+      return departurePort.itemValue || departurePort.locationName || ''
+    }
+  }
+
+  // 备用方案：从 retrieveInfo.departurePortCode 获取
+  if (!reportDetail.value?.retrieveInfo?.departurePortCode) return ''
+  const portInfo = parseJsonString(reportDetail.value.retrieveInfo.departurePortCode)
+  return portInfo?.name || ''
+}
+
+// 获取贸易国名称
+const getTradeCountryName = () => {
+  // 优先从 countryList 中查找贸易国信息
+  if (reportDetail.value?.countryList) {
+    const tradeCountry = reportDetail.value.countryList.find(
+      (item) => item.itemName === '贸易国' || item.itemName === '贸易国(地区)',
+    )
+    if (tradeCountry) {
+      return tradeCountry.itemValue || tradeCountry.cnShortName || ''
+    }
+  }
+
+  // 备用方案：从 retrieveInfo.tradeCountryThreeCode 获取
+  if (!reportDetail.value?.retrieveInfo?.tradeCountryThreeCode) return ''
+  const countryInfo = parseJsonString(reportDetail.value.retrieveInfo.tradeCountryThreeCode)
+  return countryInfo?.name || ''
+}
+
+// 获取指运港名称
+const getDestinationPortName = () => {
+  // 优先从 locationList 中查找指运港信息
+  if (reportDetail.value?.locationList) {
+    const destinationPort = reportDetail.value.locationList.find(
+      (item) => item.itemName === '指运港',
+    )
+    if (destinationPort) {
+      return destinationPort.itemValue || destinationPort.locationName || ''
+    }
+  }
+
+  // 备用方案：从 retrieveInfo.destinationPortCode 获取
+  if (!reportDetail.value?.retrieveInfo?.destinationPortCode) return ''
+  const portInfo = parseJsonString(reportDetail.value.retrieveInfo.destinationPortCode)
+  return portInfo?.name || ''
+}
+
+// 获取原产国名称
+const getOriginCountryName = () => {
+  // 优先从 countryList 中查找原产国信息
+  if (reportDetail.value?.countryList) {
+    const originCountry = reportDetail.value.countryList.find((item) => item.itemName === '原产国')
+    if (originCountry) {
+      return originCountry.itemValue || originCountry.cnShortName || ''
+    }
+  }
+
+  // 备用方案：从 retrieveInfo.originCountryThreeCode 获取
+  if (!reportDetail.value?.retrieveInfo?.originCountryThreeCode) return ''
+  const countryInfo = parseJsonString(reportDetail.value.retrieveInfo.originCountryThreeCode)
+  return countryInfo?.name || ''
+}
+
+// 获取最终目的国名称
+const getFinalDestinationCountryName = () => {
+  // 优先从 countryList 中查找最终目的国信息
+  if (reportDetail.value?.countryList) {
+    const finalDestCountry = reportDetail.value.countryList.find(
+      (item) =>
+        item.itemName === '最终目的国' ||
+        item.itemName === '最终目的国(地区)' ||
+        item.itemName === '运抵国',
+    )
+    if (finalDestCountry) {
+      return finalDestCountry.itemValue || finalDestCountry.cnShortName || ''
+    }
+  }
+
+  // 备用方案：从 retrieveInfo.finalDestinationCountryThreeCode 获取
+  if (!reportDetail.value?.retrieveInfo?.finalDestinationCountryThreeCode) return ''
+  const countryInfo = parseJsonString(
+    reportDetail.value.retrieveInfo.finalDestinationCountryThreeCode,
+  )
+  return countryInfo?.name || ''
+}
+
+// 船舶基本信息获取函数
+const getShipName = () => {
+  return (
+    reportDetail.value?.logisticsList?.[0]?.shipname ||
+    reportDetail.value?.logisticsList?.[0]?.itemValue ||
+    ''
+  )
+}
+
+const getShipBuildDate = () => {
+  return reportDetail.value?.logisticsList?.[0]?.builddate || ''
+}
+
+const getShipType = () => {
+  return reportDetail.value?.logisticsList?.[0]?.shiptype || ''
+}
+
+const getShipImo = () => {
+  return reportDetail.value?.logisticsList?.[0]?.imo || ''
+}
+
+const getShipMmsi = () => {
+  return reportDetail.value?.logisticsList?.[0]?.mmsi || ''
+}
+
+const getShipCallsign = () => {
+  return reportDetail.value?.logisticsList?.[0]?.callsign || ''
+}
+
+const getShipFlag = () => {
+  return reportDetail.value?.logisticsList?.[0]?.flag || ''
+}
+
+const getShipGt = () => {
+  return reportDetail.value?.logisticsList?.[0]?.gt || ''
+}
+
+// 船舶公司信息获取函数
+const getShipOwner = () => {
+  return reportDetail.value?.logisticsList?.[0]?.shipOwner || ''
+}
+
+const getShipOwnerCountry = () => {
+  return reportDetail.value?.logisticsList?.[0]?.shipOwnerCountry || ''
+}
+
+const getShipManager = () => {
+  return reportDetail.value?.logisticsList?.[0]?.shipManager || ''
+}
+
+const getShipManagerCountry = () => {
+  return reportDetail.value?.logisticsList?.[0]?.shipManagerCountry || ''
+}
+
+const getShipOperator = () => {
+  return reportDetail.value?.logisticsList?.[0]?.shipOperator || ''
+}
+
+const getShipOperatorCountry = () => {
+  return reportDetail.value?.logisticsList?.[0]?.shipOperatorCountry || ''
+}
+
+const getDocCompany = () => {
+  return reportDetail.value?.logisticsList?.[0]?.docCompany || ''
+}
+
+const getDocCompanyCountry = () => {
+  return reportDetail.value?.logisticsList?.[0]?.docCompanyCountry || ''
+}
+
+const getDocImo = () => {
+  return reportDetail.value?.logisticsList?.[0]?.docImo || ''
+}
+
+const getShipRegisterCompany = () => {
+  return reportDetail.value?.logisticsList?.[0]?.registerCompany || ''
+}
+
+const getShipRegisterCompanyCountry = () => {
+  return reportDetail.value?.logisticsList?.[0]?.registerCompanyCountry || ''
+}
+
+const getShipRegisterImo = () => {
+  return reportDetail.value?.logisticsList?.[0]?.registerImo || ''
+}
+
+const getTechManager = () => {
+  return reportDetail.value?.logisticsList?.[0]?.techManager || ''
+}
+
+const getTechManagerCountry = () => {
+  return reportDetail.value?.logisticsList?.[0]?.techManagerCountry || ''
+}
+
+const getShipCharterer = () => {
+  return reportDetail.value?.logisticsList?.[0]?.charterer || ''
+}
+
+// 位置筛查信息获取函数
+const getDeparturePortCode = () => {
+  // 优先从 locationList 中查找离境口岸信息
+  if (reportDetail.value?.locationList) {
+    const departurePort = reportDetail.value.locationList.find(
+      (item) => item.itemName === '离境口岸',
+    )
+    if (departurePort) {
+      return departurePort.caccPortCode || departurePort.itemValue || ''
+    }
+  }
+  return reportDetail.value?.retrieveInfo?.departurePortCode || ''
+}
+
+const getDestinationPortCode = () => {
+  // 优先从 locationList 中查找指运港信息
+  if (reportDetail.value?.locationList) {
+    const destinationPort = reportDetail.value.locationList.find(
+      (item) => item.itemName === '指运港',
+    )
+    if (destinationPort) {
+      return destinationPort.caccPortCode || destinationPort.itemValue || ''
+    }
+  }
+  return reportDetail.value?.retrieveInfo?.destinationPortCode || ''
+}
+
+// 图片加载错误处理
+const imageLoadError = ref(false)
+const onImageError = () => {
+  imageLoadError.value = true
+}
 
 // 更新页面数据的函数
 const updatePageData = () => {

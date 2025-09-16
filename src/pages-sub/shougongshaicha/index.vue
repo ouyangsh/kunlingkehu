@@ -76,9 +76,10 @@
     </div>
     <template #footer>
       <div class="h-180rpx w-full bg-[#ffffffff] flex justify-evenly items-center pb-2 box-border">
-        <div 
+        <div
           @click="handleSave"
-          class="w-330rpx h-88rpx bg-[#F2F5FA] rounded-1 flex justify-center items-center cursor-pointer">
+          class="w-330rpx h-88rpx bg-[#F2F5FA] rounded-1 flex justify-center items-center cursor-pointer"
+        >
           保存
         </div>
         <div
@@ -491,7 +492,7 @@ const saveDocument = async (opType, loadingTitle = '保存中...') => {
       templateCode: jumpParams.value.templateCode,
       itemParamList,
       type: 2, // 类型，固定为 2
-      opType: opType, // 操作类型，1 仅保存，2 保存并且筛查
+      opType, // 操作类型，1 仅保存，2 保存并且筛查
     }
 
     console.log('准备发送的数据:', requestData)
@@ -523,12 +524,12 @@ const saveDocument = async (opType, loadingTitle = '保存中...') => {
           // 将筛查结果存储到本地存储中
           uni.setStorageSync('searchResult', {
             resultData: response.data || response,
-            searchParams: requestData
+            searchParams: requestData,
           })
-          
+
           // 跳转到筛查结果页面
           uni.navigateTo({
-            url: '/pages-sub/shaichajieguo/index'
+            url: '/pages-sub/shaichajieguo/index',
           })
         }, 1500)
       }

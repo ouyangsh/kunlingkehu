@@ -32,7 +32,10 @@
     </view>
     <template #footer>
       <div class="h-180rpx w-full bg-[#ffffffff] flex justify-evenly items-center pb-2 box-border">
-        <div class="w-330rpx h-88rpx bg-[#F2F5FA] rounded-1 flex justify-center items-center">
+        <div
+          class="w-330rpx h-88rpx bg-[#F2F5FA] rounded-1 flex justify-center items-center"
+          @click="createNewFolder"
+        >
           新建文件夹
         </div>
         <div
@@ -44,11 +47,48 @@
       </div>
     </template>
   </buju>
+
+  <!-- 新建文件夹弹窗 -->
+  <wd-popup
+    v-model="show"
+    position="bottom"
+    custom-style="height: 400rpx; border-radius: 20rpx 20rpx 0 0"
+  >
+    <div class="flex flex-col items-center">
+      <div class="text-32rpx my40rpx">新建文件夹</div>
+      <div class="w-690rpx bg-#F4F6FA; h-88rpx rounded-md flex items-center pl10rpx">
+        <input
+          type="text"
+          class="w-690rpx bg-#F4F6FA; h-88rpx rounded-md ml10rpx"
+          v-model="inputValue"
+          placeholder="请输入文件夹名称"
+        />
+        <div class="w-88rpx h-88rpx bg-#F4F6FA; rounded-md flex items-center justify-center">
+          <uni-icons type="clear" color="#CCCCCC" size="22" @click="inputValue = ''"></uni-icons>
+        </div>
+      </div>
+      <div class="w-690rpx h-88rpx rounded-md flex items-center justify-between mt40rpx">
+        <div
+          @click="handleClose"
+          class="text-32rpx w330rpx h80rpx bg-#F4F6FA flex justify-center items-center rounded-md"
+        >
+          取消
+        </div>
+        <div
+          @click="handleConfirm"
+          class="text-32rpx w330rpx h80rpx text-#fff bg-#2563EB flex justify-center items-center rounded-md"
+        >
+          确定
+        </div>
+      </div>
+    </div>
+  </wd-popup>
 </template>
 <script setup lang="js">
 import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
-import { folderList, fileList } from '../quanbu-wendang-xuanze/zhuangtai'
+import { folderList, fileList, fetchData } from '../quanbu-wendang-xuanze/zhuangtai'
+import { addCategoryAPI } from '@/service/foo'
 
 // 计算属性：是否全部选中
 const isAllSelected = computed(() => {
@@ -115,6 +155,57 @@ const dibuClick = (item) => {
   uni.navigateTo({
     url: item.path,
   })
+}
+
+// 新建文件夹弹窗状态
+const show = ref(false)
+const inputValue = ref('')
+
+// 新建文件夹功能
+const createNewFolder = () => {
+  show.value = true
+  inputValue.value = ''
+}
+
+// 关闭弹窗
+const handleClose = () => {
+  show.value = false
+}
+
+// 确认新建文件夹
+const handleConfirm = async () => {
+  if (!inputValue.value) {
+    uni.showToast({
+      title: '文件夹名称不能为空',
+      icon: 'none',
+    })
+    return
+  }
+
+  try {
+    const res = await addCategoryAPI(inputValue.value)
+    if (res.code === 200) {
+      uni.showToast({
+        title: '创建成功',
+        icon: 'success',
+      })
+      // 刷新文件夹列表
+      await fetchData()
+    } else {
+      uni.showToast({
+        title: res.message || '创建失败',
+        icon: 'none',
+      })
+    }
+  } catch (error) {
+    console.error('创建文件夹失败', error)
+    uni.showToast({
+      title: '创建失败',
+      icon: 'none',
+    })
+  }
+
+  show.value = false
 }
 
 const loopData0 = ref([

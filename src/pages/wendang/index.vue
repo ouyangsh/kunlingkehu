@@ -64,7 +64,7 @@ import dibu from '../index/dibu.vue'
 import FolderList from './components/folder-list.vue'
 import FileList from './components/file-list.vue'
 import FunctionGrid from './components/function-grid.vue'
-import { getDirectoryListAPI } from '@/service/foo'
+import { getDirectoryListAPI, fileUpload } from '@/service/foo'
 
 const functionItems = ref([
   {
@@ -80,14 +80,128 @@ const functionItems = ref([
   {
     icon: 'icon-icon-xinjianwenjianjia',
     text: '新建文件夹',
-    color: '#F45C27',
+    color: '#37C3C8',
   },
 ])
+
+// 上传文件的通用函数
+const uploadFile = async (filePath) => {
+  uni.showLoading({
+    title: '上传中...',
+  })
+
+  try {
+    const uploadRes = await fileUpload({
+      filePath,
+      name: 'file', // 后端接收文件的字段名
+      formData: {},
+    })
+
+    if (uploadRes.code === 200) {
+      uni.showToast({
+        title: '上传成功',
+        icon: 'success',
+      })
+      // 上传成功后刷新数据
+      fetchData()
+      // 跳转到预览页面，传递文件ID和图片路径
+      uni.navigateTo({
+        url:
+          '/pages-sub/shougongshaicha_xiangce/index?imagePath=' +
+          encodeURIComponent(filePath) +
+          '&fileId=' +
+          encodeURIComponent(uploadRes.data.id),
+      })
+    } else {
+      uni.showToast({
+        title: uploadRes.msg || '上传失败',
+        icon: 'none',
+      })
+    }
+  } catch (error) {
+    console.error('上传失败', error)
+    uni.showToast({
+      title: error.message || '上传失败',
+      icon: 'none',
+    })
+  } finally {
+    uni.hideLoading()
+  }
+}
+
+const takePhoto = () => {
+  // 显示选择图片的选项
+  uni.showActionSheet({
+    itemList: ['拍照', '从相册选择'],
+    success: (res) => {
+      if (res.tapIndex === 0) {
+        // 拍照
+        uni.chooseImage({
+          count: 1,
+          sourceType: ['camera'],
+          success: (result) => {
+            console.log('拍照成功', result.tempFilePaths[0])
+            // 上传文件
+            uploadFile(result.tempFilePaths[0])
+          },
+          fail: (err) => {
+            console.log('拍照失败', err)
+            uni.showToast({
+              title: '拍照失败',
+              icon: 'error',
+            })
+          },
+        })
+      } else if (res.tapIndex === 1) {
+        // 从相册选择
+        uni.chooseImage({
+          count: 1,
+          sourceType: ['album'],
+          success: (result) => {
+            console.log('选择相册图片成功', result.tempFilePaths[0])
+            // 上传文件
+            uploadFile(result.tempFilePaths[0])
+          },
+          fail: (err) => {
+            console.log('选择相册图片失败', err)
+            uni.showToast({
+              title: '选择图片失败',
+              icon: 'error',
+            })
+          },
+        })
+      }
+    },
+  })
+}
+
+// 相册导入功能
+const importFromAlbum = () => {
+  uni.chooseImage({
+    count: 1,
+    sourceType: ['album'], // 只允许从相册选择
+    success: async (res) => {
+      const tempFilePath = res.tempFilePaths[0]
+      uploadFile(tempFilePath)
+    },
+    fail: (err) => {
+      console.log('选择图片失败', err)
+      uni.showToast({
+        title: '选择图片失败',
+        icon: 'none',
+      })
+    },
+  })
+}
 
 // 处理功能项点击
 const handleFunctionItemClick = ({ item, index }) => {
   console.log('点击功能按钮:', item.text, index)
-  if (item.text === '新建文件夹') {
+  if (item.text === '相册导入') {
+    importFromAlbum()
+  } else if (item.text === '拍照') {
+    takePhoto()
+  } else if (item.text === '新建文件夹') {
     uni.navigateTo({
       url: '/pages-sub/fenleishezhi/index',
     })
@@ -101,16 +215,14 @@ const folderList = ref([])
 // 文件列表
 const fileList = ref([])
 
-// 获取数据
+// 获取数据函数
 const fetchData = async () => {
   try {
     const res = await getDirectoryListAPI()
-    console.log(res)
-
     if (res.code === 200) {
-      folderList.value = res.data.dirs.map((dir) => ({
+      folderList.value = res.data.dirs?.map((dir) => ({
         id: dir.id,
-        icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png', // 默认图标
+        icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
         name: dir.dirName,
         date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
         count: dir.fileCount,

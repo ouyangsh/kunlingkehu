@@ -41,15 +41,33 @@
         </div>
 
         <div class="flex text-26rpx mt-28rpx space-x-20rpx">
-          <div class="h60rpx px-20rpx bg-#F4F6FA flex justify-center items-center">近7天</div>
-          <div class="h60rpx px-20rpx bg-#F4F6FA flex justify-center items-center">近1月</div>
-          <div class="h60rpx px-20rpx bg-#F4F6FA flex justify-center items-center">1年内</div>
+          <div
+            @click="setDateRange('7days')"
+            class="h60rpx px-20rpx bg-#F4F6FA flex justify-center items-center cursor-pointer"
+          >
+            近7天
+          </div>
+          <div
+            @click="setDateRange('1month')"
+            class="h60rpx px-20rpx bg-#F4F6FA flex justify-center items-center cursor-pointer"
+          >
+            近1月
+          </div>
+          <div
+            @click="setDateRange('1year')"
+            class="h60rpx px-20rpx bg-#F4F6FA flex justify-center items-center cursor-pointer"
+          >
+            1年内
+          </div>
           <div
             @click="openPicker"
             class="h60rpx px-20rpx bg-#F4F6FA flex justify-center items-center"
           >
-            <i class="font_family icon-icon-rili text-#BAC3D1"></i>
-            <div>自定义日期</div>
+            <i class="font_family icon-icon-rili text-#BAC3D1 mr-10rpx"></i>
+            <div class="flex flex-col text-center leading-tight">
+              <div class="text-22rpx">{{ startDateDisplay }}</div>
+              <div class="text-22rpx">{{ endDateDisplay }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -107,6 +125,15 @@ const datetimePickerRef = ref()
 const dateRange = ref(['', Date.now()]) // For v-model
 const startDate = ref('') // For display
 const endDate = ref('') // For display
+
+// 自定义日期显示文本
+const startDateDisplay = computed(() => {
+  return startDate.value || '开始日期'
+})
+
+const endDateDisplay = computed(() => {
+  return endDate.value || '结束日期'
+})
 const pageslength = computed(() => getCurrentPages().length)
 
 // 新闻列表数据
@@ -395,6 +422,44 @@ const jieguo = () => {
   uni.navigateTo({
     url: '/pages-sub/shougongshaicha/index',
   })
+}
+
+// 设置预定义的日期范围
+const setDateRange = (type) => {
+  const now = new Date()
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  let startTime, endTime
+
+  switch (type) {
+    case '7days':
+      startTime = new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000) // 7天前
+      endTime = today
+      break
+    case '1month':
+      startTime = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate()) // 1个月前
+      endTime = today
+      break
+    case '1year':
+      startTime = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()) // 1年前
+      endTime = today
+      break
+    default:
+      return
+  }
+
+  // 更新日期范围
+  startDate.value = formatDate(startTime.getTime())
+  endDate.value = formatDate(endTime.getTime())
+  dateRange.value = [startTime.getTime(), endTime.getTime()]
+
+  // 更新查询参数
+  queryParams.publishDateBegin = startDate.value
+  queryParams.publishDateEnd = endDate.value
+
+  // 重新获取数据
+  queryParams.pageNum = 1
+  newsList.value = []
+  fetchNewsList()
 }
 
 function openPicker() {

@@ -7,6 +7,7 @@
           section_4: index === 1,
           section_5: index === 2,
           'opacity-50': item.selected && isAllSelected,
+          'pointer-events-none': item.selected && isAllSelected,
         }"
         @click="handleFolderClick(item)"
       >
@@ -41,6 +42,10 @@ const props = defineProps({
 const emit = defineEmits(['folderClick'])
 
 const handleFolderClick = (folder) => {
+  // 如果文件夹已选中且处于全选状态，则不响应点击
+  if (folder.selected && props.isAllSelected) {
+    return
+  }
   emit('folderClick', folder)
 }
 </script>

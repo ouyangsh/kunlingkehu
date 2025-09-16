@@ -165,14 +165,23 @@ const loopData0 = ref([
   },
 ])
 
-const yidongClick = () => {
+const yidongClick = async () => {
   const selectedFiles = fileList.value.filter((file) => file.selected)
   console.log('移动')
   // 调用移动接口
-  moveDocumentAPI({
+  const result = await moveDocumentAPI({
     ids: selectedFiles.map((file) => file.id),
     targetDirId: selectedFolderId.value,
   })
+  console.log('moveDocumentAPI', result)
+  if (result.code === 200) {
+    uni.showToast({
+      title: '移动成功',
+      icon: 'success',
+    })
+    // 移动成功后刷新数据
+    await getDocumentList()
+  }
 }
 </script>
 <style lang="css" scoped>

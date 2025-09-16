@@ -280,7 +280,7 @@ const loopData0 = ref([
         title: '下载中...',
       })
 
-      const downloadTasks = selectedFiles.map((file) => {
+      const downloadTasks = selectedFiles.map((file, index) => {
         return new Promise((resolve, reject) => {
           // #ifdef MP-WEIXIN || APP-PLUS
           downloadAttachmentAPI({ attachmentId: file.id })
@@ -294,23 +294,36 @@ const loopData0 = ref([
 
               // Remove invalid characters and replace spaces
               const cleanBaseFileName = baseFileName.replace(/[^\w.-]/g, '_').replace(/\s/g, '_')
-              const fileName = `${cleanBaseFileName}.${fileExtension}`
 
-              const filePath = `${uni.env.USER_DATA_PATH}/${fileName}`
+              // Add timestamp and index to avoid filename conflicts
+              const timestamp = Date.now()
+              const fileName = `${cleanBaseFileName}_${timestamp}_${index}.${fileExtension}`
+
+              // Use appropriate path for different platforms
+              let filePath
+              // #ifdef MP-WEIXIN
+              filePath = `${wx.env.USER_DATA_PATH}/${fileName}`
+              // #endif
+              // #ifdef APP-PLUS
+              filePath = `${uni.env.USER_DATA_PATH}/${fileName}`
+              // #endif
+
               fs.writeFile({
                 filePath,
                 data: res, // res is ArrayBuffer
                 encoding: 'binary',
                 success: () => {
-                  // File is already saved at filePath, so we can directly open it
+                  console.log(`文件保存成功: ${filePath}`)
+                  // Try to open document, but don't fail the whole process if it fails
                   uni.openDocument({
-                    filePath, // Use the path where we just wrote the file
+                    filePath,
                     showMenu: true,
                     success: function (res) {
                       console.log('打开文档成功')
                     },
                     fail: (error) => {
-                      reject(new Error(`打开文档失败: ${error.errMsg}`))
+                      console.warn(`打开文档失败: ${error.errMsg}`)
+                      // Don't reject here, just log the warning
                     },
                   })
                   resolve(filePath) // Resolve with the saved file path
@@ -319,6 +332,26 @@ const loopData0 = ref([
                   reject(new Error(`写入文件失败: ${error.errMsg}`))
                 },
               })
+            })
+            .catch((error) => {
+              reject(new Error(`下载失败: ${error.errMsg || error.message}`))
+            })
+          // #endif
+
+          // #ifdef H5
+          // For H5, use browser download
+          downloadAttachmentAPI({ attachmentId: file.id })
+            .then((res) => {
+              const blob = new Blob([res])
+              const url = window.URL.createObjectURL(blob)
+              const a = document.createElement('a')
+              a.href = url
+              a.download = file.name || 'downloaded_file'
+              document.body.appendChild(a)
+              a.click()
+              document.body.removeChild(a)
+              window.URL.revokeObjectURL(url)
+              resolve(file.name)
             })
             .catch((error) => {
               reject(new Error(`下载失败: ${error.errMsg || error.message}`))

@@ -27,8 +27,8 @@ const httpInterceptor = {
       // 1. 非 http 开头需拼接地址
       options.url = baseURL + options.url
     }
-    // 2. 请求超时
-    options.timeout = 10000 // 10s
+    // 2. 请求超时（仅在未显式传入时设置默认值）
+    options.timeout = options.timeout ?? 10000 // 10s
     // 3. 添加小程序端请求头标识
     options.header = {
       platform: 'mp-weixin', // 可选值与 uniapp 定义的平台一致，告诉后台来源

@@ -987,11 +987,21 @@
     </template>
   </buju>
 
-  <wd-popup v-model="guidang" custom-style="height: 364rpx; width: 630rpx; border-radius: 20rpx ">
-    <div class="flex flex-col items-center">
+  <wd-popup v-model="guidang" custom-style="height: 600rpx; width: 630rpx; border-radius: 20rpx ">
+    <div class="flex flex-col items-center px-40rpx">
       <div class="text-32rpx my40rpx">归档</div>
-      <div class="text-32rpx my20rpx">确认归档？</div>
-      <div class="h-88rpx rounded-md flex items-center justify-evenly mt40rpx w-630rpx mb-20rpx">
+      <div class="text-28rpx mb-30rpx text-#666666">请输入归档说明</div>
+
+      <!-- 归档说明输入框 -->
+      <textarea
+        v-model="archiveMsg"
+        placeholder="请输入归档说明..."
+        class="w-100% h-200rpx p-20rpx border border-#E5E5E5 rounded-8rpx text-28rpx mb-40rpx"
+        maxlength="200"
+        show-confirm-bar="false"
+      />
+
+      <div class="h-88rpx rounded-md flex items-center justify-evenly w-100% mb-20rpx">
         <div
           @click="guidanghanshu(false)"
           class="text-32rpx w270rpx h88rpx bg-#F4F6FA flex justify-center items-center rounded-md"
@@ -1030,6 +1040,7 @@
 </template>
 <script setup lang="js">
 import { ref, onMounted, computed } from 'vue'
+import { http } from '@/utils/http'
 
 const statusBarHeight = ref(0)
 // 报告详情数据
@@ -1044,10 +1055,69 @@ const endDate = ref('') // For display
 const scrollViewRef = ref()
 const scrollIntoViewId = ref('')
 const guidang = ref(false)
-const guidanghanshu = (value) => {
-  guidang.value = false
-  if (value) {
-    // 归档操作
+const archiveMsg = ref('')
+
+const guidanghanshu = async (value) => {
+  if (!value) {
+    guidang.value = false
+    archiveMsg.value = ''
+    return
+  }
+
+  // 获取documentId
+  const documentId = reportDetail.value?.documentId
+  if (!documentId) {
+    uni.showToast({
+      title: '未找到文档ID',
+      icon: 'none',
+    })
+    return
+  }
+
+  try {
+    uni.showLoading({
+      title: '归档中...',
+    })
+
+    // 调用归档API
+    const response = await http({
+      url: '/tscc/document/archived',
+      method: 'POST',
+      data: {
+        id: documentId,
+        msg: archiveMsg.value.trim(),
+      },
+    })
+
+    uni.hideLoading()
+
+    if (response.code === 200) {
+      uni.showToast({
+        title: '归档成功',
+        icon: 'success',
+      })
+
+      // 关闭弹窗并清空输入
+      guidang.value = false
+      archiveMsg.value = ''
+
+      // 可以选择返回上一页或刷新页面
+      setTimeout(() => {
+        uni.navigateBack()
+      }, 1500)
+    } else {
+      uni.showToast({
+        title: response.msg || '归档失败',
+        icon: 'none',
+      })
+    }
+  } catch (error) {
+    uni.hideLoading()
+    console.error('归档失败:', error)
+    uni.showToast({
+      title: '归档失败，请重试',
+      icon: 'none',
+    })
   }
 }
 const shanchu = ref(false)
@@ -1243,25 +1313,153 @@ const archiveReport = () => {
 }
 
 // 导出筛查报告
-const exportReport = () => {
-  uni.showActionSheet({
-    itemList: ['导出为PDF', '导出为Excel', '导出为Word'],
+const exportReport = async () => {
+  // 获取documentId
+  const documentId = reportDetail.value?.documentId
+  if (!documentId) {
+    uni.showToast({
+      title: '未找到文档ID',
+      icon: 'none',
+    })
+    return
+  }
+
+  try {
+    uni.showLoading({
+      title: '正在导出PDF...',
+    })
+
+    // 微信小程序使用downloadFile下载文件
+    const downloadTask = uni.downloadFile({
+      url: `${import.meta.env.VITE_SERVER_BASEURL}/tscc/document/export-pdf`,
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        platform: 'mp-weixin',
+        clientid: 'e5cd7e4891bf95d1d19206ce24a7b32e',
+      },
+      // 微信小程序downloadFile不支持POST data，需要通过URL参数传递
+      // 或者使用request先获取下载链接
+      success: (res) => {
+        uni.hideLoading()
+
+        if (res.statusCode === 200) {
+          // 直接打开下载的文件
+          uni.openDocument({
+            filePath: res.tempFilePath,
+            fileType: 'pdf',
+            success: () => {
+              console.log('PDF打开成功')
+              uni.showToast({
+                title: 'PDF导出成功',
+                icon: 'success',
+              })
+            },
+            fail: (err) => {
+              console.error('PDF打开失败:', err)
+              uni.showToast({
+                title: 'PDF打开失败',
+                icon: 'none',
+              })
+            },
+          })
+        } else {
+          uni.showToast({
+            title: '导出失败',
+            icon: 'none',
+          })
+        }
+      },
+      fail: (err) => {
+        uni.hideLoading()
+        console.error('下载失败:', err)
+
+        // 如果downloadFile不支持POST，则使用request方式
+        exportPdfWithRequest(documentId)
+      },
+    })
+  } catch (error) {
+    uni.hideLoading()
+    console.error('导出失败:', error)
+    uni.showToast({
+      title: '导出失败，请重试',
+      icon: 'none',
+    })
+  }
+}
+
+// 备用方案：使用request获取二进制数据
+const exportPdfWithRequest = (documentId) => {
+  uni.showLoading({
+    title: '正在导出PDF...',
+  })
+
+  uni.request({
+    url: `${import.meta.env.VITE_SERVER_BASEURL}/tscc/document/export-pdf`,
+    method: 'POST',
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      platform: 'mp-weixin',
+      clientid: 'e5cd7e4891bf95d1d19206ce24a7b32e',
+    },
+    data: `documentId=${documentId}`,
+    responseType: 'arraybuffer',
     success: (res) => {
-      const formats = ['PDF', 'Excel', 'Word']
-      const selectedFormat = formats[res.tapIndex]
+      uni.hideLoading()
 
-      uni.showToast({
-        title: `正在生成${selectedFormat}报告...`,
-        icon: 'loading',
-        duration: 2000,
-      })
+      if (res.statusCode === 200) {
+        // 生成临时文件名
+        const fileName = `筛查报告_${documentId}.pdf`
 
-      setTimeout(() => {
+        // 获取文件系统管理器
+        const fs = wx.getFileSystemManager()
+
+        // 写入临时文件
+        const tempFilePath = `${wx.env.USER_DATA_PATH}/${fileName}`
+
+        try {
+          fs.writeFileSync(tempFilePath, res.data)
+
+          // 打开文件
+          uni.openDocument({
+            filePath: tempFilePath,
+            fileType: 'pdf',
+            success: () => {
+              console.log('PDF打开成功')
+              uni.showToast({
+                title: 'PDF导出成功',
+                icon: 'success',
+              })
+            },
+            fail: (err) => {
+              console.error('PDF打开失败:', err)
+              uni.showToast({
+                title: 'PDF打开失败',
+                icon: 'none',
+              })
+            },
+          })
+        } catch (writeError) {
+          console.error('文件写入失败:', writeError)
+          uni.showToast({
+            title: '文件保存失败',
+            icon: 'none',
+          })
+        }
+      } else {
         uni.showToast({
-          title: `${selectedFormat}报告生成完成`,
-          icon: 'success',
+          title: '导出失败',
+          icon: 'none',
         })
-      }, 2000)
+      }
+    },
+    fail: (err) => {
+      uni.hideLoading()
+      console.error('请求失败:', err)
+      uni.showToast({
+        title: '导出失败，请重试',
+        icon: 'none',
+      })
     },
   })
 }

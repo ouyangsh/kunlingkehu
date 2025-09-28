@@ -5,7 +5,6 @@
 
 interface NavigateToOptions {
   url: "/pages/index/index" |
-       "/pages/demo/index" |
        "/pages/index/dibu" |
        "/pages/index/request" |
        "/pages/login/index" |
@@ -14,47 +13,6 @@ interface NavigateToOptions {
        "/pages/user-center/index" |
        "/pages/wendang/index" |
        "/pages/zixun/index" |
-       "/pages/demo/base/auto-import" |
-       "/pages/demo/base/css" |
-       "/pages/demo/base/enum" |
-       "/pages/demo/base/env" |
-       "/pages/demo/base/iconfont" |
-       "/pages/demo/base/mock" |
-       "/pages/demo/base/mp-weixin-share" |
-       "/pages/demo/base/navbar" |
-       "/pages/demo/base/no-navbar" |
-       "/pages/demo/base/pinia" |
-       "/pages/demo/base/request" |
-       "/pages/demo/base/request2" |
-       "/pages/demo/base/route-interceptor" |
-       "/pages/demo/base/svg" |
-       "/pages/demo/base/throughout" |
-       "/pages/demo/base/uni-ui-icons" |
-       "/pages/demo/base/uni-ui" |
-       "/pages/demo/base/unocss-icons" |
-       "/pages/demo/base/unocss" |
-       "/pages/demo/base/upload" |
-       "/pages/demo/base/upload2" |
-       "/pages/demo/base/uv-ui" |
-       "/pages/demo/base/vconsole" |
-       "/pages/demo/base/wot" |
-       "/pages/demo/page/clock" |
-       "/pages/demo/page/clock2" |
-       "/pages/demo/page/floating-bubble" |
-       "/pages/demo/page/i18n" |
-       "/pages/demo/page/sign" |
-       "/pages/demo/page/waterfall" |
-       "/pages/demo/route-interceptor/index" |
-       "/pages/demo/route-interceptor/login-auto" |
-       "/pages/demo/route-interceptor/login-model" |
-       "/pages/demo/route-interceptor/login-page" |
-       "/pages/demo/page/echarts/index" |
-       "/pages/demo/page/img-min/index" |
-       "/pages/demo/page/lottery/big-wheel" |
-       "/pages/demo/page/lottery/nine-grid" |
-       "/pages/demo/page/sp-editor/index" |
-       "/pages/demo/page/ucharts/index" |
-       "/pages/demo/page/z-paging/index" |
        "/pages-sub/changjianwenti/index" |
        "/pages-sub/danju/index" |
        "/pages-sub/demo/index" |

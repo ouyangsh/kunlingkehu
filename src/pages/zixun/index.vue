@@ -409,6 +409,15 @@ function handleConfirm(e) {
     startDate.value = formatDate(start)
     endDate.value = formatDate(end)
     dateRange.value = [start, end]
+
+    // 更新查询参数
+    queryParams.publishDateBegin = startDate.value
+    queryParams.publishDateEnd = endDate.value
+
+    // 重新获取数据
+    queryParams.pageNum = 1
+    newsList.value = []
+    fetchNewsList()
   }
 }
 

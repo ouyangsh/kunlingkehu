@@ -11,7 +11,7 @@
   <buju title="首页">
     <template #header>
       <view class="box_1 flex-col fixed top-0 left-0 z-10">
-        <image class="box_1_background" src="@/static/lanhu_shouye/qwer.png" mode="" />
+        <image class="box_1_background" src="/static/used-images/qwer.png" mode="" />
         <view class="box_1_content flex-col">
           <view class="image-wrapper_13 flex-row">
             <image class="image_1" referrerpolicy="no-referrer" />
@@ -23,7 +23,7 @@
             <image
               class="image_2"
               referrerpolicy="no-referrer"
-              src="/static/lanhu_shouye/SketchPng90d6059e3c0b86e5c9b56bf40c7b4c9d17beb6da4b70b2778e006005f96729b4.png"
+              src="/static/used-images/SketchPng90d6059e3c0b86e5c9b56bf40c7b4c9d17beb6da4b70b2778e006005f96729b4.png"
             />
           </view>
         </view>
@@ -42,7 +42,7 @@
             <image
               class="thumbnail_1"
               referrerpolicy="no-referrer"
-              src="/static/lanhu_shouye/SketchPng0c59d307ad6b7e2bdfdf2318d36012ee119fa9b3ceac3a5c743401e1beeee2ca.png"
+              src="/static/used-images/SketchPng0c59d307ad6b7e2bdfdf2318d36012ee119fa9b3ceac3a5c743401e1beeee2ca.png"
             />
           </view>
         </view>
@@ -94,10 +94,10 @@ const uploadFile = async (filePath) => {
   uni.showLoading({
     title: '上传中...',
   })
-  
+
   try {
     const uploadRes = await fileUpload({
-      filePath: filePath,
+      filePath,
       name: 'file', // 后端接收文件的字段名
       formData: {},
     })
@@ -235,7 +235,7 @@ const recentList = ref([
   {
     id: 1,
     image:
-      '/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+      '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     title: '贸易合规助手2025-05-21 10.46',
     subtitle: '2025/05/21 12:36',
     selected: false,
@@ -244,7 +244,7 @@ const recentList = ref([
   {
     id: 1,
     image:
-      '/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+      '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     title: '贸易合规助手2025-05-21 10.46',
     subtitle: '2025/05/21 12:36',
     selected: false,
@@ -252,7 +252,7 @@ const recentList = ref([
   {
     id: 1,
     image:
-      '/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+      '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     title: '贸易合规助手2025-05-21 10.46',
     subtitle: '2025/05/21 12:36',
     selected: false,
@@ -260,7 +260,7 @@ const recentList = ref([
   {
     id: 1,
     image:
-      '/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+      '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     title: '贸易合规助手2025-05-21 10.46',
     subtitle: '2025/05/21 12:36',
     selected: false,
@@ -268,7 +268,7 @@ const recentList = ref([
   {
     id: 2,
     image:
-      '/static/lanhu_shouye/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+      '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
     title: '贸易合规助手2025-05-22 11.47',
     subtitle: '2025/05/22 12:37',
     selected: true,
@@ -373,7 +373,7 @@ const fetchData = async () => {
     if (res.code === 200) {
       folderList.value = res.data.dirs.map((dir) => ({
         id: dir.id,
-        icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png', // 默认图标
+        icon: '/static/used-images/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png', // 默认图标
         name: dir.dirName,
         date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
         count: dir.fileCount,
@@ -383,7 +383,7 @@ const fetchData = async () => {
       fileList.value = res.data.files.map((file) => {
         return {
           id: file.id,
-          icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
+          icon: '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
           name: file.fileName,
           date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
           selected: false,

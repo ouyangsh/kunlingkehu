@@ -19,7 +19,7 @@
           <image
             class="image_2"
             referrerpolicy="no-referrer"
-            src="/static/lanhu_fenleishezhi/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png"
+            src="/static/used-images/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png"
           />
           <text class="text_3">{{ item.lanhutext0 }}</text>
 
@@ -27,7 +27,7 @@
             @click="xuanzhong(item, index)"
             class="label_4"
             referrerpolicy="no-referrer"
-            src="/static/lanhu_wendang/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
+            src="/static/used-images/SketchPng3c89c19677a99f77e8d2e9946e3cc8420325a7c60f4b2a85bba82cdd845ad68c.png"
           />
         </view>
       </view>

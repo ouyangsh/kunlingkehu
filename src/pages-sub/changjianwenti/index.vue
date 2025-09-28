@@ -26,7 +26,7 @@
             </div>
             <div>
               <image
-                src="/static/images/ren@2x.png"
+                src="/static/used-images/ren@2x.png"
                 class="w260rpx h146rpx pr-3"
                 mode="scaleToFill"
               />

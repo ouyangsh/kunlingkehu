@@ -12,7 +12,7 @@
     <div class="login-container px-30rpx">
       <!-- Logo区域 -->
       <div class="logo-section flex flex-col items-center mt-80rpx mb-80rpx">
-        <image src="/static/logo.png" class="w-120rpx h-120rpx rounded-16rpx" mode="aspectFit" />
+        <image src="/static/used-images/logo.png" class="w-120rpx h-120rpx rounded-16rpx" mode="aspectFit" />
         <text class="text-36rpx font-600 mt-20rpx">欢迎使用</text>
         <text class="text-26rpx text-gray-500 mt-10rpx">请授权登录后继续使用</text>
       </div>
@@ -26,7 +26,7 @@
           :disabled="isLoading"
           class="login-btn w-full h-88rpx bg-green-500 rounded-16rpx flex justify-center items-center mb-30rpx"
         >
-          <image src="/static/icons/wechat.png" class="w-36rpx h-36rpx mr-20rpx" mode="aspectFit" />
+          <image src="/static/used-images/logo.png" class="w-36rpx h-36rpx mr-20rpx" mode="aspectFit" />
           <text class="text-white text-32rpx font-500">
             {{ isLoading ? '登录中...' : '微信授权登录' }}
           </text>

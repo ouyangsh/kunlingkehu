@@ -33,12 +33,12 @@
             @click="tiaozhuan"
             class="label_4"
             referrerpolicy="no-referrer"
-            src="/static/lanhu_wendang/SketchPng010d95ac2a9e84192e9b3a69673847ba55fc67e70b4dc42b120e9c24d2b053c5.png"
+            src="/static/used-images/SketchPng010d95ac2a9e84192e9b3a69673847ba55fc67e70b4dc42b120e9c24d2b053c5.png"
           />
           <image
             class="label_5"
             referrerpolicy="no-referrer"
-            src="/static/lanhu_wendang/SketchPng890113b4a2f35b211f7f22a50480e91a53ea2213e1b7abde9f3837164f1098c5.png"
+            src="/static/used-images/SketchPng890113b4a2f35b211f7f22a50480e91a53ea2213e1b7abde9f3837164f1098c5.png"
           />
         </view>
         <view class="block_10 flex-col">
@@ -222,7 +222,7 @@ const fetchData = async () => {
     if (res.code === 200) {
       folderList.value = res.data.dirs?.map((dir) => ({
         id: dir.id,
-        icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
+        icon: '/static/used-images/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
         name: dir.dirName,
         date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
         count: dir.fileCount,
@@ -232,7 +232,7 @@ const fetchData = async () => {
       fileList.value = res.data.files.map((file) => {
         return {
           id: file.id,
-          icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
+          icon: '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
           name: file.fileName,
           date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
           selected: false,

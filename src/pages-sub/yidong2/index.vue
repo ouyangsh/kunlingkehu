@@ -103,7 +103,7 @@ const getDocumentList = async () => {
     fileLista.value = res.rows.map((file) => {
       return {
         id: file.id,
-        icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
+        icon: '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
         name: file.fileName,
         date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
         selected: false,

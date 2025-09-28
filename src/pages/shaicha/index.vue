@@ -165,7 +165,7 @@
       <image
         @click="tiaozhuan"
         class="w-88rpx h-88rpx"
-        src="@/static/lanhu_shaicha/SketchPng5f6fde3afd1ee831a9e0ca2a045fc7b393f024f4af7028a4efeb23de0580afb2.png"
+        src="@/static/used-images/SketchPng5f6fde3afd1ee831a9e0ca2a045fc7b393f024f4af7028a4efeb23de0580afb2.png"
       ></image>
     </div>
 

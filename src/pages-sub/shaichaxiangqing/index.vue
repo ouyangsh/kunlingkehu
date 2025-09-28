@@ -909,7 +909,7 @@
             <!-- 附件图片 -->
             <div class="relative">
               <image
-                src="/static/customs-form.png"
+                src="/static/used-images/customs-form.png"
                 mode="widthFix"
                 class="w-full rounded-8rpx border border-#E5E5E5"
                 @error="onImageError"

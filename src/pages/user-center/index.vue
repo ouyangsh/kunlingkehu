@@ -18,7 +18,7 @@
         <div class="flex items-center px-40rpx py-40rpx pt100rpx" @click="goToUserInfo">
           <!-- 头像 -->
           <image
-            :src="userInfo.avatar || '/static/logo.png'"
+            :src="userInfo.avatar || '/static/used-images/logo.png'"
             class="w-140rpx h-140rpx rounded-140rpx mr-40rpx"
             mode="aspectFill"
           />

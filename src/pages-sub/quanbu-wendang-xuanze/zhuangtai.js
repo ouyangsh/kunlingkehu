@@ -16,7 +16,7 @@ export const fetchData = async () => {
     if (res.code === 200) {
       folderList.value = res.data.dirs.map((dir) => ({
         id: dir.id,
-        icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png', // 默认图标
+        icon: '/static/used-images/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png', // 默认图标
         name: dir.dirName,
         date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
         count: dir.fileCount,
@@ -26,7 +26,7 @@ export const fetchData = async () => {
       fileList.value = res.data.files.map((file) => {
         return {
           id: file.id,
-          icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
+          icon: '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
           name: file.fileName,
           date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
           selected: false,
@@ -46,7 +46,7 @@ fetchData()
 
 export const folder = ref({
   id: 1,
-  icon: '/static/lanhu_wendang/SketchPngf47a31a7c4f8701358171bb7437c221841b8c585677cfc6d961b01e284b21a525.png',
+  icon: '/static/used-images/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
   name: '单据',
   date: '2025/05/21 12:36',
   count: 2,
@@ -54,7 +54,7 @@ export const folder = ref({
   fileList: [
     {
       id: 1,
-      icon: '/static/lanhu_wendang/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
+      icon: '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png',
       name: '贸易合规助手2025-05-21 10.46',
       date: '2025/05/21 12:36',
       selected: false,

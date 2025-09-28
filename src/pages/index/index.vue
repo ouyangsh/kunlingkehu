@@ -20,11 +20,11 @@
             <text class="text_2">贸易合规，国货领航！</text>
           </view>
           <view class="image-wrapper_14 flex-row">
-            <image
-              class="image_2"
-              referrerpolicy="no-referrer"
-              src="/static/used-images/SketchPng90d6059e3c0b86e5c9b56bf40c7b4c9d17beb6da4b70b2778e006005f96729b4.png"
-            />
+            <!--            <image-->
+            <!--              class="image_2"-->
+            <!--              referrerpolicy="no-referrer"-->
+            <!--              src="/static/used-images/SketchPng90d6059e3c0b86e5c9b56bf40c7b4c9d17beb6da4b70b2778e006005f96729b4.png"-->
+            <!--            />-->
           </view>
         </view>
       </view>

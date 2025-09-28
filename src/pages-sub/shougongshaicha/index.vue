@@ -299,6 +299,10 @@ const jumpParams = ref({
 const displayItems = computed(() => {
   const result = {}
 
+  console.log('计算 displayItems, analysisDataMap 长度:', Object.keys(analysisDataMap.value).length)
+  console.log('analysisDataMap 内容:', analysisDataMap.value)
+  console.log('itemTemplates 内容:', itemTemplates.value)
+
   // 如果有筛查数据，显示所有有key的项（无论value是否为空）
   if (Object.keys(analysisDataMap.value).length > 0) {
     Object.keys(itemTemplates.value).forEach((category) => {
@@ -306,6 +310,8 @@ const displayItems = computed(() => {
       const matchedItems = categoryItems.filter((item) =>
         Object.prototype.hasOwnProperty.call(analysisDataMap.value, item),
       )
+
+      console.log(`类别 ${category} 匹配到的项目:`, matchedItems)
 
       if (matchedItems.length > 0) {
         result[category] = matchedItems
@@ -322,6 +328,7 @@ const displayItems = computed(() => {
     })
   }
 
+  console.log('最终的 displayItems:', result)
   return result
 })
 
@@ -547,13 +554,77 @@ const selectFile = async (file) => {
         icon: 'success',
       })
 
-      // 处理解析结果，与图片解析相同的逻辑
-      if (response.data && response.data.analysisElement) {
-        const analysisElement = response.data.analysisElement
-        console.log('文件解析结果：', analysisElement)
+      // 处理解析结果，更新页面数据
+      if (response.data) {
+        let parsedData = null
+        const dataMap = {}
 
-        // 更新分析数据
-        analysisDataMap.value = analysisElement
+        console.log('完整的文件解析响应数据:', response)
+
+        // 处理新的数据结构（按组分类的对象）
+        // 检查 response.data 是否直接包含分组数据
+        if (response.data && typeof response.data === 'object' && !response.data.analysisElement) {
+          parsedData = response.data
+          console.log('接收到的文件解析数据:', parsedData)
+
+          // 遍历所有组，将数据扁平化到 dataMap
+          Object.keys(parsedData).forEach((groupName) => {
+            const groupData = parsedData[groupName]
+            console.log(`处理文件解析组 ${groupName}:`, groupData)
+
+            if (Array.isArray(groupData)) {
+              // 处理数组类型的组（如商品信息组）
+              groupData.forEach((item, index) => {
+                Object.keys(item).forEach((key) => {
+                  const mapKey = index > 0 ? `${key}${index + 1}` : key
+                  dataMap[mapKey] = getDisplayValue(item[key] || '')
+                  console.log(`文件解析数组项 ${mapKey}:`, dataMap[mapKey])
+                })
+              })
+            } else if (typeof groupData === 'object') {
+              // 处理对象类型的组
+              Object.keys(groupData).forEach((key) => {
+                dataMap[key] = getDisplayValue(groupData[key] || '')
+                console.log(`文件解析对象项 ${key}:`, dataMap[key])
+              })
+            }
+          })
+
+          analysisDataMap.value = dataMap
+          console.log('最终的文件解析 analysisDataMap:', analysisDataMap.value)
+        }
+        // 兼容旧的 analysisElement 格式
+        else if (response.data.analysisElement) {
+          const analysisElement = response.data.analysisElement
+          let oldParsedData = analysisElement
+
+          if (typeof analysisElement === 'string') {
+            try {
+              oldParsedData = JSON.parse(analysisElement)
+            } catch (e) {
+              oldParsedData = []
+            }
+          }
+
+          if (Array.isArray(oldParsedData)) {
+            analysisData.value = oldParsedData
+            oldParsedData.forEach((item) => {
+              if (item.key) {
+                dataMap[item.key] = getDisplayValue(item.value || '')
+              }
+            })
+            analysisDataMap.value = dataMap
+            console.log('文件解析成功（旧格式），更新数据:', dataMap)
+          }
+        }
+
+        // 更新跳转参数
+        if (response.data.documentId) {
+          jumpParams.value.documentId = response.data.documentId
+        }
+        if (response.data.attachmentId) {
+          jumpParams.value.attachmentId = response.data.attachmentId
+        }
 
         // 关闭导入弹窗
         showImportModal.value = false
@@ -786,38 +857,85 @@ const analyzeDocument = async (imageBase64) => {
       })
 
       // 处理解析结果，更新页面数据
-      if (response.data && response.data.analysisElement) {
-        const analysisElement = response.data.analysisElement
-        let parsedData = analysisElement
+      if (response.data) {
+        let parsedData = null
+        const dataMap = {}
 
-        if (typeof analysisElement === 'string') {
-          try {
-            parsedData = JSON.parse(analysisElement)
-          } catch (e) {
-            parsedData = []
-          }
-        }
+        console.log('完整的响应数据:', response)
 
-        if (Array.isArray(parsedData)) {
-          analysisData.value = parsedData
-          const dataMap = {}
-          parsedData.forEach((item) => {
-            if (item.key) {
-              dataMap[item.key] = getDisplayValue(item.value || '')
+        // 处理新的数据结构（按组分类的对象）
+        // 检查 response.data 是否直接包含分组数据
+        if (response.data && typeof response.data === 'object' && !response.data.analysisElement) {
+          parsedData = response.data
+          console.log('接收到的解析数据:', parsedData)
+
+          // 遍历所有组，将数据扁平化到 dataMap
+          Object.keys(parsedData).forEach((groupName) => {
+            const groupData = parsedData[groupName]
+            console.log(`处理组 ${groupName}:`, groupData)
+
+            if (Array.isArray(groupData)) {
+              // 处理数组类型的组（如商品信息组）
+              groupData.forEach((item, index) => {
+                Object.keys(item).forEach((key) => {
+                  const mapKey = index > 0 ? `${key}${index + 1}` : key
+                  dataMap[mapKey] = getDisplayValue(item[key] || '')
+                  console.log(`数组项 ${mapKey}:`, dataMap[mapKey])
+                })
+              })
+            } else if (typeof groupData === 'object') {
+              // 处理对象类型的组
+              Object.keys(groupData).forEach((key) => {
+                dataMap[key] = getDisplayValue(groupData[key] || '')
+                console.log(`对象项 ${key}:`, dataMap[key])
+              })
             }
           })
+
           analysisDataMap.value = dataMap
-
-          // 更新跳转参数
-          if (response.data.documentId) {
-            jumpParams.value.documentId = response.data.documentId
-          }
-          if (response.data.attachmentId) {
-            jumpParams.value.attachmentId = response.data.attachmentId
-          }
-
-          console.log('文档解析成功，更新数据:', dataMap)
+          console.log('最终的 analysisDataMap:', analysisDataMap.value)
+          console.log('当前 itemTemplates:', itemTemplates.value)
         }
+        // 兼容旧的 analysisElement 格式
+        else if (response.data.analysisElement) {
+          const analysisElement = response.data.analysisElement
+          let oldParsedData = analysisElement
+
+          if (typeof analysisElement === 'string') {
+            try {
+              oldParsedData = JSON.parse(analysisElement)
+            } catch (e) {
+              oldParsedData = []
+            }
+          }
+
+          if (Array.isArray(oldParsedData)) {
+            analysisData.value = oldParsedData
+            oldParsedData.forEach((item) => {
+              if (item.key) {
+                dataMap[item.key] = getDisplayValue(item.value || '')
+              }
+            })
+            analysisDataMap.value = dataMap
+            console.log('文档解析成功（旧格式），更新数据:', dataMap)
+          }
+        }
+
+        // 更新跳转参数
+        if (response.data.documentId) {
+          jumpParams.value.documentId = response.data.documentId
+        }
+        if (response.data.attachmentId) {
+          jumpParams.value.attachmentId = response.data.attachmentId
+        }
+
+        // 关闭导入弹窗
+        showImportModal.value = false
+
+        uni.showToast({
+          title: '图片导入成功',
+          icon: 'success',
+        })
       }
     } else {
       uni.showToast({

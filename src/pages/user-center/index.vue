@@ -76,9 +76,9 @@
         </div>
 
         <!-- 联系客服 -->
-        <div
-          @click="contactService"
-          class="menu-item flex items-center justify-between px-40rpx py-32rpx"
+        <button
+          open-type="contact"
+          class="menu-item flex items-center justify-between px-40rpx w-full bg-transparent border-none"
         >
           <div class="flex items-center">
             <i class="font_family icon-icon-lianxikefu !text-40rpx text-#19213D mr-20rpx"></i>
@@ -86,7 +86,7 @@
             <text class="text-32rpx text-black">联系客服</text>
           </div>
           <uni-icons type="right" size="18"></uni-icons>
-        </div>
+        </button>
       </div>
     </div>
     <template #footer>

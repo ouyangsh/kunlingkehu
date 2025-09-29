@@ -5,7 +5,7 @@
   >
     <view class="list_12 flex-row">
       <view
-        class="image-text_37 flex-col"
+        class="image-text_37 flex-col flex-1"
         v-for="(item, index) in loopData1"
         :key="index"
         @click="handleTabClick(index)"
@@ -28,8 +28,9 @@
 
 <script setup lang="js">
 import { onShow } from '@dcloudio/uni-app'
+import { useNavigationStore } from '@/store/navigation'
 
-const currentIndex = ref(0)
+const navigationStore = useNavigationStore()
 const pages = [
   '/pages/index/index',
   '/pages/wendang/index',
@@ -38,21 +39,31 @@ const pages = [
   '/pages/user-center/index',
 ]
 
+// 页面名称到索引的映射
+const pageNameToIndex = {
+  index: 0,
+  wendang: 1,
+  shaicha: 2,
+  zixun: 3,
+  userCenter: 4,
+}
+
+// 根据 store 中的 suoyin 计算当前索引
+const currentIndex = computed(() => {
+  return pageNameToIndex[navigationStore.suoyin] || 0
+})
+
 onShow(() => {
   const currentRoute = getCurrentPages().pop().route
   const index = pages.findIndex((page) => `/${currentRoute}` === page)
   if (index !== -1) {
-    currentIndex.value = index
+    navigationStore.setSuoyin(index)
   }
 })
 
 const handleTabClick = (index) => {
-  const url = pages[index]
-  if (url && url !== `/${getCurrentPages().pop().route}`) {
-    uni.reLaunch({
-      url,
-    })
-  }
+  // 更新 store 中的 suoyin 状态
+  navigationStore.setSuoyin(index)
 }
 
 // 添加选中和未选中状态图标

@@ -57,7 +57,7 @@
   </buju>
 </template>
 <script setup lang="js">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import buju from '@/components/buju/buju.vue'
 import dibu from '../index/dibu.vue'
@@ -65,6 +65,9 @@ import FolderList from './components/folder-list.vue'
 import FileList from './components/file-list.vue'
 import FunctionGrid from './components/function-grid.vue'
 import { getDirectoryListAPI, fileUpload } from '@/service/foo'
+import { useNavigationStore } from '@/store/navigation'
+
+const navigationStore = useNavigationStore()
 
 const functionItems = ref([
   {
@@ -251,6 +254,17 @@ const fetchData = async () => {
 onShow(() => {
   fetchData()
 })
+
+// 监听导航状态变化，当切换到文档页面时重新加载数据
+watch(
+  () => navigationStore.suoyin,
+  (newValue) => {
+    if (newValue === 'wendang') {
+      fetchData()
+    }
+  },
+  { immediate: true },
+)
 
 // 文件夹选择切换
 const toggleSelectFolder = (folder) => {

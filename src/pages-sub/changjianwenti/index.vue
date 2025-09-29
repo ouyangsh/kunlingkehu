@@ -104,7 +104,7 @@
       <div class="h180rpx box-border wfull flex justify-evenly pt30rpx">
         <div class="flex items-center flex-col">
           <div @click="navigateTo('/pages-sub/yijianfankui/index')">
-            <i class="font_family icon-icon-lianxikefu !text-40rpx text-#19213D"></i>
+            <i class="font_family icon-yijianfankui !text-40rpx text-#19213D"></i>
           </div>
           <div class="text-18rpx">意见反馈</div>
         </div>

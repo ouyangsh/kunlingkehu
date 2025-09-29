@@ -36,6 +36,7 @@
             src="/static/used-images/SketchPng010d95ac2a9e84192e9b3a69673847ba55fc67e70b4dc42b120e9c24d2b053c5.png"
           />
           <image
+            @click="jumpToQuanbuWendang"
             class="label_5"
             referrerpolicy="no-referrer"
             src="/static/used-images/SketchPng890113b4a2f35b211f7f22a50480e91a53ea2213e1b7abde9f3837164f1098c5.png"
@@ -282,6 +283,12 @@ const constants = ref({})
 const tiaozhuan = () => {
   uni.navigateTo({
     url: '/pages-sub/fenleishezhi/index',
+  })
+}
+
+const jumpToQuanbuWendang = () => {
+  uni.navigateTo({
+    url: '/pages-sub/quanbu-wendang-xuanze/index',
   })
 }
 </script>

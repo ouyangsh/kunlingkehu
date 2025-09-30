@@ -8,157 +8,172 @@
 </route>
 
 <template>
-  <!-- The hidden picker for daterange -->
-  <div class="absolute h-0">
-    <wd-datetime-picker
-      ref="datetimePickerRef"
-      v-model="dateRange"
-      @confirm="handleConfirm"
-    ></wd-datetime-picker>
-  </div>
-  <div class="h340rpx w-full bg-[#D8EBFE] fixed top-0">
-    <view :style="{ height: statusBarHeight + 'px' }"></view>
-    <div class="h-44px flex justify-center items-center text-38rpx font-500">筛查</div>
-  </div>
-  <div class="h340rpx w-full fixed top-0">
-    <view :style="{ height: statusBarHeight + 'px' }"></view>
-    <div class="w-full justify-center flex" style="margin-top: 44px">
-      <div
-        class="w690rpx box-border h200rpx bg-[#ffffffff] z-10 rounded-16rpx flex flex-col justify-evenly pl-30rpx color-[#333333] text-26rpx"
-      >
-        <div class="bg-[D8B14A6B] flex">
-          <div class="h-60rpx flex justify-center items-center mr-20rpx">状态：</div>
-          <div
-            @click="handleStatusChange(0)"
-            :class="indexa === 0 ? 'bg-[#2563EB] text-[#ffffffff]' : 'bg-[#F4F6FA] '"
-            class="h-60rpx flex rounded-1 justify-center mr-20rpx items-center px-2"
-          >
-            全部
-          </div>
-          <div
-            @click="handleStatusChange(1)"
-            :class="indexa === 1 ? 'bg-[#2563EB] text-[#ffffffff]' : 'bg-[#F4F6FA] '"
-            class="h-60rpx rounded-1 flex justify-center mr-20rpx items-center px-2"
-          >
-            已归档
-          </div>
-          <div
-            @click="handleStatusChange(2)"
-            :class="indexa === 2 ? 'bg-[#2563EB] text-[#ffffffff]' : 'bg-[#F4F6FA] '"
-            class="h-60rpx rounded-1 flex justify-center mr-20rpx items-center px-2"
-          >
-            未归档
-          </div>
-        </div>
-        <view class="flex">
-          <view class="flex items-center">
-            <div class="h-60rpx flex justify-center items-center mr-20rpx">日期：</div>
-            <view
-              @click="openPicker"
-              class="w-460rpx h-60rpx overflow-hidden flex justify-evenly items-center bg-#F4F6FA"
+  <buju title="筛查">
+    <!-- The hidden picker for daterange -->
+    <div class="absolute h-0">
+      <wd-datetime-picker
+        ref="datetimePickerRef"
+        v-model="dateRange"
+        @confirm="handleConfirm"
+      ></wd-datetime-picker>
+    </div>
+    <div class="h340rpx w-full bg-[#D8EBFE] fixed top-0">
+      <view :style="{ height: statusBarHeight + 'px' }"></view>
+      <div class="h-44px flex justify-center items-center text-38rpx font-500">筛查</div>
+    </div>
+    <div class="h340rpx w-full fixed top-0">
+      <view :style="{ height: statusBarHeight + 'px' }"></view>
+      <div class="w-full justify-center flex" style="margin-top: 44px">
+        <div
+          class="w690rpx box-border h200rpx bg-[#ffffffff] z-10 rounded-16rpx flex flex-col justify-evenly pl-30rpx color-[#333333] text-26rpx"
+        >
+          <div class="bg-[D8B14A6B] flex">
+            <div class="h-60rpx flex justify-center items-center mr-20rpx">状态：</div>
+            <div
+              @click="handleStatusChange(0)"
+              :class="indexa === 0 ? 'bg-[#2563EB] text-[#ffffffff]' : 'bg-[#F4F6FA] '"
+              class="h-60rpx flex rounded-1 justify-center mr-20rpx items-center px-2"
             >
-              <i class="font_family icon-icon-rili text-#666666 text-20rpx"></i>
-              <div class="text-#2563EB">{{ startDate ? startDate : '开始日期' }}</div>
-              <div class="text-#666666">至</div>
-              <div class="text-#2563EB">{{ endDate ? endDate : '结束日期' }}</div>
-              <!-- <view class="p-4 text-center">
-                <view class="mt-4 text-xs">
-                  <text>开始: {{ startDate || 'N/A' }}</text>
-                  <text class="ml-2">结束: {{ endDate || 'N/A' }}</text>
-                </view>
-              </view> -->
+              全部
+            </div>
+            <div
+              @click="handleStatusChange(1)"
+              :class="indexa === 1 ? 'bg-[#2563EB] text-[#ffffffff]' : 'bg-[#F4F6FA] '"
+              class="h-60rpx rounded-1 flex justify-center mr-20rpx items-center px-2"
+            >
+              已归档
+            </div>
+            <div
+              @click="handleStatusChange(2)"
+              :class="indexa === 2 ? 'bg-[#2563EB] text-[#ffffffff]' : 'bg-[#F4F6FA] '"
+              class="h-60rpx rounded-1 flex justify-center mr-20rpx items-center px-2"
+            >
+              未归档
+            </div>
+          </div>
+          <view class="flex">
+            <view class="flex items-center">
+              <div class="h-60rpx flex justify-center items-center mr-20rpx">日期：</div>
+              <view
+                @click="openPicker"
+                class="w-460rpx h-60rpx overflow-hidden flex justify-evenly items-center bg-#F4F6FA"
+              >
+                <i class="font_family icon-icon-rili text-#666666 text-20rpx"></i>
+                <div class="text-#2563EB">{{ startDate ? startDate : '开始日期' }}</div>
+                <div class="text-#666666">至</div>
+                <div class="text-#2563EB">{{ endDate ? endDate : '结束日期' }}</div>
+                <!-- <view class="p-4 text-center">
+                  <view class="mt-4 text-xs">
+                    <text>开始: {{ startDate || 'N/A' }}</text>
+                    <text class="ml-2">结束: {{ endDate || 'N/A' }}</text>
+                  </view>
+                </view> -->
+              </view>
             </view>
           </view>
-        </view>
+        </div>
       </div>
     </div>
-  </div>
-
-  <buju title="筛查">
     <div class="h220rpx"></div>
 
-    <!-- 加载提示 -->
-    <div v-if="loading && screeningList.length === 0" class="text-center py-8">
-      <text class="text-gray-500">加载中...</text>
-    </div>
-
-    <!-- 筛查列表 -->
-    <div
-      @click="jieguo(item)"
-      v-for="item in screeningList"
-      :key="item.id"
-      class="w-690rpx bg-#fff rounded-16rpx m-30rpx p-30rpx box-border"
+    <!-- 使用 scroll-view 实现可靠的滚动加载 -->
+    <scroll-view
+      class="scroll-container"
+      scroll-y
+      @scrolltolower="handleScrollToLower"
+      lower-threshold="100"
     >
-      <!-- ID和状态 -->
-      <div class="flex justify-start items-center mb-20rpx">
-        <div class="flex items-center mr2">
-          <text class="text-28rpx font-500 color-#333333">ID：{{ item.id }}</text>
+      <!-- 加载提示 -->
+      <div v-if="loading && screeningList.length === 0" class="text-center py-8">
+        <text class="text-gray-500">加载中...</text>
+      </div>
+
+      <!-- 筛查列表 -->
+      <div
+        @click="jieguo(item)"
+        v-for="item in screeningList"
+        :key="item.id"
+        class="w-690rpx bg-#fff rounded-16rpx m-30rpx p-30rpx box-border"
+      >
+        <!-- ID和状态 -->
+        <div class="flex justify-start items-center mb-20rpx">
+          <div class="flex items-center mr2">
+            <text class="text-28rpx font-500 color-#333333">ID：{{ item.id }}</text>
+          </div>
+          <div
+            :class="item.status === 99 ? 'text-#6B7280 bg-#F3F4F6' : 'text-#EF9913 bg-#FCEBD0'"
+            class="px-16rpx py-8rpx text-22rpx rounded-8rpx"
+          >
+            {{ item.status === 99 ? '已归档' : '未归档' }}
+          </div>
         </div>
-        <div
-          :class="item.status === 99 ? 'text-#6B7280 bg-#F3F4F6' : 'text-#EF9913 bg-#FCEBD0'"
-          class="px-16rpx py-8rpx text-22rpx rounded-8rpx"
-        >
-          {{ item.status === 99 ? '已归档' : '未归档' }}
+
+        <!-- 交易方信息 -->
+        <div class="flex mb-16rpx">
+          <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">交易方：</text>
+          <text class="text-24rpx color-#333333 flex-1 break-all">
+            {{ getTradePartyInfo(item.tradePartyParam) }}
+          </text>
+        </div>
+
+        <!-- 商品信息 -->
+        <div class="flex mb-16rpx">
+          <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">商品信息：</text>
+          <text class="text-24rpx color-#333333 flex-1 break-all">
+            {{ getCommodityInfo(item.commodityParam) }}
+          </text>
+        </div>
+
+        <!-- 国家信息 -->
+        <div class="flex mb-16rpx">
+          <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">国家信息：</text>
+          <text class="text-24rpx color-#333333 flex-1 break-all">
+            {{ getCountryInfo(item.countryParam) }}
+          </text>
+        </div>
+
+        <!-- 船舶信息 -->
+        <div class="flex mb-16rpx">
+          <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">船舶信息：</text>
+          <text class="text-24rpx color-#333333 flex-1 break-all">
+            {{ getTransportInfo(item.transportParam) }}
+          </text>
+        </div>
+
+        <!-- 机构名称 -->
+        <div class="flex">
+          <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">机构名称：</text>
+          <text class="text-24rpx color-#333333 flex-1">
+            {{ item.tenantName || 'XXX有限公司' }}
+          </text>
         </div>
       </div>
 
-      <!-- 交易方信息 -->
-      <div class="flex mb-16rpx">
-        <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">交易方：</text>
-        <text class="text-24rpx color-#333333 flex-1 break-all">
-          {{ getTradePartyInfo(item.tradePartyParam) }}
+      <!-- 空状态 -->
+      <div v-if="!loading && screeningList.length === 0" class="text-center py-16">
+        <text class="text-gray-500">暂无数据</text>
+      </div>
+
+      <!-- 视口触发器 - 用于检测是否需要加载更多 -->
+      <div
+        v-if="screeningList.length > 0 && screeningList.length < total"
+        class="load-trigger text-center py-4"
+        @click="loadMore"
+      >
+        <text v-if="loading" class="text-gray-500">加载中...</text>
+        <text v-else class="text-gray-400">
+          点击或上拉加载更多 ({{ screeningList.length }}/{{ total }})
         </text>
       </div>
 
-      <!-- 商品信息 -->
-      <div class="flex mb-16rpx">
-        <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">商品信息：</text>
-        <text class="text-24rpx color-#333333 flex-1 break-all">
-          {{ getCommodityInfo(item.commodityParam) }}
-        </text>
+      <!-- 没有更多数据提示 -->
+      <div
+        v-if="screeningList.length > 0 && screeningList.length >= total"
+        class="text-center py-4"
+      >
+        <text class="text-gray-400">没有更多数据了</text>
       </div>
-
-      <!-- 国家信息 -->
-      <div class="flex mb-16rpx">
-        <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">国家信息：</text>
-        <text class="text-24rpx color-#333333 flex-1 break-all">
-          {{ getCountryInfo(item.countryParam) }}
-        </text>
-      </div>
-
-      <!-- 船舶信息 -->
-      <div class="flex mb-16rpx">
-        <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">船舶信息：</text>
-        <text class="text-24rpx color-#333333 flex-1 break-all">
-          {{ getTransportInfo(item.transportParam) }}
-        </text>
-      </div>
-
-      <!-- 机构名称 -->
-      <div class="flex">
-        <text class="text-24rpx color-#666666 w-120rpx flex-shrink-0">机构名称：</text>
-        <text class="text-24rpx color-#333333 flex-1">{{ item.tenantName || 'XXX有限公司' }}</text>
-      </div>
-    </div>
-
-    <!-- 空状态 -->
-    <div v-if="!loading && screeningList.length === 0" class="text-center py-16">
-      <text class="text-gray-500">暂无数据</text>
-    </div>
-
-    <!-- 视口触发器 - 用于检测是否需要加载更多 -->
-    <div
-      v-if="screeningList.length > 0 && screeningList.length < total"
-      class="load-trigger text-center py-4"
-    >
-      <text v-if="loading" class="text-gray-500">加载中...</text>
-      <text v-else class="text-gray-400">上拉加载更多</text>
-    </div>
-
-    <!-- 没有更多数据提示 -->
-    <div v-if="screeningList.length > 0 && screeningList.length >= total" class="text-center py-4">
-      <text class="text-gray-400">没有更多数据了</text>
-    </div>
+    </scroll-view>
 
     <!-- 浮动按钮 -->
     <div class="fixed bottom-190rpx right-30rpx">
@@ -175,8 +190,14 @@
   </buju>
 </template>
 <script setup lang="js">
+import { ref, computed, nextTick, onMounted, onUnmounted, inject, watch } from 'vue'
+import { onReachBottom } from '@dcloudio/uni-app'
 import dibu from '../index/dibu.vue'
 import { getDocumentScreeningListAPI } from '@/service/foo'
+
+// 获取页面激活状态
+const currentPage = inject('currentPage', ref('index'))
+const isPageActive = computed(() => currentPage.value === 'shaicha')
 
 const indexa = ref(0)
 const statusBarHeight = ref(0)
@@ -242,8 +263,10 @@ const getScreeningList = async (isRefresh = false) => {
 
       console.log('筛查列表获取成功：', result)
 
-      // 数据更新后重新初始化观察器
-      reinitObserver()
+      // 数据更新后重新初始化观察器（只在页面激活时）
+      if (isPageActive.value) {
+        reinitObserver()
+      }
     } else {
       uni.showToast({
         title: result.msg || '获取数据失败',
@@ -324,13 +347,50 @@ const getTransportInfo = (transportParam) => {
   return transportParam.replace(/;/g, ' ') // 用空格分隔
 }
 
+// scroll-view 滚动到底部事件处理
+const handleScrollToLower = () => {
+  console.log('scroll-view 滚动到底部')
+  if (isPageActive.value) {
+    console.log('页面激活，触发加载更多')
+    loadMore()
+  } else {
+    console.log('页面未激活，忽略滚动事件')
+  }
+}
+
+// 防抖标记
+let loadMoreTimer = null
+
 // 加载更多数据
 const loadMore = () => {
-  // 如果正在加载或已经没有更多数据，则不执行
-  if (loading.value || screeningList.value.length >= total.value) return
+  console.log('loadMore 被调用', {
+    loading: loading.value,
+    currentLength: screeningList.value.length,
+    total: total.value,
+    isPageActive: isPageActive.value,
+  })
 
-  pageNum.value += 1
-  getScreeningList(false)
+  // 如果正在加载或已经没有更多数据，则不执行
+  if (loading.value || screeningList.value.length >= total.value) {
+    console.log('loadMore 被阻止:', {
+      loading: loading.value,
+      hasMore: screeningList.value.length < total.value,
+    })
+    return
+  }
+
+  // 防抖处理，避免重复触发
+  if (loadMoreTimer) {
+    clearTimeout(loadMoreTimer)
+  }
+
+  console.log('开始加载更多数据...')
+  loadMoreTimer = setTimeout(() => {
+    pageNum.value += 1
+    console.log('页码增加到:', pageNum.value)
+    getScreeningList(false)
+    loadMoreTimer = null
+  }, 300)
 }
 
 // 初始化 Intersection Observer
@@ -376,12 +436,75 @@ function formatDate(timestamp) {
   return `${year}-${month}-${day}`
 }
 
+// 微信小程序上拉加载事件（只在页面激活时触发）
+onReachBottom(() => {
+  console.log('onReachBottom 触发', { isPageActive: isPageActive.value })
+  if (isPageActive.value) {
+    console.log('页面激活，调用 loadMore')
+    loadMore()
+  } else {
+    console.log('页面未激活，忽略 onReachBottom')
+  }
+})
+
+// 监听页面激活状态，首次激活时加载数据
+watch(
+  isPageActive,
+  (newVal, oldVal) => {
+    if (newVal && !oldVal && screeningList.value.length === 0) {
+      getScreeningList(true)
+    }
+    // 页面激活时初始化观察器
+    if (newVal) {
+      nextTick(() => {
+        initIntersectionObserver()
+      })
+    }
+  },
+  { immediate: true },
+)
+
 onMounted(() => {
   const systemInfo = uni.getSystemInfoSync()
   statusBarHeight.value = systemInfo.statusBarHeight
 
-  // 页面加载时获取筛查列表
-  getScreeningList(true)
+  // 添加页面滚动监听作为备用方案
+  uni.onPageScroll((e) => {
+    // 只在页面激活时处理滚动事件
+    if (!isPageActive.value) return
+
+    console.log('页面滚动事件触发', { scrollTop: e.scrollTop })
+
+    // 简单的滚动到底部检测
+    const systemInfo = uni.getSystemInfoSync()
+    const windowHeight = systemInfo.windowHeight
+    const scrollHeight = e.scrollTop + windowHeight
+
+    // 获取页面信息
+    const query = uni.createSelectorQuery()
+    query.select('.load-trigger').boundingClientRect()
+    query.selectViewport().scrollOffset()
+    query.exec((res) => {
+      if (res[0] && res[1]) {
+        const rect = res[0]
+        const scrollTop = res[1].scrollTop
+        const windowHeight = uni.getSystemInfoSync().windowHeight
+
+        console.log('滚动检测', {
+          rectTop: rect.top,
+          scrollTop,
+          windowHeight,
+          distance: rect.top - scrollTop,
+        })
+
+        // 如果加载触发器距离视口底部小于200px，触发加载
+        if (rect.top - scrollTop < windowHeight + 200) {
+          console.log('滚动触发加载更多')
+          loadMore()
+        }
+      }
+    })
+  })
 })
 
 // 页面卸载时清理观察器
@@ -392,4 +515,9 @@ onUnmounted(() => {
   }
 })
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.scroll-container {
+  height: calc(100vh - 340rpx - 210rpx); /* 减去顶部筛选区域和底部导航的高度 */
+  width: 100%;
+}
+</style>

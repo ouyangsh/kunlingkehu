@@ -7,12 +7,12 @@
 }
 </route>
 <template>
-  <index v-if="suoyin == 'index'"></index>
-  <shaicha v-if="suoyin == 'shaicha'"></shaicha>
-  <wendang v-if="suoyin == 'wendang'"></wendang>
-  <zixun v-if="suoyin == 'zixun'"></zixun>
-  <shaicha v-if="suoyin == 'shaicha'"></shaicha>
-  <userCenter v-if="suoyin == 'userCenter'"></userCenter>
+  <index v-show="suoyin == 'index'"></index>
+  <shaicha v-show="suoyin == 'shaicha'"></shaicha>
+  <wendang v-show="suoyin == 'wendang'"></wendang>
+  <zixun v-show="suoyin == 'zixun'"></zixun>
+  <shaicha v-show="suoyin == 'shaicha'"></shaicha>
+  <userCenter v-show="suoyin == 'userCenter'"></userCenter>
 </template>
 
 <script lang="ts" setup>

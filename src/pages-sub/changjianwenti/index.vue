@@ -109,7 +109,8 @@
           <div class="text-18rpx">意见反馈</div>
         </div>
         <div class="flex items-center flex-col">
-          <div @click="navigateTo('/pages-sub/lianxikefu/index')">
+          <div class="relative" @click="navigateTo('/pages-sub/lianxikefu/index')">
+            <button open-type="contact" class="absolute w10 h10 opacity-0 z-10"></button>
             <i class="font_family icon-icon-lianxikefu !text-40rpx text-#19213D"></i>
           </div>
           <div class="text-18rpx">联系客服</div>

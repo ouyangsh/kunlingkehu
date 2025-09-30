@@ -269,8 +269,24 @@ watch(
 
 // 文件夹选择切换
 const toggleSelectFolder = (folder) => {
-  // 文件夹的选择逻辑（如果需要）
-  console.log('点击文件夹:', folder.name)
+  // 跳转到分类设置页面，传递文件夹信息
+  const folderId = folder.id || ''
+  const folderName = encodeURIComponent(folder.name || '')
+  const url = `/pages-sub/fenleishezhi/index?folderId=${folderId}&folderName=${folderName}`
+
+  uni.navigateTo({
+    url,
+    success: () => {
+      console.log('跳转到分类设置页面成功')
+    },
+    fail: (err) => {
+      console.error('跳转到分类设置页面失败:', err)
+      uni.showToast({
+        title: '页面跳转失败',
+        icon: 'error',
+      })
+    },
+  })
 }
 
 // 文件选择切换

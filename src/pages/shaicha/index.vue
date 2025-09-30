@@ -191,7 +191,6 @@
 </template>
 <script setup lang="js">
 import { ref, computed, nextTick, onMounted, onUnmounted, inject, watch } from 'vue'
-import { onReachBottom } from '@dcloudio/uni-app'
 import dibu from '../index/dibu.vue'
 import { getDocumentScreeningListAPI } from '@/service/foo'
 
@@ -436,16 +435,7 @@ function formatDate(timestamp) {
   return `${year}-${month}-${day}`
 }
 
-// 微信小程序上拉加载事件（只在页面激活时触发）
-onReachBottom(() => {
-  console.log('onReachBottom 触发', { isPageActive: isPageActive.value })
-  if (isPageActive.value) {
-    console.log('页面激活，调用 loadMore')
-    loadMore()
-  } else {
-    console.log('页面未激活，忽略 onReachBottom')
-  }
-})
+// 注意：不再使用 onReachBottom，改用 scroll-view 的 @scrolltolower 事件
 
 // 监听页面激活状态，首次激活时加载数据
 watch(
@@ -467,44 +457,6 @@ watch(
 onMounted(() => {
   const systemInfo = uni.getSystemInfoSync()
   statusBarHeight.value = systemInfo.statusBarHeight
-
-  // 添加页面滚动监听作为备用方案
-  uni.onPageScroll((e) => {
-    // 只在页面激活时处理滚动事件
-    if (!isPageActive.value) return
-
-    console.log('页面滚动事件触发', { scrollTop: e.scrollTop })
-
-    // 简单的滚动到底部检测
-    const systemInfo = uni.getSystemInfoSync()
-    const windowHeight = systemInfo.windowHeight
-    const scrollHeight = e.scrollTop + windowHeight
-
-    // 获取页面信息
-    const query = uni.createSelectorQuery()
-    query.select('.load-trigger').boundingClientRect()
-    query.selectViewport().scrollOffset()
-    query.exec((res) => {
-      if (res[0] && res[1]) {
-        const rect = res[0]
-        const scrollTop = res[1].scrollTop
-        const windowHeight = uni.getSystemInfoSync().windowHeight
-
-        console.log('滚动检测', {
-          rectTop: rect.top,
-          scrollTop,
-          windowHeight,
-          distance: rect.top - scrollTop,
-        })
-
-        // 如果加载触发器距离视口底部小于200px，触发加载
-        if (rect.top - scrollTop < windowHeight + 200) {
-          console.log('滚动触发加载更多')
-          loadMore()
-        }
-      }
-    })
-  })
 })
 
 // 页面卸载时清理观察器
@@ -517,7 +469,7 @@ onUnmounted(() => {
 </script>
 <style lang="scss" scoped>
 .scroll-container {
-  height: calc(100vh - 340rpx - 210rpx); /* 减去顶部筛选区域和底部导航的高度 */
   width: 100%;
+  height: calc(100vh - 340rpx - 210rpx); /* 减去顶部筛选区域和底部导航的高度 */
 }
 </style>

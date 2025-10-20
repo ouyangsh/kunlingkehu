@@ -56,8 +56,27 @@ const userStore = useUserStore()
 const userInfo = computed(() => userStore.userInfo)
 
 // 页面加载时获取用户信息
-onMounted(() => {
-  console.log('个人信息页面加载，用户信息：', userInfo.value)
+onMounted(async () => {
+  console.log('个人信息页面加载，当前用户信息：', userInfo.value)
+  
+  // 如果用户已登录但缺少详细信息，则获取详细信息
+  if (userStore.isLogined && !userInfo.value.realName) {
+    try {
+      uni.showLoading({
+        title: '加载用户信息...',
+      })
+      await userStore.fetchUserInfo()
+      console.log('用户详细信息获取完成：', userInfo.value)
+    } catch (error) {
+      console.error('获取用户详细信息失败：', error)
+      uni.showToast({
+        title: '获取用户信息失败',
+        icon: 'error',
+      })
+    } finally {
+      uni.hideLoading()
+    }
+  }
 })
 </script>
 

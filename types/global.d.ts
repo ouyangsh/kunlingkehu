@@ -25,6 +25,27 @@ interface IUserInfo {
   country?: string
   isGuest?: boolean
   isAutoLogin?: boolean
+
+  // 从 /system/user/getInfo 接口获取的详细信息
+  realName?: string        // 真实姓名
+  nickName?: string        // 昵称
+  email?: string           // 邮箱
+  phonenumber?: string     // 手机号
+  phone?: string           // 手机号（别名）
+  sex?: string             // 性别
+  deptName?: string        // 部门名称
+  company?: string         // 公司/单位
+  tenantName?: string      // 租户名称
+  loginDate?: string       // 最后登录时间
+  expireDate?: string      // 账号期限
+  remark?: string          // 备注
+  roles?: Array<{          // 角色信息
+    roleId: number
+    roleName: string
+    roleKey: string
+    superAdmin?: boolean
+  }>
+  permissions?: string[]   // 权限列表
 }
 
 // 微信登录请求参数

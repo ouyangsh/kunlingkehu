@@ -43,6 +43,17 @@ export const getUserInfoAPI = () => {
   })
 }
 
+/**
+ * 获取系统用户详细信息
+ * @returns {Promise}
+ */
+export const getSystemUserInfoAPI = () => {
+  return http({
+    url: '/system/user/getInfo',
+    method: 'GET',
+  })
+}
+
 export const accountLoginAPI = (params) => {
   return http({
     url: '/auth/login',

@@ -98,6 +98,15 @@ const onSubmit = async () => {
       })
 
       uni.showToast({ title: res.msg || '登录成功', icon: 'success' })
+      
+      // 登录成功后获取用户详细信息
+      try {
+        await userStore.fetchUserInfo()
+        console.log('登录后用户详细信息获取成功')
+      } catch (error) {
+        console.error('登录后获取用户详细信息失败:', error)
+        // 不影响登录流程，只记录错误
+      }
       // 调用小程序账号绑定接口（不阻塞跳转）
       uni
         .login({ provider: 'weixin' })

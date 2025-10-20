@@ -18,7 +18,7 @@
         <div class="flex items-center px-40rpx py-40rpx pt100rpx" @click="goToUserInfo">
           <!-- 头像 -->
           <image
-            :src="userInfo.avatar || '/static/used-images/logo.png'"
+            :src="userInfo.avatar || '/static/used-images/ren@2x.png'"
             class="w-140rpx h-140rpx rounded-140rpx mr-40rpx"
             mode="aspectFill"
           />
@@ -29,7 +29,7 @@
               {{ formatPhoneNumber(userInfo.phone) || '136****9779' }}
             </div>
             <div class="text-28rpx text-gray-500">
-              {{ userInfo.memberLevel || '普通会员' }}
+              {{ getUserRole() }}
             </div>
           </div>
         </div>
@@ -111,6 +111,18 @@ const isLogined = computed(() => userStore.isLogined)
 const formatPhoneNumber = (phone) => {
   if (!phone) return null
   return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
+}
+
+// 获取用户角色显示
+const getUserRole = () => {
+  const user = userInfo.value
+  
+  // 直接显示角色名称
+  if (user.roles && user.roles.length > 0 && user.roles[0].roleName) {
+    return user.roles[0].roleName
+  }
+  
+  return '普通用户'
 }
 
 // 跳转到个人信息页面

@@ -177,6 +177,15 @@ export const manualWechatLogin = async () => {
         icon: 'success',
       })
 
+      // 登录成功后获取用户详细信息
+      try {
+        await userStore.fetchUserInfo()
+        console.log('微信登录后用户详细信息获取成功')
+      } catch (error) {
+        console.error('微信登录后获取用户详细信息失败:', error)
+        // 不影响登录流程，只记录错误
+      }
+
       return { success: true, message: '手动登录成功' }
     } else {
       throw new Error(response.msg || '登录失败')

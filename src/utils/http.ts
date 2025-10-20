@@ -12,21 +12,39 @@ export const http = <T>(options: CustomRequestOptions) => {
       // #endif
       // 响应成功
       async success(res) {
-        // 状态码 2xx，参考 axios 的设计
-        if (res.data.code >= 200 && res.data.code < 300) {
-          // 2.1 提取核心数据 res.data
-          resolve(res.data as IResData<T>)
-        } else if (res.data.code === 401) {
-          await autoLogin()
-          // 401错误  -> 清理用户信息，跳转到登录页
-          // userStore.clearUserInfo()
-          // uni.navigateTo({ url: '/pages/login/login' })
-          reject(res)
+        console.log('HTTP请求响应:', res)
+
+        // 检查HTTP状态码
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          // 尝试解析响应数据
+          const responseData = res.data as IResData<T>
+          
+          // 检查业务状态码
+          if (responseData && responseData.code === 200) {
+            // 2.1 提取核心数据 res.data
+            resolve(responseData)
+          } else if (responseData && responseData.code === 401) {
+            console.log('收到401错误，尝试重新登录')
+            await autoLogin()
+            // 401错误  -> 清理用户信息，跳转到登录页
+            // userStore.clearUserInfo()
+            // uni.navigateTo({ url: '/pages/login/login' })
+            reject(res)
+          } else {
+            // 其他业务错误 -> 根据后端错误信息轻提示
+            console.error('业务错误:', responseData)
+            uni.showToast({
+              icon: 'none',
+              title: responseData?.msg || '请求错误',
+            })
+            reject(res)
+          }
         } else {
-          // 其他错误 -> 根据后端错误信息轻提示
+          // HTTP状态码错误
+          console.error('HTTP状态码错误:', res.statusCode, res)
           uni.showToast({
             icon: 'none',
-            title: (res.data as IResData<T>).msg || '请求错误',
+            title: `网络错误 ${res.statusCode}`,
           })
           reject(res)
         }

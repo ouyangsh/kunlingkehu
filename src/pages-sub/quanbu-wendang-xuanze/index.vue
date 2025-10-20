@@ -119,6 +119,7 @@ import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
 import { folderList, fileList, fetchData } from './zhuangtai'
 import { downloadAttachmentAPI, deleteDocumentAPI } from '@/service/foo'
+import { useUserStore, useDocumentStore } from '@/store'
 
 // 计算属性：是否全部选中
 const isAllSelected = computed(() => {
@@ -129,8 +130,18 @@ const isAllSelected = computed(() => {
   )
 })
 
+const userStore = useUserStore()
+const documentStore = useDocumentStore()
+
 onShow(() => {
-  fetchData()
+  console.log('quanbu-wendang-xuanze页面 - onShow触发')
+  console.log('quanbu-wendang-xuanze页面 - 用户登录状态:', userStore.isLogined)
+  
+  if (userStore.isLogined) {
+    fetchData()
+  } else {
+    console.warn('quanbu-wendang-xuanze页面 - 用户未登录，跳过数据获取')
+  }
 })
 
 // 返回首页
@@ -147,19 +158,29 @@ const toggleSelectAll = () => {
   // 更新文件夹选中状态
   folderList.value.forEach((folder) => {
     folder.selected = newStatus
+    // 同步到全局状态管理
+    documentStore.setFolderSelected(folder.id, folder.selected, folder)
   })
 
   // 更新文件选中状态
   fileList.value.forEach((file) => {
     file.selected = newStatus
+    // 同步到全局状态管理
+    documentStore.setFileSelected(file.id, file.selected, file)
   })
 
   console.log('全选/取消全选状态:', newStatus)
+  console.log('quanbu-wendang-xuanze页面 - 全局选中文件数量:', documentStore.getSelectedFiles().length)
+  console.log('quanbu-wendang-xuanze页面 - 全局选中文件夹数量:', documentStore.getSelectedFolders().length)
 }
 
 // 文件夹选择切换
 const toggleSelectFolder = (folder) => {
   folder.selected = !folder.selected
+  
+  // 同步到全局状态管理
+  documentStore.setFolderSelected(folder.id, folder.selected, folder)
+  
   uni.navigateTo({
     url: '/pages-sub/danju/index?id=' + folder.id,
   })
@@ -169,6 +190,10 @@ const toggleSelectFolder = (folder) => {
 // 文件选择切换
 const toggleSelectFile = (file) => {
   file.selected = !file.selected
+  
+  // 同步到全局状态管理
+  documentStore.setFileSelected(file.id, file.selected, file)
+  
   console.log('切换文件选择状态:', file.name, file.selected)
 }
 

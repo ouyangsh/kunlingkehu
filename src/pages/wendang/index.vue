@@ -67,8 +67,10 @@ import FileList from './components/file-list.vue'
 import FunctionGrid from './components/function-grid.vue'
 import { getDirectoryListAPI, fileUpload } from '@/service/foo'
 import { useNavigationStore } from '@/store/navigation'
+import { useUserStore } from '@/store'
 
 const navigationStore = useNavigationStore()
+const userStore = useUserStore()
 
 const functionItems = ref([
   {
@@ -222,46 +224,84 @@ const fileList = ref([])
 // 获取数据函数
 const fetchData = async () => {
   try {
+    console.log('wendang页面 - 开始获取数据...')
+    console.log('wendang页面 - 用户登录状态:', userStore.isLogined)
+    console.log('wendang页面 - 用户token:', userStore.userInfo?.token ? '已设置' : '未设置')
+    
     const res = await getDirectoryListAPI()
-    if (res.code === 200) {
-      folderList.value = res.data.dirs?.map((dir) => ({
-        id: dir.id,
-        icon: '/static/used-images/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
-        name: dir.dirName,
-        date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
-        count: dir.fileCount,
-        selected: false,
-      }))
+    console.log('wendang页面 - API响应:', res)
 
-      fileList.value = res.data.files.map((file) => {
-        return {
-          id: file.id,
-          icon: '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
-          name: file.fileName,
+    if (res.code === 200 && res.data) {
+      // 处理文件夹数据
+      if (res.data.dirs && Array.isArray(res.data.dirs)) {
+        folderList.value = res.data.dirs.map((dir) => ({
+          id: dir.id,
+          icon: '/static/used-images/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png',
+          name: dir.dirName,
           date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
+          count: dir.fileCount,
           selected: false,
-        }
+        }))
+        console.log('wendang页面 - 文件夹数据处理完成:', folderList.value.length, '个文件夹')
+      } else {
+        console.warn('wendang页面 - dirs数据格式异常:', res.data.dirs)
+        folderList.value = []
+      }
+
+      // 处理文件数据
+      if (res.data.files && Array.isArray(res.data.files)) {
+        fileList.value = res.data.files.map((file) => {
+          return {
+            id: file.id,
+            icon: '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
+            name: file.fileName,
+            date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
+            selected: false,
+          }
+        })
+        console.log('wendang页面 - 文件数据处理完成:', fileList.value.length, '个文件')
+      } else {
+        console.warn('wendang页面 - files数据格式异常:', res.data.files)
+        fileList.value = []
+      }
+    } else {
+      console.error('wendang页面 - API返回数据格式异常:', res)
+      uni.showToast({
+        title: res.msg || '数据格式异常',
+        icon: 'none',
       })
     }
   } catch (error) {
-    console.error('获取数据失败', error)
+    console.error('wendang页面 - 获取数据失败', error)
     uni.showToast({
-      title: '获取数据失败',
-      icon: 'error',
+      title: '获取数据失败，请检查网络连接',
+      icon: 'none',
     })
   }
 }
 
 onShow(() => {
-  fetchData()
+  console.log('wendang页面 - onShow触发')
+  console.log('wendang页面 - 用户登录状态:', userStore.isLogined)
+  
+  if (userStore.isLogined) {
+    fetchData()
+  } else {
+    console.warn('wendang页面 - 用户未登录，跳过数据获取')
+  }
 })
 
 // 监听导航状态变化，当切换到文档页面时重新加载数据
 watch(
   () => navigationStore.suoyin,
   (newValue) => {
-    if (newValue === 'wendang') {
+    console.log('wendang页面 - 导航状态变化:', newValue)
+    console.log('wendang页面 - 用户登录状态:', userStore.isLogined)
+    
+    if (newValue === 'wendang' && userStore.isLogined) {
       fetchData()
+    } else if (newValue === 'wendang' && !userStore.isLogined) {
+      console.warn('wendang页面 - 用户未登录，跳过数据获取')
     }
   },
   { immediate: true },

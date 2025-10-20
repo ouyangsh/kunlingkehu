@@ -17,3 +17,4 @@ export default store
 export * from './user'
 export * from './count'
 export * from './navigation'
+export * from './document'

@@ -37,10 +37,16 @@ const httpInterceptor = {
     }
     // 4. 添加 token 请求头标识
     const userStore = useUserStore()
-    const { token } = userStore.userInfo as unknown as IUserInfo
+    const { token } = userStore.userInfo
+    console.log('请求拦截器 - 用户登录状态:', userStore.isLogined)
+    console.log('请求拦截器 - Token:', token ? '已设置' : '未设置')
     if (token) {
       options.header.Authorization = `Bearer ${token}`
+      console.log('请求拦截器 - Authorization头已设置')
+    } else {
+      console.warn('请求拦截器 - 未找到token，可能影响API调用')
     }
+    console.log('请求拦截器 - 最终请求头:', options.header)
   },
 }
 

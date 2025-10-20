@@ -66,9 +66,10 @@ import FolderList from '@/pages/wendang/components/folder-list.vue'
 import FileList from '@/pages/wendang/components/file-list.vue'
 import FunctionGrid from '@/pages/wendang/components/function-grid.vue'
 import { onMounted, watch } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 import { http } from '@/utils/http'
 import { downloadAttachmentAPI, fileUpload } from '@/service/foo'
-import { useUserStore } from '@/store'
+import { useUserStore, useDocumentStore } from '@/store'
 const { footerHeight } = useLayout()
 const loopData0 = ref([
   {
@@ -205,7 +206,13 @@ const toggleSelectFolder = async (folder) => {
 // 文件选择切换
 const toggleSelectFile = (file) => {
   file.selected = !file.selected
-  console.log('切换文件选择状态:', file.name, file.selected)
+  
+  // 同步到全局状态管理
+  const documentStore = useDocumentStore()
+  documentStore.setFileSelected(file.id, file.selected, file)
+  
+  console.log('主页 - 切换文件选择状态:', file.name, file.selected)
+  console.log('主页 - 全局选中文件数量:', documentStore.getSelectedFiles().length)
 }
 
 const recentList = ref([
@@ -345,41 +352,115 @@ const navigateToAllDocs = () => {
 
 const fetchData = async () => {
   try {
+    console.log('开始获取数据...')
+    const userStore = useUserStore()
+    console.log('当前用户登录状态:', userStore.isLogined)
+    console.log('当前用户token:', userStore.userInfo?.token ? '已设置' : '未设置')
+    
     const res = await http({ url: '/tscc/attachment-directory/last', method: 'POST' })
+    console.log('获取数据成功:', res)
 
-    if (res.code === 200) {
-      folderList.value = res.data.dirs.map((dir) => ({
-        id: dir.id,
-        icon: '/static/used-images/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png', // 默认图标
-        name: dir.dirName,
-        date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
-        count: dir.fileCount,
-        selected: false,
-      }))
-
-      fileList.value = res.data.files.map((file) => {
-        return {
-          id: file.id,
-          icon: '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
-          name: file.fileName,
+    if (res.code === 200 && res.data) {
+      // 处理文件夹数据
+      if (res.data.dirs && Array.isArray(res.data.dirs)) {
+        folderList.value = res.data.dirs.map((dir) => ({
+          id: dir.id,
+          icon: '/static/used-images/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png', // 默认图标
+          name: dir.dirName,
           date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
+          count: dir.fileCount,
           selected: false,
-        }
+        }))
+        console.log('文件夹数据处理完成:', folderList.value.length, '个文件夹')
+      } else {
+        console.warn('dirs数据格式异常:', res.data.dirs)
+        folderList.value = []
+      }
+
+      // 处理文件数据
+      if (res.data.files && Array.isArray(res.data.files)) {
+        const documentStore = useDocumentStore()
+        const processedFiles = res.data.files.map((file) => {
+          return {
+            id: file.id,
+            icon: '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
+            name: file.fileName,
+            date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
+            selected: false,
+          }
+        })
+        
+        // 同步选中状态
+        fileList.value = documentStore.syncFileListSelection(processedFiles)
+        console.log('文件数据处理完成:', fileList.value.length, '个文件')
+        
+        // 输出选中状态信息
+        const selectedCount = fileList.value.filter(file => file.selected).length
+        console.log('主页 - 同步后选中的文件数量:', selectedCount)
+      } else {
+        console.warn('files数据格式异常:', res.data.files)
+        fileList.value = []
+      }
+      
+      // 数据加载完成后，再次同步选中状态（确保最新状态）
+      setTimeout(() => {
+        syncSelectionState()
+      }, 50)
+    } else {
+      console.error('API返回数据格式异常:', res)
+      uni.showToast({
+        title: res.msg || '数据格式异常',
+        icon: 'none',
       })
     }
   } catch (error) {
     console.error('获取数据失败', error)
-    // uni.showToast({
-    //   title: '获取数据失败',
-    //   icon: 'error',
-    // })
+    uni.showToast({
+      title: '获取数据失败，请检查网络连接',
+      icon: 'none',
+    })
   }
+}
+
+// 同步选中状态函数
+const syncSelectionState = () => {
+  const documentStore = useDocumentStore()
+  
+  // 同步文件选中状态
+  fileList.value.forEach(file => {
+    const shouldBeSelected = documentStore.isFileSelected(file.id)
+    if (file.selected !== shouldBeSelected) {
+      file.selected = shouldBeSelected
+      console.log('主页 - 同步文件选中状态:', file.name, file.selected)
+    }
+  })
+  
+  // 同步文件夹选中状态
+  folderList.value.forEach(folder => {
+    const shouldBeSelected = documentStore.isFolderSelected(folder.id)
+    if (folder.selected !== shouldBeSelected) {
+      folder.selected = shouldBeSelected
+      console.log('主页 - 同步文件夹选中状态:', folder.name, folder.selected)
+    }
+  })
+  
+  const selectedFileCount = fileList.value.filter(file => file.selected).length
+  const selectedFolderCount = folderList.value.filter(folder => folder.selected).length
+  console.log('主页 - 同步完成，选中文件数:', selectedFileCount, '选中文件夹数:', selectedFolderCount)
 }
 
 onMounted(() => {
   if (userStore.isLogined) {
     fetchData()
   }
+})
+
+onShow(() => {
+  console.log('主页 - onShow触发，开始同步选中状态')
+  // 延迟一点执行，确保数据已经加载
+  setTimeout(() => {
+    syncSelectionState()
+  }, 100)
 })
 
 const userStore = useUserStore()

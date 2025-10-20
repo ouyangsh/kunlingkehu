@@ -136,47 +136,35 @@ const uploadFile = async (filePath) => {
 }
 
 const takePhoto = () => {
-  // 显示选择图片的选项
-  uni.showActionSheet({
-    itemList: ['拍照', '从相册选择'],
-    success: (res) => {
-      if (res.tapIndex === 0) {
-        // 拍照
-        uni.chooseImage({
-          count: 1,
-          sourceType: ['camera'],
-          success: (result) => {
-            console.log('拍照成功', result.tempFilePaths[0])
-            // 上传文件
-            uploadFile(result.tempFilePaths[0])
-          },
-          fail: (err) => {
-            console.log('拍照失败', err)
-            uni.showToast({
-              title: '拍照失败',
-              icon: 'error',
-            })
-          },
-        })
-      } else if (res.tapIndex === 1) {
-        // 从相册选择
-        uni.chooseImage({
-          count: 1,
-          sourceType: ['album'],
-          success: (result) => {
-            console.log('选择相册图片成功', result.tempFilePaths[0])
-            // 上传文件
-            uploadFile(result.tempFilePaths[0])
-          },
-          fail: (err) => {
-            console.log('选择相册图片失败', err)
-            uni.showToast({
-              title: '选择图片失败',
-              icon: 'error',
-            })
-          },
-        })
-      }
+  // 直接进入拍照
+  uni.chooseImage({
+    count: 1,
+    sourceType: ['camera'],
+    success: (result) => {
+      console.log('拍照成功', result.tempFilePaths[0])
+      const tempFilePath = result.tempFilePaths[0]
+      
+      // 直接跳转到预览页面，只传递图片路径
+      uni.navigateTo({
+        url: `/pages-sub/shougongshaicha_xiangce/index?imagePath=${encodeURIComponent(tempFilePath)}`,
+        success: () => {
+          console.log('跳转到拍照页面成功')
+        },
+        fail: (err) => {
+          console.error('跳转到拍照页面失败:', err)
+          uni.showToast({
+            title: '页面跳转失败',
+            icon: 'error',
+          })
+        },
+      })
+    },
+    fail: (err) => {
+      console.log('拍照失败', err)
+      uni.showToast({
+        title: '拍照失败',
+        icon: 'error',
+      })
     },
   })
 }
@@ -206,11 +194,11 @@ const toggleSelectFolder = async (folder) => {
 // 文件选择切换
 const toggleSelectFile = (file) => {
   file.selected = !file.selected
-  
+
   // 同步到全局状态管理
   const documentStore = useDocumentStore()
   documentStore.setFileSelected(file.id, file.selected, file)
-  
+
   console.log('主页 - 切换文件选择状态:', file.name, file.selected)
   console.log('主页 - 全局选中文件数量:', documentStore.getSelectedFiles().length)
 }
@@ -273,39 +261,24 @@ const functionItems = ref([
       uni.chooseImage({
         count: 1,
         sourceType: ['album'], // 只允许从相册选择
-        success: async (res) => {
+        success: (res) => {
           const tempFilePath = res.tempFilePaths[0]
-          uni.showLoading({
-            title: '上传中...',
+          console.log('选择相册图片成功:', tempFilePath)
+          
+          // 直接跳转到预览页面，只传递图片路径
+          uni.navigateTo({
+            url: `/pages-sub/shougongshaicha_xiangce/index?imagePath=${encodeURIComponent(tempFilePath)}`,
+            success: () => {
+              console.log('跳转到相册导入页面成功')
+            },
+            fail: (err) => {
+              console.error('跳转到相册导入页面失败:', err)
+              uni.showToast({
+                title: '页面跳转失败',
+                icon: 'error',
+              })
+            },
           })
-          try {
-            const uploadRes = await fileUpload({
-              filePath: tempFilePath,
-              name: 'file', // 后端接收文件的字段名
-              formData: {},
-            })
-
-            if (uploadRes.code === 200) {
-              uni.showToast({
-                title: '上传成功',
-                icon: 'success',
-              })
-              // 上传成功后可以刷新数据或者进行其他操作
-              fetchData()
-            } else {
-              uni.showToast({
-                title: uploadRes.msg || '上传失败',
-                icon: 'none',
-              })
-            }
-          } catch (error) {
-            uni.showToast({
-              title: error.message || '上传失败',
-              icon: 'none',
-            })
-          } finally {
-            uni.hideLoading()
-          }
         },
         fail: (err) => {
           console.log('选择图片失败', err)
@@ -356,7 +329,7 @@ const fetchData = async () => {
     const userStore = useUserStore()
     console.log('当前用户登录状态:', userStore.isLogined)
     console.log('当前用户token:', userStore.userInfo?.token ? '已设置' : '未设置')
-    
+
     const res = await http({ url: '/tscc/attachment-directory/last', method: 'POST' })
     console.log('获取数据成功:', res)
 
@@ -389,19 +362,19 @@ const fetchData = async () => {
             selected: false,
           }
         })
-        
+
         // 同步选中状态
         fileList.value = documentStore.syncFileListSelection(processedFiles)
         console.log('文件数据处理完成:', fileList.value.length, '个文件')
-        
+
         // 输出选中状态信息
-        const selectedCount = fileList.value.filter(file => file.selected).length
+        const selectedCount = fileList.value.filter((file) => file.selected).length
         console.log('主页 - 同步后选中的文件数量:', selectedCount)
       } else {
         console.warn('files数据格式异常:', res.data.files)
         fileList.value = []
       }
-      
+
       // 数据加载完成后，再次同步选中状态（确保最新状态）
       setTimeout(() => {
         syncSelectionState()
@@ -425,28 +398,33 @@ const fetchData = async () => {
 // 同步选中状态函数
 const syncSelectionState = () => {
   const documentStore = useDocumentStore()
-  
+
   // 同步文件选中状态
-  fileList.value.forEach(file => {
+  fileList.value.forEach((file) => {
     const shouldBeSelected = documentStore.isFileSelected(file.id)
     if (file.selected !== shouldBeSelected) {
       file.selected = shouldBeSelected
       console.log('主页 - 同步文件选中状态:', file.name, file.selected)
     }
   })
-  
+
   // 同步文件夹选中状态
-  folderList.value.forEach(folder => {
+  folderList.value.forEach((folder) => {
     const shouldBeSelected = documentStore.isFolderSelected(folder.id)
     if (folder.selected !== shouldBeSelected) {
       folder.selected = shouldBeSelected
       console.log('主页 - 同步文件夹选中状态:', folder.name, folder.selected)
     }
   })
-  
-  const selectedFileCount = fileList.value.filter(file => file.selected).length
-  const selectedFolderCount = folderList.value.filter(folder => folder.selected).length
-  console.log('主页 - 同步完成，选中文件数:', selectedFileCount, '选中文件夹数:', selectedFolderCount)
+
+  const selectedFileCount = fileList.value.filter((file) => file.selected).length
+  const selectedFolderCount = folderList.value.filter((folder) => folder.selected).length
+  console.log(
+    '主页 - 同步完成，选中文件数:',
+    selectedFileCount,
+    '选中文件夹数:',
+    selectedFolderCount,
+  )
 }
 
 onMounted(() => {

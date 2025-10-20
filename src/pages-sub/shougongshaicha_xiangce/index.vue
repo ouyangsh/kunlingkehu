@@ -25,11 +25,11 @@
 
   <buju title="筛查">
     <!-- 主要内容区域 -->
-    <div class="h-full p-20rpx">
+    <div class="h-80% p-20rpx">
       <!-- 文档预览区域 -->
       <div
         v-if="!isCropping"
-        class="w-full h-full rounded-16rpx p-20rpx flex justify-center items-center relative"
+        class="w-full h-full rounded-16rpx flex justify-center items-center relative"
       >
         <image
           :src="currentDisplayImage"
@@ -518,8 +518,23 @@ const confirmImage = async () => {
         duration: 1500,
       })
 
+      // 通知主页面刷新数据
+      uni.$emit('refreshMainPage')
+
       setTimeout(() => {
-        uni.navigateBack()
+        uni.navigateBack({
+          success: () => {
+            // 返回成功后，通过页面间通信刷新上一页数据
+            const pages = getCurrentPages()
+            if (pages.length > 1) {
+              const prevPage = pages[pages.length - 2]
+              // 如果上一页有fetchData方法，则调用刷新（支持主页面和文档页面）
+              if (prevPage.$vm && typeof prevPage.$vm.fetchData === 'function') {
+                prevPage.$vm.fetchData()
+              }
+            }
+          },
+        })
       }, 1500)
     } else {
       throw new Error('上传响应异常')

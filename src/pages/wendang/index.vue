@@ -136,47 +136,35 @@ const uploadFile = async (filePath) => {
 }
 
 const takePhoto = () => {
-  // 显示选择图片的选项
-  uni.showActionSheet({
-    itemList: ['拍照', '从相册选择'],
-    success: (res) => {
-      if (res.tapIndex === 0) {
-        // 拍照
-        uni.chooseImage({
-          count: 1,
-          sourceType: ['camera'],
-          success: (result) => {
-            console.log('拍照成功', result.tempFilePaths[0])
-            // 上传文件
-            uploadFile(result.tempFilePaths[0])
-          },
-          fail: (err) => {
-            console.log('拍照失败', err)
-            uni.showToast({
-              title: '拍照失败',
-              icon: 'error',
-            })
-          },
-        })
-      } else if (res.tapIndex === 1) {
-        // 从相册选择
-        uni.chooseImage({
-          count: 1,
-          sourceType: ['album'],
-          success: (result) => {
-            console.log('选择相册图片成功', result.tempFilePaths[0])
-            // 上传文件
-            uploadFile(result.tempFilePaths[0])
-          },
-          fail: (err) => {
-            console.log('选择相册图片失败', err)
-            uni.showToast({
-              title: '选择图片失败',
-              icon: 'error',
-            })
-          },
-        })
-      }
+  // 直接进入拍照
+  uni.chooseImage({
+    count: 1,
+    sourceType: ['camera'],
+    success: (result) => {
+      console.log('拍照成功', result.tempFilePaths[0])
+      const tempFilePath = result.tempFilePaths[0]
+      
+      // 直接跳转到预览页面，只传递图片路径
+      uni.navigateTo({
+        url: `/pages-sub/shougongshaicha_xiangce/index?imagePath=${encodeURIComponent(tempFilePath)}`,
+        success: () => {
+          console.log('跳转到拍照页面成功')
+        },
+        fail: (err) => {
+          console.error('跳转到拍照页面失败:', err)
+          uni.showToast({
+            title: '页面跳转失败',
+            icon: 'error',
+          })
+        },
+      })
+    },
+    fail: (err) => {
+      console.log('拍照失败', err)
+      uni.showToast({
+        title: '拍照失败',
+        icon: 'error',
+      })
     },
   })
 }
@@ -186,9 +174,24 @@ const importFromAlbum = () => {
   uni.chooseImage({
     count: 1,
     sourceType: ['album'], // 只允许从相册选择
-    success: async (res) => {
+    success: (res) => {
       const tempFilePath = res.tempFilePaths[0]
-      uploadFile(tempFilePath)
+      console.log('选择相册图片成功:', tempFilePath)
+      
+      // 直接跳转到预览页面，只传递图片路径
+      uni.navigateTo({
+        url: `/pages-sub/shougongshaicha_xiangce/index?imagePath=${encodeURIComponent(tempFilePath)}`,
+        success: () => {
+          console.log('跳转到相册导入页面成功')
+        },
+        fail: (err) => {
+          console.error('跳转到相册导入页面失败:', err)
+          uni.showToast({
+            title: '页面跳转失败',
+            icon: 'error',
+          })
+        },
+      })
     },
     fail: (err) => {
       console.log('选择图片失败', err)

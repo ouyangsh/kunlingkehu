@@ -1041,6 +1041,7 @@
 <script setup lang="js">
 import { ref, onMounted, computed } from 'vue'
 import { http } from '@/utils/http'
+import { useUserStore } from '@/store'
 
 const statusBarHeight = ref(0)
 // 报告详情数据
@@ -1324,60 +1325,15 @@ const exportReport = async () => {
     return
   }
 
+  console.log('开始导出PDF，documentId:', documentId)
+
   try {
     uni.showLoading({
       title: '正在导出PDF...',
     })
 
-    // 微信小程序使用downloadFile下载文件
-    const downloadTask = uni.downloadFile({
-      url: `${import.meta.env.VITE_SERVER_BASEURL}/tscc/document/export-pdf`,
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        platform: 'mp-weixin',
-        clientid: 'e5cd7e4891bf95d1d19206ce24a7b32e',
-      },
-      // 微信小程序downloadFile不支持POST data，需要通过URL参数传递
-      // 或者使用request先获取下载链接
-      success: (res) => {
-        uni.hideLoading()
-
-        if (res.statusCode === 200) {
-          // 直接打开下载的文件
-          uni.openDocument({
-            filePath: res.tempFilePath,
-            fileType: 'pdf',
-            success: () => {
-              console.log('PDF打开成功')
-              uni.showToast({
-                title: 'PDF导出成功',
-                icon: 'success',
-              })
-            },
-            fail: (err) => {
-              console.error('PDF打开失败:', err)
-              uni.showToast({
-                title: 'PDF打开失败',
-                icon: 'none',
-              })
-            },
-          })
-        } else {
-          uni.showToast({
-            title: '导出失败',
-            icon: 'none',
-          })
-        }
-      },
-      fail: (err) => {
-        uni.hideLoading()
-        console.error('下载失败:', err)
-
-        // 如果downloadFile不支持POST，则使用request方式
-        exportPdfWithRequest(documentId)
-      },
-    })
+    // 直接使用request方式，更稳定
+    await exportPdfWithRequest(documentId)
   } catch (error) {
     uni.hideLoading()
     console.error('导出失败:', error)
@@ -1388,79 +1344,134 @@ const exportReport = async () => {
   }
 }
 
-// 备用方案：使用request获取二进制数据
-const exportPdfWithRequest = (documentId) => {
-  uni.showLoading({
-    title: '正在导出PDF...',
-  })
+// 改进的PDF导出方案，兼容iOS真机
+const exportPdfWithRequest = async (documentId) => {
+  return new Promise((resolve, reject) => {
+    console.log('使用request方式导出PDF，documentId:', documentId)
 
-  uni.request({
-    url: `${import.meta.env.VITE_SERVER_BASEURL}/tscc/document/export-pdf`,
-    method: 'POST',
-    header: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      platform: 'mp-weixin',
-      clientid: 'e5cd7e4891bf95d1d19206ce24a7b32e',
-    },
-    data: `documentId=${documentId}`,
-    responseType: 'arraybuffer',
-    success: (res) => {
-      uni.hideLoading()
+    // 获取用户token等认证信息
+    const userStore = useUserStore()
+    const token = userStore.token || ''
 
-      if (res.statusCode === 200) {
-        // 生成临时文件名
-        const fileName = `筛查报告_${documentId}.pdf`
+    uni.request({
+      url: `${import.meta.env.VITE_SERVER_BASEURL}/tscc/document/export-pdf`,
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        platform: 'mp-weixin',
+        clientid: 'e5cd7e4891bf95d1d19206ce24a7b32e',
+        Authorization: token ? `Bearer ${token}` : '',
+      },
+      data: `documentId=${documentId}`,
+      responseType: 'arraybuffer',
+      timeout: 30000, // 30秒超时
+      success: (res) => {
+        console.log('PDF请求成功，状态码:', res.statusCode)
+        console.log('响应数据大小:', res.data ? res.data.byteLength : 0)
 
-        // 获取文件系统管理器
-        const fs = wx.getFileSystemManager()
+        uni.hideLoading()
 
-        // 写入临时文件
-        const tempFilePath = `${wx.env.USER_DATA_PATH}/${fileName}`
+        if (res.statusCode === 200 && res.data && res.data.byteLength > 0) {
+          // 生成临时文件名，使用时间戳确保唯一性
+          const timestamp = new Date().getTime()
+          const fileName = `筛查报告_${documentId}_${timestamp}.pdf`
 
-        try {
-          fs.writeFileSync(tempFilePath, res.data)
+          try {
+            // 使用uni-app的文件系统API，更兼容
+            const fs = uni.getFileSystemManager()
 
-          // 打开文件
-          uni.openDocument({
-            filePath: tempFilePath,
-            fileType: 'pdf',
-            success: () => {
-              console.log('PDF打开成功')
-              uni.showToast({
-                title: 'PDF导出成功',
-                icon: 'success',
-              })
-            },
-            fail: (err) => {
-              console.error('PDF打开失败:', err)
-              uni.showToast({
-                title: 'PDF打开失败',
-                icon: 'none',
-              })
-            },
-          })
-        } catch (writeError) {
-          console.error('文件写入失败:', writeError)
+            // 获取临时文件路径
+            const tempDirPath = `${uni.env.USER_DATA_PATH}`
+            const tempFilePath = `${tempDirPath}/${fileName}`
+
+            console.log('准备写入文件:', tempFilePath)
+
+            // 将ArrayBuffer转换为Base64
+            const base64Data = uni.arrayBufferToBase64(res.data)
+
+            // 写入文件
+            fs.writeFile({
+              filePath: tempFilePath,
+              data: base64Data,
+              encoding: 'base64',
+              success: () => {
+                console.log('文件写入成功:', tempFilePath)
+
+                // 打开文件
+                uni.openDocument({
+                  filePath: tempFilePath,
+                  fileType: 'pdf',
+                  showMenu: true, // 显示分享等菜单
+                  success: () => {
+                    console.log('PDF打开成功')
+                    uni.showToast({
+                      title: 'PDF导出成功',
+                      icon: 'success',
+                    })
+                    resolve()
+                  },
+                  fail: (openErr) => {
+                    console.error('PDF打开失败:', openErr)
+
+                    // 如果打开失败，尝试保存到相册或提示用户
+                    uni.showModal({
+                      title: '提示',
+                      content: 'PDF文件已生成，但无法直接打开。是否保存到本地？',
+                      success: (modalRes) => {
+                        if (modalRes.confirm) {
+                          // 可以尝试其他方式处理文件
+                          uni.showToast({
+                            title: 'PDF已保存到本地',
+                            icon: 'success',
+                          })
+                        }
+                      },
+                    })
+                    resolve()
+                  },
+                })
+              },
+              fail: (writeErr) => {
+                console.error('文件写入失败:', writeErr)
+                uni.showToast({
+                  title: '文件保存失败',
+                  icon: 'none',
+                })
+                reject(writeErr)
+              },
+            })
+          } catch (error) {
+            console.error('文件处理异常:', error)
+            uni.showToast({
+              title: '文件处理失败',
+              icon: 'none',
+            })
+            reject(error)
+          }
+        } else {
+          console.error(
+            'PDF数据无效，状态码:',
+            res.statusCode,
+            '数据大小:',
+            res.data ? res.data.byteLength : 0,
+          )
           uni.showToast({
-            title: '文件保存失败',
+            title: '导出的PDF文件无效',
             icon: 'none',
           })
+          reject(new Error('PDF数据无效'))
         }
-      } else {
+      },
+      fail: (err) => {
+        uni.hideLoading()
+        console.error('PDF请求失败:', err)
         uni.showToast({
-          title: '导出失败',
+          title: '网络请求失败，请重试',
           icon: 'none',
         })
-      }
-    },
-    fail: (err) => {
-      uni.hideLoading()
-      console.error('请求失败:', err)
-      uni.showToast({
-        title: '导出失败，请重试',
-        icon: 'none',
-      })
-    },
+        reject(err)
+      },
+    })
   })
 }
 

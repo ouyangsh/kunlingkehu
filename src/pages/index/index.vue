@@ -318,14 +318,14 @@ const functionItems = ref([
       takePhoto()
     },
   },
-  {
-    icon: 'icon-icon-zhishiku',
-    text: '知识库',
-    color: '#F45C27',
-    fun: () => {
-      // 知识库逻辑
-    },
-  },
+  // {
+  //   icon: 'icon-icon-zhishiku',
+  //   text: '知识库',
+  //   color: '#F45C27',
+  //   fun: () => {
+  //     // 知识库逻辑
+  //   },
+  // },
 ])
 
 // 处理功能项点击

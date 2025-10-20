@@ -22,22 +22,50 @@
       </div>
       <div class="h176rpx w100vw bg-#FFFFFF text-#333333 p30rpx box-border">
         <div class="flex justify-around text-26rpx">
-          <div class="flex justify-center items-center">
-            <div>所在区域</div>
-            <i class="font_family icon-trangle-down text-#BAC3D1"></i>
-          </div>
-          <div class="flex justify-center items-center">
-            <div>司法管辖区</div>
-            <i class="font_family icon-trangle-down text-#BAC3D1"></i>
-          </div>
-          <div class="flex justify-center items-center">
-            <div>所在主题</div>
-            <i class="font_family icon-trangle-down text-#BAC3D1"></i>
-          </div>
-          <div class="flex justify-center items-center">
-            <div>所属行业</div>
-            <i class="font_family icon-trangle-down text-#BAC3D1"></i>
-          </div>
+          <picker
+            :range="pickerData.regionTypes"
+            :range-key="'dictValue'"
+            :value="pickerIndex.region"
+            @change="(e) => onPickerChange('region', e)"
+          >
+            <div class="flex justify-center items-center">
+              <div>{{ selectedLabels.region }}</div>
+              <i class="font_family icon-trangle-down text-#BAC3D1 ml-5rpx"></i>
+            </div>
+          </picker>
+          <picker
+            :range="pickerData.countryTypes"
+            :range-key="'dictValue'"
+            :value="pickerIndex.country"
+            @change="(e) => onPickerChange('country', e)"
+          >
+            <div class="flex justify-center items-center">
+              <div>{{ selectedLabels.country }}</div>
+              <i class="font_family icon-trangle-down text-#BAC3D1 ml-5rpx"></i>
+            </div>
+          </picker>
+          <picker
+            :range="pickerData.subjectTypes"
+            :range-key="'dictValue'"
+            :value="pickerIndex.subject"
+            @change="(e) => onPickerChange('subject', e)"
+          >
+            <div class="flex justify-center items-center">
+              <div>{{ selectedLabels.subject }}</div>
+              <i class="font_family icon-trangle-down text-#BAC3D1 ml-5rpx"></i>
+            </div>
+          </picker>
+          <picker
+            :range="pickerData.industryTypes"
+            :range-key="'dictValue'"
+            :value="pickerIndex.industry"
+            @change="(e) => onPickerChange('industry', e)"
+          >
+            <div class="flex justify-center items-center">
+              <div>{{ selectedLabels.industry }}</div>
+              <i class="font_family icon-trangle-down text-#BAC3D1 ml-5rpx"></i>
+            </div>
+          </picker>
         </div>
 
         <div class="flex text-26rpx mt-28rpx space-x-20rpx">
@@ -93,7 +121,13 @@
           >
             {{ newsItem.tittleChn }}
           </div>
-          <div v-if="newsItem.imageProperty" class="w120rpx h80rpx bg-#F4F6FA shrink-0 ml2"></div>
+          <image
+            v-if="newsItem.imageProperty"
+            :src="`https://spm-1312877696.cos.ap-beijing.myqcloud.com/news/${newsItem.imageProperty}.png`"
+            class="w120rpx h80rpx shrink-0 ml2 rounded-8rpx"
+            mode="aspectFill"
+            :lazy-load="true"
+          />
         </div>
         <div class="text-24rpx flex justify-between mt-25rpx text-#666666">
           <div>{{ newsItem.publishDate.split(' ')[0] }}</div>
@@ -151,6 +185,30 @@ const queryParams = reactive({
   source: '',
   pageNum: 1,
   pageSize: 10,
+})
+
+// picker组件数据
+const pickerData = reactive({
+  regionTypes: [], // 所在区域
+  countryTypes: [], // 司法管辖区
+  subjectTypes: [], // 所在主题
+  industryTypes: [], // 所属行业
+})
+
+// picker选中的索引
+const pickerIndex = reactive({
+  region: 0,
+  country: 0,
+  subject: 0,
+  industry: 0,
+})
+
+// 当前选中的值显示
+const selectedLabels = reactive({
+  region: '所在区域',
+  country: '司法管辖区',
+  subject: '所在主题',
+  industry: '所属行业',
 })
 
 // scroll-view相关
@@ -486,6 +544,93 @@ function formatDate(timestamp) {
   return `${year}-${month}-${day}`
 }
 
+// 获取字典数据
+const fetchDictData = async (dictType) => {
+  try {
+    const res = await http({
+      url: `/system/dict/data/type/${dictType}`,
+      method: 'GET',
+    })
+    if (res.code === 200 && res.data) {
+      return res.data
+    }
+    return []
+  } catch (error) {
+    console.error(`获取字典数据失败: ${dictType}`, error)
+    return []
+  }
+}
+
+// 初始化picker数据
+const initPickerData = async () => {
+  try {
+    const [regionTypes, countryTypes, subjectTypes, industryTypes] = await Promise.all([
+      fetchDictData('news_region_type'), // 所在区域
+      fetchDictData('news_country_type'), // 司法管辖区
+      fetchDictData('news_subject_type'), // 所在主题
+      fetchDictData('news_industry_type'), // 所属行业
+    ])
+
+    // 转换数据格式为picker需要的格式
+    pickerData.regionTypes = [{ dictValue: '所在区域', dictLabel: '' }, ...regionTypes]
+    pickerData.countryTypes = [{ dictValue: '司法管辖区', dictLabel: '' }, ...countryTypes]
+    pickerData.subjectTypes = [{ dictValue: '所在主题', dictLabel: '' }, ...subjectTypes]
+    pickerData.industryTypes = [{ dictValue: '所属行业', dictLabel: '' }, ...industryTypes]
+
+    console.log('所有picker数据初始化完成')
+  } catch (error) {
+    console.error('初始化picker数据失败', error)
+  }
+}
+
+// picker事件处理
+const onPickerChange = (type, e) => {
+  const index = e.detail.value
+  pickerIndex[type] = index
+
+  let selectedData
+  switch (type) {
+    case 'region':
+      selectedData = pickerData.regionTypes[index]
+      break
+    case 'country':
+      selectedData = pickerData.countryTypes[index]
+      break
+    case 'subject':
+      selectedData = pickerData.subjectTypes[index]
+      break
+    case 'industry':
+      selectedData = pickerData.industryTypes[index]
+      break
+  }
+
+  if (selectedData) {
+    // 更新显示标签
+    selectedLabels[type] = selectedData.dictValue
+
+    // 更新查询参数
+    switch (type) {
+      case 'region':
+        queryParams.regionType = selectedData.dictLabel
+        break
+      case 'country':
+        queryParams.countryType = selectedData.dictLabel
+        break
+      case 'subject':
+        queryParams.subjectType = selectedData.dictLabel
+        break
+      case 'industry':
+        queryParams.industryType = selectedData.dictLabel
+        break
+    }
+
+    // 重新获取数据
+    queryParams.pageNum = 1
+    newsList.value = []
+    fetchNewsList()
+  }
+}
+
 const fetchNewsList = async (append = false) => {
   if (isLoading.value || (append && !hasMore.value)) return
   isLoading.value = true
@@ -521,10 +666,31 @@ const onScrollToLower = () => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   const systemInfo = uni.getSystemInfoSync()
   statusBarHeight.value = systemInfo.statusBarHeight
-  fetchNewsList()
+
+  // 等待自动登录完成后再获取数据
+  try {
+    const { autoLogin } = await import('@/utils/autoLogin')
+    await autoLogin()
+    console.log('自动登录完成，开始初始化数据')
+    
+    // 并行获取picker数据和新闻数据
+    await Promise.all([
+      initPickerData(),
+      fetchNewsList()
+    ])
+    
+    console.log('所有数据初始化完成')
+  } catch (error) {
+    console.error('自动登录失败，但仍尝试获取数据:', error)
+    // 即使自动登录失败，也尝试获取数据（可能已经有token了）
+    await Promise.all([
+      initPickerData(),
+      fetchNewsList()
+    ])
+  }
 })
 </script>
 <style lang="scss" scoped>
@@ -551,7 +717,6 @@ onMounted(() => {
 .news-list-scroll-view {
   height: 100%;
 }
-
 /* 确保scroll-view有合适的高度 */
 :deep(.uni-scroll-view) {
   height: 100% !important;
@@ -567,5 +732,18 @@ onMounted(() => {
   padding-bottom: 35rpx;
   background: #fff;
   border-top: 1px solid #f0f0f0;
+}
+/* 下拉选择器样式 */
+.rotate-180 {
+  transition: transform 0.3s ease;
+  transform: rotate(180deg);
+}
+
+.dropdown-option {
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-option:hover {
+  background-color: #f5f5f5;
 }
 </style>

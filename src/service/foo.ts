@@ -165,3 +165,16 @@ export const getDocumentScreeningListAPI = (data: {
     },
   })
 }
+
+/** 提交意见反馈 */
+export const submitFeedbackAPI = (data: {
+  content: string
+  imageUrl?: string
+  contact?: string
+}) => {
+  return http<any>({
+    url: '/tscc/feedback/submit',
+    method: 'POST',
+    data,
+  })
+}

@@ -61,8 +61,10 @@ export const autoLogin = async () => {
     const refreshToken = response && response.data && response.data.refresh_token
 
     if (accessToken) {
-      // 保存用户信息（仅保存接口返回字段，做驼峰映射）
+      // 保存用户信息（合并现有信息，避免覆盖详细信息）
+      const currentUserInfo = userStore.userInfo
       userStore.setUserInfo({
+        ...currentUserInfo, // 保留现有的详细信息
         token: accessToken,
         refreshToken,
         userId: response.data.userId,
@@ -159,8 +161,10 @@ export const manualWechatLogin = async () => {
     const accessToken = response && response.data && response.data.access_token
     const refreshToken = response && response.data && response.data.refresh_token
     if (accessToken) {
-      // 保存用户信息（仅保存接口返回字段，做驼峰映射）
+      // 保存用户信息（合并现有信息，避免覆盖详细信息）
+      const currentUserInfo = userStore.userInfo
       userStore.setUserInfo({
+        ...currentUserInfo, // 保留现有的详细信息
         token: accessToken,
         refreshToken,
         userId: response.data.userId,

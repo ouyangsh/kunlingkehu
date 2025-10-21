@@ -26,10 +26,10 @@
           <!-- 用户信息 -->
           <div class="flex-1">
             <div class="text-40rpx font-600 text-black mb-20rpx">
-              {{ formatPhoneNumber(userInfo.phone) || '136****9779' }}
+              {{ formatPhoneNumber(userInfo.phone) || formatPhoneNumber(userInfo.phonenumber) || '136****9779' }}
             </div>
             <div class="text-28rpx text-gray-500">
-              {{ getUserRole() }}
+              {{ getUserRole }}
             </div>
           </div>
         </div>
@@ -98,6 +98,7 @@
 <script setup lang="js">
 import dibu from '../index/dibu.vue'
 import { useUserStore } from '@/store'
+import { onMounted, watch } from 'vue'
 import { logoutAPI } from '@/service/auth'
 import { manualWechatLogin } from '@/utils/autoLogin'
 
@@ -113,17 +114,22 @@ const formatPhoneNumber = (phone) => {
   return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
 }
 
-// 获取用户角色显示
-const getUserRole = () => {
+// 获取用户角色显示 - 改为计算属性
+const getUserRole = computed(() => {
   const user = userInfo.value
-  
-  // 直接显示角色名称
+
+  // 优先显示租户类型名称
+  if (user.tenantTypeName) {
+    return user.tenantTypeName
+  }
+
+  // 备用：显示角色名称
   if (user.roles && user.roles.length > 0 && user.roles[0].roleName) {
     return user.roles[0].roleName
   }
-  
+
   return '普通用户'
-}
+})
 
 // 跳转到个人信息页面
 const goToUserInfo = () => {
@@ -265,10 +271,42 @@ const showContactOptions = () => {
   })
 }
 
-// 页面加载时检查登录状态
-onMounted(() => {
-  console.log('用户中心页面加载，当前登录状态：', isLogined.value)
+// 获取用户详细信息的函数
+const fetchUserDetailInfo = async () => {
+  if (isLogined.value) {
+    console.log('用户已登录，开始获取详细信息...')
+    try {
+      console.log('调用 userStore.fetchUserInfo()...')
+      await userStore.fetchUserInfo()
+      console.log('用户信息更新完成：', userInfo.value)
+    } catch (error) {
+      console.error('获取用户信息失败：', error)
+    }
+  } else {
+    console.log('用户未登录，跳过获取详细信息')
+  }
+}
+
+// 监听登录状态变化
+watch(isLogined, async (newValue, oldValue) => {
+  console.log('登录状态变化：', oldValue, '->', newValue)
+  if (newValue && !oldValue) {
+    console.log('用户刚刚登录成功，获取详细信息...')
+    await fetchUserDetailInfo()
+  }
+}, { immediate: false })
+
+// 页面加载时检查登录状态并获取用户信息
+onMounted(async () => {
+  console.log('=== 用户中心页面 onMounted 开始 ===')
+  console.log('当前登录状态：', isLogined.value)
   console.log('用户信息：', userInfo.value)
+  console.log('用户token：', userInfo.value?.token)
+
+  // 立即尝试获取用户信息
+  await fetchUserDetailInfo()
+  
+  console.log('=== 用户中心页面 onMounted 结束 ===')
 })
 </script>
 

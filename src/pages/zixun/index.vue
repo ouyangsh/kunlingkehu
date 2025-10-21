@@ -551,9 +551,11 @@ const fetchDictData = async (dictType) => {
       url: `/system/dict/data/type/${dictType}`,
       method: 'GET',
     })
+    console.log(`字典数据响应 ${dictType}:`, res)
     if (res.code === 200 && res.data) {
       return res.data
     }
+    console.warn(`字典数据业务逻辑失败 ${dictType}:`, res)
     return []
   } catch (error) {
     console.error(`获取字典数据失败: ${dictType}`, error)

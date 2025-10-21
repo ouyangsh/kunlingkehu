@@ -10,15 +10,15 @@
 <template>
   <buju title="手工筛查">
     <template #header>
-      <div class="h44px flex items-center px-[30rpx] w100vw box-border">
-        <view class="flex justify-between w100vw box-border">
+      <div class="h44px flex items-center px-[30rpx] w-full box-border">
+        <view class="flex justify-between w-full">
           <uni-icons v-if="pageslength > 1" type="left" size="22" @click="navigateBack"></uni-icons>
           <uni-icons v-else type="home" size="22" @click="navigateBack"></uni-icons>
           <text class="text-38rpx font500">手工筛查</text>
           <uni-icons class="opacity-0" type="left" size="22" @click="navigateBack"></uni-icons>
         </view>
       </div>
-      <div class="flex border-b border-gray-200 mx-30rpx z10 bg-#f2f5fa wfull py2">
+      <div class="flex border-b border-gray-200 mx-30rpx z10 bg-#f2f5fa w-full py2">
         <div
           v-for="(tab, index) in tabs"
           :key="index"
@@ -39,12 +39,12 @@
     <!-- 内容区域 -->
     <scroll-view
       ref="scrollViewRef"
-      class="flex-1 scroll-container"
+      class="flex-1 scroll-container overflow-x-hidden"
       scroll-y
       :scroll-into-view="scrollIntoViewId"
       :scroll-with-animation="true"
     >
-      <div id="section-0" class="px-30rpx mb-3">
+      <div id="section-0" class="px-30rpx mb-3 max-w-full overflow-x-hidden">
         <div class="text-32rpx pt25rpx">商品信息</div>
         <div class="flex items-center flex-wrap mb-3">
           <div
@@ -89,16 +89,22 @@
                 <text class="flex-1 leading-6">{{ item.code }}</text>
               </div>
               <div class="">
-                <text class="text-#777777">物项/商品描述中文：</text>
-                <text class="flex-1 leading-6">{{ item.description }}</text>
+                <text class="text-#777777 shrink-0">物项/商品描述中文：</text>
+                <text class="flex-1 leading-6 break-words whitespace-pre-wrap">
+                  {{ item.description }}
+                </text>
               </div>
               <div class="">
-                <text class="text-#777777">发布国家/地区：</text>
-                <text class="flex-1 leading-6">{{ item.publishCountry }}</text>
+                <text class="text-#777777 shrink-0">发布国家/地区：</text>
+                <text class="flex-1 leading-6 break-words whitespace-pre-wrap">
+                  {{ item.publishCountry }}
+                </text>
               </div>
               <div class="">
-                <text class="text-#777777">管制清单中文：</text>
-                <text class="flex-1 leading-6">{{ item.controlList }}</text>
+                <text class="text-#777777 shrink-0">管制清单中文：</text>
+                <text class="flex-1 leading-6 break-words whitespace-pre-wrap">
+                  {{ item.controlList }}
+                </text>
               </div>
               <div class="">
                 <text class="text-#777777">检索码：</text>
@@ -109,8 +115,10 @@
                 <text class="flex-1 leading-6">{{ item.customsCode }}</text>
               </div>
               <div class="">
-                <text class="text-#777777">管制国家/地区：</text>
-                <text class="flex-1 leading-6">{{ item.controlCountry }}</text>
+                <text class="text-#777777 shrink-0">管制国家/地区：</text>
+                <text class="flex-1 leading-6 break-words whitespace-pre-wrap">
+                  {{ item.controlCountry }}
+                </text>
               </div>
               <div class="">
                 <text class="text-#777777">综合关税编码：</text>
@@ -129,7 +137,7 @@
         </div>
 
         <!-- 交易方信息 -->
-        <div id="section-1" class="mb-60rpx">
+        <div id="section-1" class="mb-60rpx max-w-full overflow-x-hidden">
           <div class="text-32rpx mb-30rpx">交易方信息</div>
           <!-- 循环渲染多个交易方 -->
           <div
@@ -203,7 +211,7 @@
         </div>
 
         <!-- 国家信息 -->
-        <div id="section-2" class="mb-60rpx">
+        <div id="section-2" class="mb-60rpx max-w-full overflow-x-hidden">
           <div class="text-32rpx mb-30rpx">国家信息</div>
           <!-- 循环渲染多个国家 -->
           <div
@@ -271,7 +279,7 @@
         </div>
 
         <!-- 船舶信息 -->
-        <div id="section-3" class="mb-60rpx">
+        <div id="section-3" class="mb-60rpx max-w-full overflow-x-hidden">
           <div class="text-32rpx mb-30rpx">船舶信息</div>
           <!-- 循环渲染多个船舶 -->
           <div
@@ -898,6 +906,13 @@ onMounted(() => {
 .scroll-container {
   width: 100%;
   height: 100%;
+  overflow-x: hidden;
+}
+
+/* 防止页面水平滚动 */
+page {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 /* 确保scroll-view有合适的高度 */
 :deep(.uni-scroll-view) {

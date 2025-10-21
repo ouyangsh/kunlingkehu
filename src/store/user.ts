@@ -24,12 +24,15 @@ export const useUserStore = defineStore(
     // 获取用户详细信息
     const fetchUserInfo = async () => {
       try {
-        console.log('开始获取用户详细信息...')
+        console.log('=== fetchUserInfo 开始执行 ===')
+        console.log('调用 getSystemUserInfoAPI()...')
         const response = await getSystemUserInfoAPI()
+        console.log('getSystemUserInfoAPI 响应：', response)
         
         if (response.code === 200 && response.data) {
           const userData = response.data.user
           const tenantName = response.data.tenantName
+          const tenantTypeName = response.data.tenantTypeName
           
           // 更新用户信息，保留原有的token等登录信息
           const updatedUserInfo = {
@@ -47,6 +50,7 @@ export const useUserStore = defineStore(
             deptName: userData.deptName,
             company: tenantName || userData.deptName, // 使用租户名称或部门名称作为公司
             tenantName: tenantName,
+            tenantTypeName: tenantTypeName, // 添加租户类型名称
             loginDate: userData.loginDate,
             remark: userData.remark,
             roles: userData.roles,

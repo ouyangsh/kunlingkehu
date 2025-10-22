@@ -119,7 +119,7 @@
           <div
             class="h80rpx text-30rpx text-#19213D min-w-560rpx overflow-hidden text-ellipsis line-clamp-2"
           >
-            {{ newsItem.tittleChn }}
+            {{ newsItem.tittleChn || newsItem.tittle }}
           </div>
           <image
             v-if="newsItem.imageProperty"
@@ -152,6 +152,7 @@
 <script setup lang="js">
 import dibu from '../index/dibu.vue'
 import { http } from '@/utils/http'
+import { waitForLogin } from '@/utils/loginWaiter'
 
 const statusBarHeight = ref(0)
 const activeTab = ref(0)
@@ -674,24 +675,17 @@ onMounted(async () => {
 
   // 等待自动登录完成后再获取数据
   try {
-    const { autoLogin } = await import('@/utils/autoLogin')
-    await autoLogin()
-    console.log('自动登录完成，开始初始化数据')
-    
+    await waitForLogin()
+    console.log('登录等待完成，开始初始化数据')
+
     // 并行获取picker数据和新闻数据
-    await Promise.all([
-      initPickerData(),
-      fetchNewsList()
-    ])
-    
+    await Promise.all([initPickerData(), fetchNewsList()])
+
     console.log('所有数据初始化完成')
   } catch (error) {
-    console.error('自动登录失败，但仍尝试获取数据:', error)
-    // 即使自动登录失败，也尝试获取数据（可能已经有token了）
-    await Promise.all([
-      initPickerData(),
-      fetchNewsList()
-    ])
+    console.error('等待登录失败，但仍尝试获取数据:', error)
+    // 即使等待失败，也尝试获取数据（可能已经有token了）
+    await Promise.all([initPickerData(), fetchNewsList()])
   }
 })
 </script>

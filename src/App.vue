@@ -2,6 +2,7 @@
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import { useUserStore } from '@/store'
 import { autoLogin } from '@/utils/autoLogin'
+import { setLoginPromise } from '@/utils/loginWaiter'
 
 const userStore = useUserStore()
 
@@ -9,11 +10,13 @@ onLaunch(async () => {
   console.log('App Launch')
 
   // 应用启动时自动登录
+  const loginPromise = autoLogin()
+  setLoginPromise(loginPromise)
   try {
-    await autoLogin()
+    await loginPromise
     console.log('自动登录完成，当前登录状态：', userStore.isLogined)
   } catch (error) {
-    console.log('自动登录失败：', error.message)
+    console.log('自动登录失败：', error?.message || error || '未知错误')
   }
 })
 

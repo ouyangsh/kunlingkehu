@@ -79,18 +79,26 @@ export const autoLogin = async () => {
       console.log('自动登录成功')
       return { success: true, message: response.msg || '登录成功' }
     } else {
-      // 登录失败 跳转到登录页面
-      uni.navigateTo({
-        url: '/pages/login/index',
-      })
+      // 登录失败，抛出错误让catch处理跳转
       throw new Error(response?.msg || '自动登录失败')
     }
   } catch (error) {
     console.error('自动登录失败:', error)
 
-    // 自动登录失败时，设置游客模式（可选）
-    if (error.message.includes('授权码') || error.message.includes('网络')) {
-      console.log('设置为游客模式')
+    // 自动登录失败时，跳转到登录页面
+    console.log('自动登录失败，准备跳转到登录页面')
+    try {
+      uni.navigateTo({
+        url: '/pages/login/index',
+      })
+      console.log('已跳转到登录页面')
+    } catch (navError) {
+      console.error('跳转到登录页面失败:', navError)
+    }
+
+    // 对于特定的网络错误，可以设置游客模式
+    if (error.message && (error.message.includes('授权码') || error.message.includes('网络'))) {
+      console.log('网络相关错误，设置为游客模式')
       userStore.setUserInfo({
         nickname: '游客用户',
         avatar: '',

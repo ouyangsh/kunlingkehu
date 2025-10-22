@@ -1,5 +1,4 @@
 import { CustomRequestOptions } from '@/interceptors/request'
-import { autoLogin } from '@/utils/autoLogin'
 
 export const http = <T>(options: CustomRequestOptions) => {
   // 1. 返回 Promise 对象
@@ -18,17 +17,13 @@ export const http = <T>(options: CustomRequestOptions) => {
         if (res.statusCode >= 200 && res.statusCode < 300) {
           // 尝试解析响应数据
           const responseData = res.data as IResData<T>
-          
           // 检查业务状态码
           if (responseData && responseData.code === 200) {
             // 2.1 提取核心数据 res.data
             resolve(responseData)
           } else if (responseData && responseData.code === 401) {
-            console.log('收到401错误，尝试重新登录')
-            await autoLogin()
-            // 401错误  -> 清理用户信息，跳转到登录页
-            // userStore.clearUserInfo()
-            // uni.navigateTo({ url: '/pages/login/login' })
+            console.log('收到401错误')
+            // 401错误直接拒绝，让调用方处理
             reject(res)
           } else {
             // 其他业务错误 -> 根据后端错误信息轻提示

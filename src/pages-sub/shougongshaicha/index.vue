@@ -63,7 +63,8 @@
                 :placeholder="'请输入' + item"
               />
               <div
-                class="mr10rpx h60rpx bg-#F4F6FA rounded-8rpx px2 flex justify-center items-center"
+                @click="deleteFormItem(category, item, index)"
+                class="mr10rpx h60rpx bg-#F4F6FA rounded-8rpx px2 flex justify-center items-center cursor-pointer"
               >
                 <i class="font_family mr10rpx icon-icon0shanchu text-20rpx"></i>
               </div>
@@ -698,6 +699,33 @@ const onPickerChange = (event, category, item, index) => {
   selectedValues.value[key] = selectedOption
 
   console.log('选择了：', selectedOption, '分类：', category, '项目：', item)
+}
+
+// 删除表单项
+const deleteFormItem = (category, item, index) => {
+  console.log('删除表单项：', { category, item, index })
+
+  // 从 analysisDataMap 中删除对应的数据
+  if (analysisDataMap.value[item]) {
+    delete analysisDataMap.value[item]
+  }
+
+  // 从 selectedValues 中删除对应的选择值
+  const key = `${category}_${item}`
+  if (selectedValues.value[key]) {
+    delete selectedValues.value[key]
+  }
+
+  // 从 itemTemplates 中删除该项，这会触发 displayItems 的重新计算
+  if (itemTemplates.value[category]) {
+    const itemIndex = itemTemplates.value[category].indexOf(item)
+    if (itemIndex > -1) {
+      itemTemplates.value[category].splice(itemIndex, 1)
+    }
+  }
+
+  console.log('删除后的 analysisDataMap:', analysisDataMap.value)
+  console.log('删除后的 itemTemplates:', itemTemplates.value)
 }
 
 // 通用的保存函数

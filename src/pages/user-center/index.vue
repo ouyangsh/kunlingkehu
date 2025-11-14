@@ -26,7 +26,11 @@
           <!-- 用户信息 -->
           <div class="flex-1">
             <div class="text-40rpx font-600 text-black mb-20rpx">
-              {{ formatPhoneNumber(userInfo.phone) || formatPhoneNumber(userInfo.phonenumber) || '136****9779' }}
+              {{
+                formatPhoneNumber(userInfo.phone) ||
+                formatPhoneNumber(userInfo.phonenumber) ||
+                '136****9779'
+              }}
             </div>
             <div class="text-28rpx text-gray-500">
               {{ getUserRole }}
@@ -288,13 +292,17 @@ const fetchUserDetailInfo = async () => {
 }
 
 // 监听登录状态变化
-watch(isLogined, async (newValue, oldValue) => {
-  console.log('登录状态变化：', oldValue, '->', newValue)
-  if (newValue && !oldValue) {
-    console.log('用户刚刚登录成功，获取详细信息...')
-    await fetchUserDetailInfo()
-  }
-}, { immediate: false })
+watch(
+  isLogined,
+  async (newValue, oldValue) => {
+    console.log('登录状态变化：', oldValue, '->', newValue)
+    if (newValue && !oldValue) {
+      console.log('用户刚刚登录成功，获取详细信息...')
+      await fetchUserDetailInfo()
+    }
+  },
+  { immediate: false },
+)
 
 // 页面加载时检查登录状态并获取用户信息
 onMounted(async () => {
@@ -305,7 +313,7 @@ onMounted(async () => {
 
   // 立即尝试获取用户信息
   await fetchUserDetailInfo()
-  
+
   console.log('=== 用户中心页面 onMounted 结束 ===')
 })
 </script>

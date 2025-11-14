@@ -190,13 +190,17 @@
   </buju>
 </template>
 <script setup lang="js">
-import { ref, computed, nextTick, onMounted, onUnmounted, inject, watch } from 'vue'
+import { ref, computed, nextTick, onMounted, onUnmounted, inject, watch, onShow } from 'vue'
 import dibu from '../index/dibu.vue'
 import { getDocumentScreeningListAPI } from '@/service/foo'
+import { useUserStore } from '@/store'
 
 // 获取页面激活状态
 const currentPage = inject('currentPage', ref('index'))
 const isPageActive = computed(() => currentPage.value === 'shaicha')
+
+// 用户状态管理
+const userStore = useUserStore()
 
 const indexa = ref(0)
 const statusBarHeight = ref(0)
@@ -218,6 +222,11 @@ let intersectionObserver = null
 // 获取筛查列表数据
 const getScreeningList = async (isRefresh = false) => {
   if (loading.value) return
+
+  // 检查登录状态
+  if (!userStore.isLogined) {
+    return
+  }
 
   loading.value = true
 
@@ -248,8 +257,6 @@ const getScreeningList = async (isRefresh = false) => {
       params.endCreateTime = `${endDate.value} 23:59:59`
     }
 
-    console.log('筛查列表请求参数：', params)
-
     const result = await getDocumentScreeningListAPI(params)
 
     if (result.code === 200) {
@@ -259,8 +266,6 @@ const getScreeningList = async (isRefresh = false) => {
         screeningList.value = [...screeningList.value, ...(result.rows || [])]
       }
       total.value = result.total || 0
-
-      console.log('筛查列表获取成功：', result)
 
       // 数据更新后重新初始化观察器（只在页面激活时）
       if (isPageActive.value) {
@@ -273,7 +278,6 @@ const getScreeningList = async (isRefresh = false) => {
       })
     }
   } catch (error) {
-    console.error('获取筛查列表失败：', error)
     uni.showToast({
       title: '网络错误',
       icon: 'error',
@@ -348,12 +352,8 @@ const getTransportInfo = (transportParam) => {
 
 // scroll-view 滚动到底部事件处理
 const handleScrollToLower = () => {
-  console.log('scroll-view 滚动到底部')
   if (isPageActive.value) {
-    console.log('页面激活，触发加载更多')
     loadMore()
-  } else {
-    console.log('页面未激活，忽略滚动事件')
   }
 }
 
@@ -362,19 +362,8 @@ let loadMoreTimer = null
 
 // 加载更多数据
 const loadMore = () => {
-  console.log('loadMore 被调用', {
-    loading: loading.value,
-    currentLength: screeningList.value.length,
-    total: total.value,
-    isPageActive: isPageActive.value,
-  })
-
   // 如果正在加载或已经没有更多数据，则不执行
   if (loading.value || screeningList.value.length >= total.value) {
-    console.log('loadMore 被阻止:', {
-      loading: loading.value,
-      hasMore: screeningList.value.length < total.value,
-    })
     return
   }
 
@@ -383,10 +372,8 @@ const loadMore = () => {
     clearTimeout(loadMoreTimer)
   }
 
-  console.log('开始加载更多数据...')
   loadMoreTimer = setTimeout(() => {
     pageNum.value += 1
-    console.log('页码增加到:', pageNum.value)
     getScreeningList(false)
     loadMoreTimer = null
   }, 300)
@@ -441,7 +428,7 @@ function formatDate(timestamp) {
 watch(
   isPageActive,
   (newVal, oldVal) => {
-    if (newVal && !oldVal && screeningList.value.length === 0) {
+    if (newVal && !oldVal && screeningList.value.length === 0 && userStore.isLogined) {
       getScreeningList(true)
     }
     // 页面激活时初始化观察器
@@ -454,9 +441,32 @@ watch(
   { immediate: true },
 )
 
+// 监听登录状态变化
+watch(
+  () => userStore.isLogined,
+  (newVal, oldVal) => {
+    if (newVal === true && oldVal === false) {
+      getScreeningList(true)
+    }
+  },
+  { immediate: false }, // 不在组件初始化时立即执行，只在变化时执行
+)
+
 onMounted(() => {
   const systemInfo = uni.getSystemInfoSync()
   statusBarHeight.value = systemInfo.statusBarHeight
+
+  // 只有在用户已登录时才获取数据
+  if (userStore.isLogined) {
+    getScreeningList(true)
+  }
+})
+
+// 页面显示时检查登录状态
+onShow(() => {
+  if (userStore.isLogined && screeningList.value.length === 0) {
+    getScreeningList(true)
+  }
 })
 
 // 页面卸载时清理观察器

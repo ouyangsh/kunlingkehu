@@ -88,9 +88,9 @@ export const autoLogin = async () => {
     // 自动登录失败时，跳转到登录页面
     console.log('自动登录失败，准备跳转到登录页面')
     try {
-      uni.navigateTo({
-        url: '/pages/login/index',
-      })
+      // uni.navigateTo({
+      //   url: '/pages/login/index',
+      // })
       console.log('已跳转到登录页面')
     } catch (navError) {
       console.error('跳转到登录页面失败:', navError)

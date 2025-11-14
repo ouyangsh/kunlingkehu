@@ -190,7 +190,6 @@
   </buju>
 </template>
 <script setup lang="js">
-import { ref, computed, nextTick, onMounted, onUnmounted, inject, watch, onShow } from 'vue'
 import dibu from '../index/dibu.vue'
 import { getDocumentScreeningListAPI } from '@/service/foo'
 import { useUserStore } from '@/store'

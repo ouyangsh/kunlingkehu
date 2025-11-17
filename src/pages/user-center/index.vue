@@ -29,7 +29,7 @@
               {{
                 formatPhoneNumber(userInfo.phone) ||
                 formatPhoneNumber(userInfo.phonenumber) ||
-                '136****9779'
+                '***********'
               }}
             </div>
             <div class="text-28rpx text-gray-500">
@@ -42,16 +42,16 @@
       <!-- 功能菜单区域 -->
       <div class="menu-section bg-white mx-40rpx rounded-16rpx">
         <!-- 扫一扫 -->
-        <div
-          @click="openScan"
-          class="menu-item flex items-center justify-between px-40rpx py-32rpx border-b border-gray-100"
-        >
-          <div class="flex items-center">
-            <i class="font_family icon-icon-saoyisao !text-40rpx text-#19213D mr-20rpx"></i>
-            <text class="text-32rpx text-black">扫一扫</text>
-          </div>
-          <uni-icons type="right" size="18"></uni-icons>
-        </div>
+        <!--        <div-->
+        <!--          @click="openScan"-->
+        <!--          class="menu-item flex items-center justify-between px-40rpx py-32rpx border-b border-gray-100"-->
+        <!--        >-->
+        <!--          <div class="flex items-center">-->
+        <!--            <i class="font_family icon-icon-saoyisao !text-40rpx text-#19213D mr-20rpx"></i>-->
+        <!--            <text class="text-32rpx text-black">扫一扫</text>-->
+        <!--          </div>-->
+        <!--          <uni-icons type="right" size="18"></uni-icons>-->
+        <!--        </div>-->
 
         <!-- 服务协议 -->
         <div

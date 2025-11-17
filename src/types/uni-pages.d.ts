@@ -9,6 +9,7 @@ interface NavigateToOptions {
        "/pages/index/index" |
        "/pages/index/request" |
        "/pages/login/index" |
+       "/pages/qrcode/index" |
        "/pages/shaicha/index" |
        "/pages/user-center/index" |
        "/pages/wendang/index" |

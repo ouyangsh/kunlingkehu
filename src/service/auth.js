@@ -69,3 +69,16 @@ export const bindMiniProgramAccountAPI = (params) => {
     data: params,
   })
 }
+
+/**
+ * 绑定微信小程序授权
+ * @param {{ uuid: string; weixinCode: string }} params
+ * @returns {Promise}
+ */
+export const bindWeixinMiniProgramAPI = (params) => {
+  return http({
+    url: '/auth/bind-weixin-mini-program',
+    method: 'POST',
+    data: params,
+  })
+}

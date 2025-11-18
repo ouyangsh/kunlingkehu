@@ -176,7 +176,6 @@ declare module 'vue' {
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
-    readonly useEcharts: UnwrapRef<typeof import('../hooks/useEcharts')['useEcharts']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
     readonly useLayout: UnwrapRef<typeof import('../hooks/useLayout.js')['useLayout']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>

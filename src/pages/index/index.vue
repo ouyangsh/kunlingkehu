@@ -143,7 +143,7 @@ const takePhoto = () => {
     success: (result) => {
       console.log('拍照成功', result.tempFilePaths[0])
       const tempFilePath = result.tempFilePaths[0]
-      
+
       // 直接跳转到预览页面，只传递图片路径
       uni.navigateTo({
         url: `/pages-sub/shougongshaicha_xiangce/index?imagePath=${encodeURIComponent(tempFilePath)}`,
@@ -264,7 +264,7 @@ const functionItems = ref([
         success: (res) => {
           const tempFilePath = res.tempFilePaths[0]
           console.log('选择相册图片成功:', tempFilePath)
-          
+
           // 直接跳转到预览页面，只传递图片路径
           uni.navigateTo({
             url: `/pages-sub/shougongshaicha_xiangce/index?imagePath=${encodeURIComponent(tempFilePath)}`,
@@ -340,7 +340,7 @@ const fetchData = async () => {
           id: dir.id,
           icon: '/static/used-images/SketchPngf47a31a7c4f8701358171bb7437c221841b8c58567cfc6d961b01e284b21a525.png', // 默认图标
           name: dir.dirName,
-          date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
+          date: dir.createTime,
           count: dir.fileCount,
           selected: false,
         }))
@@ -358,7 +358,7 @@ const fetchData = async () => {
             id: file.id,
             icon: '/static/used-images/SketchPng86bdc456c81a400fda1c141024ffaa241ae1bf437e2a3e7d0634a75a36e38e86.png', // 默认图标
             name: file.fileName,
-            date: '' + new Date().toLocaleString(), // 假设使用当前日期时间
+            date: file.createTime,
             selected: false,
           }
         })

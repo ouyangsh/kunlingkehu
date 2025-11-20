@@ -71,6 +71,11 @@ import { http } from '@/utils/http'
 import { downloadAttachmentAPI, fileUpload } from '@/service/foo'
 import { useUserStore, useDocumentStore } from '@/store'
 const { footerHeight } = useLayout()
+
+// 先初始化 userStore 和 documentStore
+const userStore = useUserStore()
+const documentStore = useDocumentStore()
+
 const loopData0 = ref([
   {
     lanhuimage0: 'icon-icon-paizhao',
@@ -196,7 +201,6 @@ const toggleSelectFile = (file) => {
   file.selected = !file.selected
 
   // 同步到全局状态管理
-  const documentStore = useDocumentStore()
   documentStore.setFileSelected(file.id, file.selected, file)
 
   console.log('主页 - 切换文件选择状态:', file.name, file.selected)
@@ -352,7 +356,6 @@ const fetchData = async () => {
 
       // 处理文件数据
       if (res.data.files && Array.isArray(res.data.files)) {
-        const documentStore = useDocumentStore()
         const processedFiles = res.data.files.map((file) => {
           return {
             id: file.id,
@@ -428,9 +431,20 @@ const syncSelectionState = () => {
 }
 
 onMounted(() => {
-  if (userStore.isLogined) {
-    fetchData()
-  }
+  console.log('=== 主页 onMounted 触发 ===')
+  console.log('当前登录状态:', userStore.isLogined)
+  console.log('用户信息:', userStore.userInfo)
+  
+  // 延迟执行以确保 store 持久化数据已完全恢复
+  setTimeout(() => {
+    console.log('延迟后登录状态:', userStore.isLogined)
+    if (userStore.isLogined) {
+      console.log('用户已登录,开始获取数据')
+      fetchData()
+    } else {
+      console.warn('用户未登录,跳过数据获取')
+    }
+  }, 100)
 })
 
 onShow(() => {
@@ -441,7 +455,7 @@ onShow(() => {
   }, 100)
 })
 
-const userStore = useUserStore()
+// userStore 已在文件顶部声明
 
 watch(
   () => userStore.isLogined,

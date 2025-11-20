@@ -73,19 +73,19 @@ const loopData1 = ref([
     lanhutext0: '首页',
     lanhufontColor0: 'rgba(106,122,135,1)',
   },
-  {
-    lanhuimage0: 'icon-icon-quanbuwendang',
-    lanhutext0: '文档',
-    lanhufontColor0: 'rgba(106,122,135,1)',
-  },
+  // {
+  //   lanhuimage0: 'icon-icon-quanbuwendang',
+  //   lanhutext0: '文档',
+  //   lanhufontColor0: 'rgba(106,122,135,1)',
+  // },
   {
     lanhuimage0: 'icon-hechaxinxiliebiao',
-    lanhutext0: '筛查',
+    lanhutext0: '单笔筛查',
     lanhufontColor0: 'rgba(106,122,135,1)',
   },
   {
     lanhuimage0: 'icon-icon-zixun',
-    lanhutext0: '资讯',
+    lanhutext0: '法律法规',
     lanhufontColor0: 'rgba(106,122,135,1)',
   },
   {

@@ -7,7 +7,6 @@ interface NavigateToOptions {
   url: "/pages/my/index" |
        "/pages/index/dibu" |
        "/pages/index/index" |
-       "/pages/index/request" |
        "/pages/login/index" |
        "/pages/qrcode/index" |
        "/pages/shaicha/index" |

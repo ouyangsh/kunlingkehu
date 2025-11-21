@@ -26,7 +26,7 @@
             </div>
             <div>
               <image
-                src="/static/used-images/ren@2x.png"
+                src="https://wx-1312877696.cos.ap-guangzhou.myqcloud.com/ren%402x.png"
                 class="w260rpx h146rpx pr-3"
                 mode="scaleToFill"
               />
@@ -41,62 +41,19 @@
     </template>
     <div class="h10rpx"></div>
     <div class="user-info-container">
-      <!-- 信息列表 -->
-      <div class="info-list">
-        <!-- 姓名 -->
-        <div class="text-32rpx font-500 pt30rpx pl30rpx">查询相关</div>
+      <!-- 问题列表 -->
+      <div class="info-list" v-for="(group, groupIndex) in questionList" :key="groupIndex">
+        <!-- 分组标题 -->
+        <div class="text-32rpx font-500 pt30rpx pl30rpx">{{ group.title }}</div>
 
-        <div class="info-item">
-          <text class="label">1.三只羊控股集团有限公司</text>
-        </div>
-
-        <!-- 手机号 -->
-        <div class="info-item">
-          <text class="label">1.三只羊控股集团有限公司</text>
-        </div>
-
-        <!-- 邮箱 -->
-        <div class="info-item">
-          <text class="label">1.三只羊控股集团有限公司</text>
-        </div>
-
-        <!-- 单位 -->
-        <div class="info-item">
-          <text class="label">1.三只羊控股集团有限公司</text>
-        </div>
-
-        <!-- 账号期限 -->
-        <div class="info-item">
-          <text class="label">1.三只羊控股集团有限公司</text>
-        </div>
-      </div>
-
-      <div class="info-list">
-        <!-- 姓名 -->
-        <div class="text-32rpx font-500 pt30rpx pl30rpx">查询相关</div>
-
-        <div class="info-item">
-          <text class="label">1.三只羊控股集团有限公司</text>
-        </div>
-
-        <!-- 手机号 -->
-        <div class="info-item">
-          <text class="label">1.三只羊控股集团有限公司</text>
-        </div>
-
-        <!-- 邮箱 -->
-        <div class="info-item">
-          <text class="label">1.三只羊控股集团有限公司</text>
-        </div>
-
-        <!-- 单位 -->
-        <div class="info-item">
-          <text class="label">1.三只羊控股集团有限公司</text>
-        </div>
-
-        <!-- 账号期限 -->
-        <div class="info-item">
-          <text class="label">1.三只羊控股集团有限公司</text>
+        <!-- 问题项 -->
+        <div
+          class="info-item"
+          v-for="(item, itemIndex) in group.items"
+          :key="itemIndex"
+          @click="openQuestion(item)"
+        >
+          <text class="label">{{ itemIndex + 1 }}.{{ item.title }}</text>
         </div>
       </div>
     </div>
@@ -122,8 +79,37 @@
 
 <script setup lang="js">
 import { useUserStore } from '@/store'
+import { http } from '@/utils/http'
 
 const userStore = useUserStore()
+
+// 问题列表数据
+const questionList = ref([])
+
+// 获取问题列表
+const fetchQuestionList = async () => {
+  try {
+    const res = await http({
+      url: '/tcss/common/find-article',
+      method: 'POST',
+    })
+    if (res.code === 200 && res.data) {
+      questionList.value = res.data
+    }
+  } catch (error) {
+    console.error('获取问题列表失败:', error)
+  }
+}
+
+// 打开问题详情
+const openQuestion = (item) => {
+  if (item && item.id) {
+    // 跳转到问题详情页面,传递问题ID和标题
+    uni.navigateTo({
+      url: `/pages-sub/wenti/index?id=${item.id}&title=${encodeURIComponent(item.title)}`,
+    })
+  }
+}
 
 const navigateTo = (url) => {
   uni.navigateTo({
@@ -147,9 +133,10 @@ const navigateBack = () => {
 // 用户信息
 const userInfo = computed(() => userStore.userInfo)
 
-// 页面加载时获取用户信息
+// 页面加载时获取用户信息和问题列表
 onMounted(() => {
-  console.log('个人信息页面加载，用户信息：', userInfo.value)
+  console.log('常见问题页面加载，用户信息：', userInfo.value)
+  fetchQuestionList()
 })
 </script>
 

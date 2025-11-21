@@ -193,6 +193,14 @@
           }
         },
         {
+          "path": "wenti/index",
+          "type": "page",
+          "style": {
+            "navigationBarTitleText": "问题详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "wuxiangchaxun/index",
           "type": "page",
           "style": {

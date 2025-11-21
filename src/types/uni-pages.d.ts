@@ -26,6 +26,7 @@ interface NavigateToOptions {
        "/pages-sub/shougongshaicha_xiangce/index" |
        "/pages-sub/shougongshaicha_xiangce_daoru/index" |
        "/pages-sub/user-center/user-info" |
+       "/pages-sub/wenti/index" |
        "/pages-sub/wuxiangchaxun/index" |
        "/pages-sub/yidong/index" |
        "/pages-sub/yidong2/index" |

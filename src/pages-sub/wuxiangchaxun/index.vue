@@ -8,54 +8,142 @@
 </route>
 <template>
   <buju title="物项查询" quanjucolor=" bg-#FFFFFF!">
-    <div class="h-100% bg-amber flex flex-col">
-      <div>asdfasdf</div>
-      <scroll-view scroll-y="true" @scrolltolower="onScrollToLower">
-        <view class="h90vh bg-emerald">
-          <!-- 物项综合查询卡片 -->
-          <view class="search-card">
-            <view class="card-header">
-              <view class="card-title">物项综合查询</view>
-              <view class="card-subtitle">整合全球物项管制清单，助力规避贸易风险</view>
-            </view>
-
-            <view class="search-box">
-              <view class="search-input-wrapper w690rpx">
-                <uni-icons
-                  type="search"
-                  size="18"
-                  color="#999"
-                  class="search-icon ml-25rpx"
-                ></uni-icons>
-                <input
-                  v-model="searchKeyword"
-                  class="search-input w-460rpx"
-                  type="text"
-                  placeholder="请输入物项关键词"
-                  placeholder-style="color: #999;"
-                />
-              </view>
-              <button class="search-btn absolute right-50rpx">查询</button>
-            </view>
-
-            <view class="examples">
-              <view class="example-list">
-                <text class="example-label">示例：</text>
-                <text
-                  class="example-item"
-                  v-for="(item, index) in recomentList"
-                  :key="index"
-                  @click="selectExample(item)"
-                >
-                  {{ item }}
-                </text>
-              </view>
-            </view>
-          </view>
+    <div class="flex flex-col items-center mt35rpx">
+      <view class="search-box relative">
+        <view class="search-input-wrapper w690rpx">
+          <uni-icons type="search" size="18" color="#999" class="search-icon ml-25rpx"></uni-icons>
+          <input
+            v-model="searchKeyword"
+            class="search-input w-460rpx"
+            type="text"
+            placeholder="请输入物项关键词"
+            placeholder-style="color: #999;"
+          />
         </view>
+        <button class="search-btn absolute right-30rpx">查询</button>
+      </view>
+
+      <!-- 筛选条件 -->
+      <view class="filter-container">
+        <view class="filter-item flex items-center" @click="showCountryPicker = true">
+          <text class="filter-label">{{ selectedCountry || '发布国家' }}</text>
+          <i class="font_family icon-down !text-17rpx text-#19213D"></i>
+        </view>
+        <view class="filter-item flex items-center" @click="showSubjectPicker = true">
+          <text class="filter-label">{{ selectedSubject || '法规分类' }}</text>
+          <i class="font_family icon-down !text-17rpx text-#19213D"></i>
+        </view>
+        <view class="filter-item flex items-center" @click="showRegionPicker = true">
+          <text class="filter-label">{{ selectedRegion || '被限制国家和地区' }}</text>
+          <i class="font_family icon-down !text-17rpx text-#19213D"></i>
+        </view>
+      </view>
+
+      <scroll-view scroll-y="true" @scrolltolower="onScrollToLower">
+        <div
+          class="w690rpx h100rpx bg-#F3F3F3 rounded-8rpx mx-auto mt-20rpx flex items-center pl-30rpx text-#9DA2A7"
+        >
+          搜索到 2 条
+        </div>
       </scroll-view>
     </div>
   </buju>
+
+  <!-- 发布国家选择器 -->
+  <uni-popup
+    ref="countryPopup"
+    type="bottom"
+    :show="showCountryPicker"
+    @close="showCountryPicker = false"
+  >
+    <view class="picker-container">
+      <view class="picker-header">
+        <text class="picker-cancel" @click="showCountryPicker = false">取消</text>
+        <text class="picker-title">选择发布国家</text>
+        <text class="picker-confirm" @click="showCountryPicker = false">确定</text>
+      </view>
+      <scroll-view scroll-y class="picker-content">
+        <view
+          v-for="item in countryList"
+          :key="item.dictValue"
+          class="picker-item"
+          @click="handleCountrySelect(item)"
+        >
+          <text>{{ item.dictLabel }}</text>
+          <uni-icons
+            v-if="selectedCountry === item.dictLabel"
+            type="checkmarkempty"
+            size="20"
+            color="#2563eb"
+          ></uni-icons>
+        </view>
+      </scroll-view>
+    </view>
+  </uni-popup>
+
+  <!-- 法规分类选择器 -->
+  <uni-popup
+    ref="subjectPopup"
+    type="bottom"
+    :show="showSubjectPicker"
+    @close="showSubjectPicker = false"
+  >
+    <view class="picker-container">
+      <view class="picker-header">
+        <text class="picker-cancel" @click="showSubjectPicker = false">取消</text>
+        <text class="picker-title">选择法规分类</text>
+        <text class="picker-confirm" @click="showSubjectPicker = false">确定</text>
+      </view>
+      <scroll-view scroll-y class="picker-content">
+        <view
+          v-for="item in subjectList"
+          :key="item.dictValue"
+          class="picker-item"
+          @click="handleSubjectSelect(item)"
+        >
+          <text>{{ item.dictLabel }}</text>
+          <uni-icons
+            v-if="selectedSubject === item.dictLabel"
+            type="checkmarkempty"
+            size="20"
+            color="#2563eb"
+          ></uni-icons>
+        </view>
+      </scroll-view>
+    </view>
+  </uni-popup>
+
+  <!-- 被限制国家和地区选择器 -->
+  <uni-popup
+    ref="regionPopup"
+    type="bottom"
+    :show="showRegionPicker"
+    @close="showRegionPicker = false"
+  >
+    <view class="picker-container">
+      <view class="picker-header">
+        <text class="picker-cancel" @click="showRegionPicker = false">取消</text>
+        <text class="picker-title">选择被限制国家和地区</text>
+        <text class="picker-confirm" @click="showRegionPicker = false">确定</text>
+      </view>
+      <scroll-view scroll-y class="picker-content">
+        <view
+          v-for="item in regionList"
+          :key="item.dictValue"
+          class="picker-item"
+          @click="handleRegionSelect(item)"
+        >
+          <text>{{ item.dictLabel }}</text>
+          <uni-icons
+            v-if="selectedRegion === item.dictLabel"
+            type="checkmarkempty"
+            size="20"
+            color="#2563eb"
+          ></uni-icons>
+        </view>
+      </scroll-view>
+    </view>
+  </uni-popup>
 </template>
 
 <script setup>
@@ -89,6 +177,19 @@ const searchKeyword = ref('')
 
 // 示例推荐列表
 const recomentList = ref([])
+
+// 筛选条件相关
+const showCountryPicker = ref(false)
+const showSubjectPicker = ref(false)
+const showRegionPicker = ref(false)
+
+const selectedCountry = ref('')
+const selectedSubject = ref('')
+const selectedRegion = ref('')
+
+const countryList = ref([])
+const subjectList = ref([])
+const regionList = ref([])
 
 // 获取字典数据
 const getDicts = async (dictType) => {
@@ -156,6 +257,50 @@ const selectExample = (value) => {
   searchKeyword.value = value
 }
 
+// 处理筛选条件选择
+const handleCountrySelect = (item) => {
+  selectedCountry.value = item.dictLabel
+  queryParams.countryType = item.dictValue
+  showCountryPicker.value = false
+  // 重置分页并重新查询
+  queryParams.pageNum = 1
+  fetchNewsList()
+}
+
+const handleSubjectSelect = (item) => {
+  selectedSubject.value = item.dictLabel
+  queryParams.subjectType = item.dictValue
+  showSubjectPicker.value = false
+  // 重置分页并重新查询
+  queryParams.pageNum = 1
+  fetchNewsList()
+}
+
+const handleRegionSelect = (item) => {
+  selectedRegion.value = item.dictLabel
+  queryParams.regionType = item.dictValue
+  showRegionPicker.value = false
+  // 重置分页并重新查询
+  queryParams.pageNum = 1
+  fetchNewsList()
+}
+
+// 获取筛选条件字典数据
+const fetchFilterDicts = async () => {
+  try {
+    const [countries, subjects, regions] = await Promise.all([
+      getDicts('country_type'),
+      getDicts('subject_type'),
+      getDicts('region_type'),
+    ])
+    countryList.value = countries
+    subjectList.value = subjects
+    regionList.value = regions
+  } catch (error) {
+    console.error('获取筛选条件字典数据失败:', error)
+  }
+}
+
 // 跳转到详情页
 const tiaozhuan = (id) => {
   uni.navigateTo({
@@ -179,13 +324,13 @@ onMounted(async () => {
   try {
     await waitForLogin()
     console.log('登录等待完成，开始获取数据')
-    // 并行获取示例数据和新闻数据
-    await Promise.all([fetchRecomentList(), fetchNewsList()])
+    // 并行获取示例数据、筛选条件字典和新闻数据
+    await Promise.all([fetchRecomentList(), fetchFilterDicts(), fetchNewsList()])
     console.log('数据初始化完成')
   } catch (error) {
     console.error('等待登录失败，但仍尝试获取数据:', error)
     // 即使等待失败，也尝试获取数据（可能已经有token了）
-    await Promise.all([fetchRecomentList(), fetchNewsList()])
+    await Promise.all([fetchRecomentList(), fetchFilterDicts(), fetchNewsList()])
   }
 })
 </script>
@@ -319,6 +464,94 @@ onMounted(async () => {
   color: #2563eb;
   margin-right: 20rpx;
   margin-bottom: 10rpx;
+}
+
+/* 筛选条件样式 */
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background: #fff;
+  width: 100vw;
+  border-bottom: 1rpx solid #f0f0f0;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.filter-item {
+  font-size: 28rpx;
+
+  &:first-child {
+    margin-left: 30rpx;
+  }
+
+  &:last-child {
+    margin-right: 30rpx;
+  }
+}
+
+.filter-label {
+  font-size: 27rpx;
+  color: #666;
+  margin-right: 8rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 选择器弹窗样式 */
+.picker-container {
+  background: #fff;
+  border-radius: 20rpx 20rpx 0 0;
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.picker-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.picker-cancel,
+.picker-confirm {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.picker-confirm {
+  color: #2563eb;
+}
+
+.picker-content {
+  flex: 1;
+  max-height: 50vh;
+}
+
+.picker-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  font-size: 28rpx;
+  color: #333;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:active {
+    background: #f5f7fa;
+  }
 }
 
 .laws-section {

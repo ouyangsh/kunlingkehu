@@ -78,7 +78,7 @@ onMounted(() => {
     min-height: 44px;
 
     .title {
-      font-size: 16px;
+      font-size: 38rpx;
       font-weight: bold;
     }
   }

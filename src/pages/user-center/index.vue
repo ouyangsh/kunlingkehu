@@ -18,7 +18,10 @@
         <div class="flex items-center px-40rpx py-40rpx pt100rpx" @click="goToUserInfo">
           <!-- 头像 -->
           <image
-            :src="userInfo.avatar || '/static/used-images/ren@2x.png'"
+            :src="
+              userInfo.avatar ||
+              'https://wx-1312877696.cos.ap-guangzhou.myqcloud.com/icon-user%402x.png'
+            "
             class="w-140rpx h-140rpx rounded-140rpx mr-40rpx"
             mode="aspectFill"
           />
@@ -29,7 +32,7 @@
               {{
                 formatPhoneNumber(userInfo.phone) ||
                 formatPhoneNumber(userInfo.phonenumber) ||
-                '***********'
+                '微信扫码授权登录'
               }}
             </div>
             <div class="text-28rpx text-gray-500">

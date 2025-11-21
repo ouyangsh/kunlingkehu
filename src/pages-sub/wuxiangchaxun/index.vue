@@ -2,125 +2,64 @@
 {
   style: {
     navigationStyle: 'custom',
-    navigationBarTitleText: '首页',
+    navigationBarTitleText: '物项查询',
   },
 }
 </route>
 <template>
-  <buju
-    title="首页"
-    :headerClass="'bg-[url(https://wx-1312877696.cos.ap-guangzhou.myqcloud.com/img2%402x.png)] relative h240rpx bg-cover bg-center bg-no-repeat'"
-  >
-    <template #header>
-      <view class="header-container">
-        <!-- 蓝色背景区域 -->
-        <view class="header-bg">
-          <view class="header-content absolute bottom-35rpx">
-            <!-- 顶部导航栏占位，如果需要 -->
-            <view class="nav-bar">
-              <text class="nav-title">贸易合规小助手</text>
-              <view class="nav-icons">
-                <!-- 图标占位 -->
+  <buju title="物项查询" quanjucolor=" bg-#FFFFFF!">
+    <div class="h-100% bg-amber flex flex-col">
+      <div>asdfasdf</div>
+      <scroll-view scroll-y="true" @scrolltolower="onScrollToLower">
+        <view class="h90vh bg-emerald">
+          <!-- 物项综合查询卡片 -->
+          <view class="search-card">
+            <view class="card-header">
+              <view class="card-title">物项综合查询</view>
+              <view class="card-subtitle">整合全球物项管制清单，助力规避贸易风险</view>
+            </view>
+
+            <view class="search-box">
+              <view class="search-input-wrapper w690rpx">
+                <uni-icons
+                  type="search"
+                  size="18"
+                  color="#999"
+                  class="search-icon ml-25rpx"
+                ></uni-icons>
+                <input
+                  v-model="searchKeyword"
+                  class="search-input w-460rpx"
+                  type="text"
+                  placeholder="请输入物项关键词"
+                  placeholder-style="color: #999;"
+                />
+              </view>
+              <button class="search-btn absolute right-50rpx">查询</button>
+            </view>
+
+            <view class="examples">
+              <view class="example-list">
+                <text class="example-label">示例：</text>
+                <text
+                  class="example-item"
+                  v-for="(item, index) in recomentList"
+                  :key="index"
+                  @click="selectExample(item)"
+                >
+                  {{ item }}
+                </text>
               </view>
             </view>
-            <view class="header-slogan">贸易合规，国货领航！</view>
           </view>
         </view>
-      </view>
-    </template>
-    <scroll-view scroll-y="true" class="law-list-scroll-view" @scrolltolower="onScrollToLower">
-      <view class="page-content">
-        <!-- 物项综合查询卡片 -->
-        <view class="search-card">
-          <view class="card-header">
-            <view class="card-title">物项综合查询</view>
-            <view class="card-subtitle">整合全球物项管制清单，助力规避贸易风险</view>
-          </view>
-
-          <view class="search-box">
-            <view class="search-input-wrapper w690rpx">
-              <uni-icons
-                type="search"
-                size="18"
-                color="#999"
-                class="search-icon ml-25rpx"
-              ></uni-icons>
-              <input
-                v-model="searchKeyword"
-                class="search-input w-460rpx"
-                type="text"
-                placeholder="请输入物项关键词"
-                placeholder-style="color: #999;"
-              />
-            </view>
-            <button class="search-btn absolute right-50rpx" @click="handleSearch">查询</button>
-          </view>
-
-          <view class="examples">
-            <view class="example-list">
-              <text class="example-label">示例：</text>
-              <text
-                class="example-item"
-                v-for="(item, index) in recomentList"
-                :key="index"
-                @click="selectExample(item)"
-              >
-                {{ item }}
-              </text>
-            </view>
-          </view>
-        </view>
-
-        <!-- 法律法规列表 -->
-        <view class="laws-section">
-          <view class="section-title">法律法规</view>
-
-          <view
-            @click="tiaozhuan(newsItem.id)"
-            class="law-item bg-#FFFFFF p30rpx box-border h184rpx mb-1px"
-            v-for="newsItem in lawList"
-            :key="newsItem.id"
-          >
-            <view class="flex">
-              <view
-                class="h80rpx text-30rpx text-#19213D min-w-560rpx overflow-hidden text-ellipsis line-clamp-2"
-              >
-                {{ newsItem.tittleChn || newsItem.tittle }}
-              </view>
-              <image
-                v-if="newsItem.imageProperty"
-                :src="`https://spm-1312877696.cos.ap-beijing.myqcloud.com/news/${newsItem.imageProperty}.png`"
-                class="w120rpx h80rpx shrink-0 ml2 rounded-8rpx"
-                mode="aspectFill"
-                :lazy-load="true"
-              />
-            </view>
-            <view class="text-24rpx flex justify-between mt-25rpx text-#666666">
-              <text>{{ newsItem.publishDate.split(' ')[0] }}</text>
-              <text>{{ newsItem.publishCountry }}</text>
-              <text>{{ newsItem.publishOrg }}</text>
-              <text>{{ newsItem.subjectType }}</text>
-            </view>
-          </view>
-          <view v-if="isLoading" class="text-center py-20rpx text-#666">加载中...</view>
-          <view
-            v-if="!hasMore && !isLoading && lawList.length > 0"
-            class="text-center py-20rpx text-#666"
-          >
-            没有更多数据了
-          </view>
-        </view>
-      </view>
-    </scroll-view>
-
-    <template #footer>
-      <dibu />
-    </template>
+      </scroll-view>
+    </div>
   </buju>
 </template>
 
 <script setup>
-import dibu from './dibu.vue'
+import dibu from '@/pages/index/dibu.vue'
 import { ref, reactive, onMounted } from 'vue'
 import { http } from '@/utils/http'
 import { waitForLogin } from '@/utils/loginWaiter'
@@ -217,14 +156,6 @@ const selectExample = (value) => {
   searchKeyword.value = value
 }
 
-// 处理查询按钮点击
-const handleSearch = () => {
-  // 跳转到物项查询页面,携带搜索关键词
-  uni.navigateTo({
-    url: `/pages-sub/wuxiangchaxun/index?keyword=${encodeURIComponent(searchKeyword.value || '')}`,
-  })
-}
-
 // 跳转到详情页
 const tiaozhuan = (id) => {
   uni.navigateTo({
@@ -233,6 +164,17 @@ const tiaozhuan = (id) => {
 }
 
 onMounted(async () => {
+  // 获取URL参数
+  const pages = getCurrentPages()
+  const currentPage = pages[pages.length - 1]
+  const keyword = currentPage.$route?.query?.keyword || currentPage.options?.keyword || ''
+
+  // 如果有搜索关键词,填入搜索框
+  if (keyword) {
+    searchKeyword.value = decodeURIComponent(keyword)
+    queryParams.keyword = decodeURIComponent(keyword)
+  }
+
   // 等待自动登录完成后再获取数据
   try {
     await waitForLogin()
@@ -253,7 +195,6 @@ onMounted(async () => {
 
 .page-content {
   background-color: #f5f7fa;
-  min-height: 100vh;
   padding-bottom: 150rpx; /* Space for footer */
 }
 

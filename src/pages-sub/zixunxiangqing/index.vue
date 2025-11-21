@@ -58,8 +58,14 @@
           原文
         </div>
       </div>
-      <div class="text-30rpx text-#19213D mt30rpx" v-html="showChinese ? (newsDetail.detailTextHtmlChn || newsDetail.detailTextHtmlUnified) : newsDetail.detailTextHtmlUnified">
-      </div>
+      <div
+        class="text-30rpx text-#19213D mt30rpx max-w-100vw"
+        v-html="
+          showChinese
+            ? newsDetail.detailTextHtmlChn || newsDetail.detailTextHtmlUnified
+            : newsDetail.detailTextHtmlUnified
+        "
+      ></div>
     </div>
   </buju>
 </template>
@@ -276,7 +282,7 @@ const fetchNewsDetail = async (id) => {
       url: '/tscc/news/detail',
       method: 'POST',
       data: {
-        id: id,
+        id,
       },
     })
     if (res.code === 200 && res.data) {

@@ -9,10 +9,10 @@ export const useNavigationStore = defineStore(
     // 页面映射关系
     const pageMap = {
       0: 'index', // 首页
-      1: 'wendang', // 文档
-      2: 'shaicha', // 筛查
-      3: 'zixun', // 资讯
-      4: 'userCenter', // 我的
+      // 1: 'wendang', // 文档
+      1: 'shaicha', // 筛查
+      2: 'zixun', // 资讯
+      3: 'userCenter', // 我的
     }
 
     // 设置当前页面索引

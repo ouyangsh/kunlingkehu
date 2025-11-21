@@ -193,6 +193,14 @@
           }
         },
         {
+          "path": "wuxiangchaxun/index",
+          "type": "page",
+          "style": {
+            "navigationStyle": "custom",
+            "navigationBarTitleText": "物项查询"
+          }
+        },
+        {
           "path": "yidong/index",
           "type": "page",
           "style": {

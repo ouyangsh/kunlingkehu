@@ -11,7 +11,6 @@
   <view class="page-container">
     <index v-show="suoyin === 'index'"></index>
     <shaicha v-show="suoyin === 'shaicha'"></shaicha>
-    <wendang v-show="suoyin === 'wendang'"></wendang>
     <zixun v-show="suoyin === 'zixun'"></zixun>
     <userCenter v-show="suoyin === 'userCenter'"></userCenter>
   </view>
@@ -21,7 +20,6 @@
 import { computed, provide } from 'vue'
 import index from '@/pages/index/index.vue'
 import shaicha from '@/pages/shaicha/index.vue'
-import wendang from '@/pages/wendang/index.vue'
 import zixun from '@/pages/zixun/index.vue'
 import userCenter from '@/pages/user-center/index.vue'
 import { useNavigationStore } from '@/store/navigation'

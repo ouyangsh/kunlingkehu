@@ -33,7 +33,7 @@ import { useNavigationStore } from '@/store/navigation'
 const navigationStore = useNavigationStore()
 const pages = [
   '/pages/index/index',
-  '/pages/wendang/index',
+  // '/pages/wendang/index',
   '/pages/shaicha/index',
   '/pages/zixun/index',
   '/pages/user-center/index',
@@ -42,10 +42,10 @@ const pages = [
 // 页面名称到索引的映射
 const pageNameToIndex = {
   index: 0,
-  wendang: 1,
-  shaicha: 2,
-  zixun: 3,
-  userCenter: 4,
+  // wendang: 1,
+  shaicha: 1,
+  zixun: 2,
+  userCenter: 3,
 }
 
 // 根据 store 中的 suoyin 计算当前索引

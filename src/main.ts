@@ -24,6 +24,14 @@ export function createApp() {
   app.use(uvUI)
   app.use(routeInterceptor)
   app.use(requestInterceptor)
+  app.mixin({
+    onShow() {
+      // 确保在 App 端隐藏原生 TabBar
+      // #ifdef APP-PLUS
+      uni.hideTabBar()
+      // #endif
+    },
+  })
   return {
     app,
   }

@@ -27,5 +27,6 @@ declare module '@vue/runtime-core' {
     QiunLoading: typeof import('./../components/qiun-loading/qiun-loading.vue')['default']
     QiunTitleBar: typeof import('./../components/qiun-title-bar/qiun-title-bar.vue')['default']
     SvgIcon: typeof import('./../components/SvgIcon.vue')['default']
+    TabBar: typeof import('./../components/TabBar/TabBar.vue')['default']
   }
 }

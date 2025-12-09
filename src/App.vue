@@ -8,6 +8,7 @@ const userStore = useUserStore()
 
 onLaunch(async () => {
   console.log('App Launch')
+  uni.hideTabBar()
 
   // 应用启动时自动登录
   const loginPromise = autoLogin()

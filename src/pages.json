@@ -16,22 +16,47 @@
       "^(?!z-paging-refresh|z-paging-load-more)z-paging(.*)": "z-paging/components/z-paging$1/z-paging$1.vue"
     }
   },
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#018d71",
+    "backgroundColor": "#F8F8F8",
+    "borderStyle": "black",
+    "height": "50px",
+    "fontSize": "10px",
+    "iconWidth": "24px",
+    "spacing": "3px",
+    "list": [
+      {
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/homeHL.png",
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "iconPath": "static/tabbar/search.png",
+        "selectedIconPath": "static/tabbar/searchHL.png",
+        "pagePath": "pages/shaicha/index",
+        "text": "单笔筛查"
+      },
+      {
+        "iconPath": "static/tabbar/news.png",
+        "selectedIconPath": "static/tabbar/newsHL.png",
+        "pagePath": "pages/zixun/index",
+        "text": "法律法规"
+      },
+      {
+        "iconPath": "static/tabbar/personal.png",
+        "selectedIconPath": "static/tabbar/personalHL.png",
+        "pagePath": "pages/user-center/index",
+        "text": "我的"
+      }
+    ]
+  },
   "pages": [
     {
-      "path": "pages/my/index",
-      "type": "home",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "我的"
-      }
-    },
-    {
-      "path": "pages/index/dibu",
-      "type": "page"
-    },
-    {
       "path": "pages/index/index",
-      "type": "page",
+      "type": "home",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "首页"
@@ -80,8 +105,8 @@
       "path": "pages/zixun/index",
       "type": "page",
       "style": {
-        "navigationBarTitleText": "筛查详情",
-        "navigationStyle": "custom"
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "法律法规"
       }
     }
   ],
@@ -90,153 +115,10 @@
       "root": "pages-sub",
       "pages": [
         {
-          "path": "changjianwenti/index",
+          "path": "test/test",
           "type": "page",
           "style": {
-            "navigationBarTitleText": "常见问题",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "danju/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "全部文档",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "demo/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "分包页面 标题"
-          }
-        },
-        {
-          "path": "fenleishezhi/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "分类设置",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "fuwuxieyi/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "服务协议",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "login/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "登录",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "quanbu-wendang-xuanze/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "全部文档",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "shaichajieguo/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "筛查结果",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "shaichaxiangqing/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "筛查详情",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "shougongshaicha/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "手工筛查",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "shougongshaicha_xiangce/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "相册导入",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "shougongshaicha_xiangce_daoru/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "相册导入",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "user-center/user-info",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "个人信息",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "wenti/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "问题详情",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "wuxiangchaxun/index",
-          "type": "page",
-          "style": {
-            "navigationStyle": "custom",
-            "navigationBarTitleText": "物项查询"
-          }
-        },
-        {
-          "path": "yidong/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "全部文档",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "yidong2/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "全部文档",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "yijianfankui/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "意见反馈",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "zixunxiangqing/index",
-          "type": "page",
-          "style": {
-            "navigationBarTitleText": "资讯详情",
+            "navigationBarTitleText": "筛查",
             "navigationStyle": "custom"
           }
         }

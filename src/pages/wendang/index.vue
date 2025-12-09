@@ -58,15 +58,15 @@
   </buju>
 </template>
 <script setup lang="js">
-import { ref, watch } from 'vue'
+// import { ref, watch } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import buju from '@/components/buju/buju.vue'
-import dibu from '../index/dibu.vue'
+// import dibu from '../index/dibu.vue'
 import FolderList from './components/folder-list.vue'
 import FileList from './components/file-list.vue'
 import FunctionGrid from './components/function-grid.vue'
 import { getDirectoryListAPI, fileUpload } from '@/service/foo'
-import { useNavigationStore } from '@/store/navigation'
+// import { useNavigationStore } from '@/store/navigation'
 import { useUserStore } from '@/store'
 
 const navigationStore = useNavigationStore()
@@ -143,7 +143,7 @@ const takePhoto = () => {
     success: (result) => {
       console.log('拍照成功', result.tempFilePaths[0])
       const tempFilePath = result.tempFilePaths[0]
-      
+
       // 直接跳转到预览页面，只传递图片路径
       uni.navigateTo({
         url: `/pages-sub/shougongshaicha_xiangce/index?imagePath=${encodeURIComponent(tempFilePath)}`,
@@ -177,7 +177,7 @@ const importFromAlbum = () => {
     success: (res) => {
       const tempFilePath = res.tempFilePaths[0]
       console.log('选择相册图片成功:', tempFilePath)
-      
+
       // 直接跳转到预览页面，只传递图片路径
       uni.navigateTo({
         url: `/pages-sub/shougongshaicha_xiangce/index?imagePath=${encodeURIComponent(tempFilePath)}`,
@@ -230,7 +230,7 @@ const fetchData = async () => {
     console.log('wendang页面 - 开始获取数据...')
     console.log('wendang页面 - 用户登录状态:', userStore.isLogined)
     console.log('wendang页面 - 用户token:', userStore.userInfo?.token ? '已设置' : '未设置')
-    
+
     const res = await getDirectoryListAPI()
     console.log('wendang页面 - API响应:', res)
 
@@ -286,7 +286,7 @@ const fetchData = async () => {
 onShow(() => {
   console.log('wendang页面 - onShow触发')
   console.log('wendang页面 - 用户登录状态:', userStore.isLogined)
-  
+
   if (userStore.isLogined) {
     fetchData()
   } else {
@@ -300,7 +300,7 @@ watch(
   (newValue) => {
     console.log('wendang页面 - 导航状态变化:', newValue)
     console.log('wendang页面 - 用户登录状态:', userStore.isLogined)
-    
+
     if (newValue === 'wendang' && userStore.isLogined) {
       fetchData()
     } else if (newValue === 'wendang' && !userStore.isLogined) {

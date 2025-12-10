@@ -35,13 +35,13 @@ const list = [
   },
   {
     pagePath: 'pages/shaicha/index',
-    text: '单笔筛查',
+    text: '分类',
     iconPath: '/static/tabbar/search.png',
     selectedIconPath: '/static/tabbar/searchHL.png',
   },
   {
     pagePath: 'pages/zixun/index',
-    text: '法律法规',
+    text: '购物车',
     iconPath: '/static/tabbar/news.png',
     selectedIconPath: '/static/tabbar/newsHL.png',
   },
@@ -80,7 +80,7 @@ const switchTab = (item: any, index: number) => {
   left: 0;
   right: 0;
   height: 50px;
-  background-color: #d84b4b;
+  background-color: #ffffff;
   display: flex;
   padding-bottom: env(safe-area-inset-bottom);
   box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);

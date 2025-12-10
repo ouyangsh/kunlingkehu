@@ -11,7 +11,7 @@ onLaunch(async () => {
   uni.hideTabBar()
 
   // 应用启动时自动登录
-  const loginPromise = autoLogin()
+  // const loginPromise = autoLogin()
   setLoginPromise(loginPromise)
   try {
     await loginPromise

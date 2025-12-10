@@ -1,17 +1,17 @@
 <route lang="json5">
 {
   style: {
-    navigationBarTitleText: '筛查',
+    navigationBarTitleText: '分类',
     navigationStyle: 'custom',
   },
 }
 </route>
 
 <template>
-  <buju title="筛查">
+  <buju title="分类">
     <view class="content">
       <view class="text-area">
-        <text class="title">单笔筛查</text>
+        <text class="title">分类</text>
       </view>
     </view>
     <template #footer>

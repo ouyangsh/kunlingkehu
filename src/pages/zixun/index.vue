@@ -2,16 +2,16 @@
 {
   style: {
     navigationStyle: 'custom',
-    navigationBarTitleText: '法律法规',
+    navigationBarTitleText: '购物车',
   },
 }
 </route>
 
 <template>
-  <buju title="法律法规">
+  <buju title="购物车">
     <view class="content">
       <view class="text-area">
-        <text class="title">法律法规</text>
+        <text class="title">购物车</text>
       </view>
     </view>
     <template #footer>

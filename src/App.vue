@@ -11,13 +11,18 @@ onLaunch(async () => {
   uni.hideTabBar()
 
   // 应用启动时自动登录
-  // const loginPromise = autoLogin()
+  const loginPromise = autoLogin()
   setLoginPromise(loginPromise)
   try {
     await loginPromise
     console.log('自动登录完成，当前登录状态：', userStore.isLogined)
+    if (!userStore.isLogined) {
+        throw new Error('未登录')
+    }
   } catch (error) {
     console.log('自动登录失败：', error?.message || error || '未知错误')
+    // 跳转到登录页
+    uni.reLaunch({ url: '/pages/login/index' })
   }
 })
 

@@ -1,4 +1,12 @@
+import { useUserStore } from '@/store/user'
 import { CustomRequestOptions } from '@/interceptors/request'
+
+// 定义接口类型
+interface IResData<T> {
+  code: number
+  msg: string
+  data: T
+}
 
 export const http = <T>(options: CustomRequestOptions) => {
   // 1. 返回 Promise 对象
@@ -18,12 +26,14 @@ export const http = <T>(options: CustomRequestOptions) => {
           // 尝试解析响应数据
           const responseData = res.data as IResData<T>
           // 检查业务状态码
-          if (responseData && responseData.code === 200) {
+          if (responseData && (responseData.code === 200 || responseData.code === 2000)) {
             // 2.1 提取核心数据 res.data
             resolve(responseData)
           } else if (responseData && responseData.code === 401) {
-            console.log('收到401错误')
-            // 401错误直接拒绝，让调用方处理
+            console.log('收到401错误, 执行自动登出')
+            const userStore = useUserStore()
+            userStore.clearUserInfo()
+            uni.reLaunch({ url: '/pages/login/login' })
             reject(res)
           } else {
             // 其他业务错误 -> 根据后端错误信息轻提示
@@ -34,6 +44,13 @@ export const http = <T>(options: CustomRequestOptions) => {
             })
             reject(res)
           }
+        } else if (res.statusCode === 401) {
+          // HTTP 401
+          console.log('收到HTTP 401错误, 执行自动登出')
+          const userStore = useUserStore()
+          userStore.clearUserInfo()
+          uni.reLaunch({ url: '/pages/login/login' })
+          reject(res)
         } else {
           // HTTP状态码错误
           console.error('HTTP状态码错误:', res.statusCode, res)
@@ -71,8 +88,9 @@ export const uniFileUpload = <T>(options: CustomRequestOptions) => {
           resolve(resData)
         } else if (res.statusCode === 401) {
           // 401错误  -> 清理用户信息，跳转到登录页
-          // userStore.clearUserInfo()
-          // uni.navigateTo({ url: '/pages/login/login' })
+          const userStore = useUserStore()
+          userStore.clearUserInfo()
+          uni.reLaunch({ url: '/pages/login/login' })
           reject(res)
         } else {
           // 其他错误 -> 根据后端错误信息轻提示

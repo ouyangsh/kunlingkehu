@@ -5,13 +5,14 @@
 
 interface NavigateToOptions {
   url: "/pages/index/index" |
+       "/pages/group/detail" |
+       "/pages/group/join" |
+       "/pages/group/list" |
        "/pages/login/index" |
-       "/pages/qrcode/index" |
        "/pages/shaicha/index" |
        "/pages/user-center/index" |
        "/pages/wendang/index" |
-       "/pages/zixun/index" |
-       "/pages-sub/test/test";
+       "/pages/zixun/index";
 }
 interface RedirectToOptions extends NavigateToOptions {}
 

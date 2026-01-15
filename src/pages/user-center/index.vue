@@ -4,6 +4,7 @@
     navigationBarTitleText: '用户中心',
     navigationStyle: 'custom',
   },
+  needLogin: true,
 }
 </route>
 
@@ -12,6 +13,10 @@
     <view class="content">
       <view class="text-area">
         <text class="title">我的</text>
+      </view>
+      
+      <view class="mt-40rpx px-40rpx w-full">
+         <uv-button type="primary" @click="goToLogin">去登录</uv-button>
       </view>
     </view>
     <template #footer>
@@ -22,11 +27,10 @@
 
 <script setup lang="ts">
 import TabBar from '@/components/TabBar/TabBar.vue'
-import { onShow } from '@dcloudio/uni-app'
 
-// onShow(() => {
-//   uni.hideTabBar()
-// })
+const goToLogin = () => {
+  uni.navigateTo({ url: '/pages/login/index' })
+}
 </script>
 
 <style>

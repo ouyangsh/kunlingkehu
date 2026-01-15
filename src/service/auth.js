@@ -1,25 +1,6 @@
 import { http } from '@/utils/http'
 
-/**
- * 微信登录
- * @param {Object} params - 登录参数
- * @param {string} params.code - 微信授权码
- * @param {Object} params.user_info - 用户信息
- * @param {string} params.user_info.nickName - 用户昵称
- * @param {string} params.user_info.avatarUrl - 头像URL
- * @param {number} params.user_info.gender - 性别
- * @param {string} params.user_info.city - 城市
- * @param {string} params.user_info.province - 省份
- * @param {string} params.user_info.country - 国家
- * @returns {Promise} 登录响应
- */
-export const wechatLoginAPI = (params) => {
-  return http({
-    url: '/auth/login',
-    method: 'POST',
-    data: params,
-  })
-}
+// 移除微信登录相关API，仅保留通用或邮箱登录API
 
 /**
  * 退出登录
@@ -54,30 +35,27 @@ export const getSystemUserInfoAPI = () => {
   })
 }
 
-export const accountLoginAPI = (params) => {
+/**
+ * 发送邮箱验证码
+ * @param {{ email: string }} params
+ * @returns {Promise}
+ */
+export const sendEmailCodeAPI = (params) => {
   return http({
-    url: '/auth/login',
-    method: 'POST',
-    data: params,
-  })
-}
-
-export const bindMiniProgramAccountAPI = (params) => {
-  return http({
-    url: '/auth/social/callback',
+    url: '/api/email_code/',
     method: 'POST',
     data: params,
   })
 }
 
 /**
- * 绑定微信小程序授权
- * @param {{ uuid: string; weixinCode: string }} params
+ * 邮箱登录
+ * @param {{ email: string; code: string }} params
  * @returns {Promise}
  */
-export const bindWeixinMiniProgramAPI = (params) => {
+export const emailLoginAPI = (params) => {
   return http({
-    url: '/auth/bind-weixin-mini-program',
+    url: '/api/email_login/',
     method: 'POST',
     data: params,
   })

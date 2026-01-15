@@ -1,6 +1,6 @@
 <route lang="json5" type="page">
 {
-  style: { navigationBarTitleText: '账号登录' },
+  style: { navigationBarTitleText: '邮箱登录' },
 }
 </route>
 
@@ -9,26 +9,36 @@
     <view class="text-center mt-40rpx mb-60rpx">
       <image src="/static/used-images/logo.png" class="w-120rpx h-120rpx rounded-16rpx" mode="aspectFit" />
       <view class="text-36rpx font-600 mt-20rpx">欢迎登录</view>
-      <view class="text-26rpx text-gray-500 mt-10rpx">请输入账号和密码</view>
+      <view class="text-26rpx text-gray-500 mt-10rpx">请输入邮箱验证码登录/注册</view>
     </view>
 
-    <uv-form ref="formRef" :model="form" :rules="rules" labelWidth="160rpx">
-      <uv-form-item label="账号" prop="username">
-        <uv-input v-model="form.username" placeholder="请输入账号" clearable />
+    <!-- Email Login Form -->
+    <uv-form ref="emailFormRef" :model="emailForm" :rules="emailRules" labelWidth="0">
+      <uv-form-item prop="email">
+        <uv-input v-model="emailForm.email" placeholder="请输入邮箱地址" prefixIcon="email" clearable border="surround" />
       </uv-form-item>
-      <uv-form-item label="密码" prop="password">
-        <uv-input v-model="form.password" placeholder="请输入密码" type="password" clearable />
+      <uv-form-item prop="code" class="mt-30rpx">
+        <view class="flex items-center w-full">
+           <view class="flex-1">
+             <uv-input v-model="emailForm.code" placeholder="请输入验证码" prefixIcon="chat" clearable border="surround" />
+           </view>
+           <view class="ml-20rpx">
+             <uv-button size="small" type="primary" :plain="true" :disabled="countdown > 0" @click="sendCode">
+               {{ countdown > 0 ? `${countdown}s后重试` : '获取验证码' }}
+             </uv-button>
+           </view>
+        </view>
       </uv-form-item>
     </uv-form>
 
-    <view class="mt-40rpx">
-      <uv-button type="primary" :loading="submitting" :disabled="submitting" @click="onSubmit">
+    <view class="mt-60rpx">
+      <uv-button type="primary" shape="circle" :loading="submitting" :disabled="submitting" @click="onSubmit">
         登录
       </uv-button>
     </view>
 
-    <view class="mt-20rpx text-center text-24rpx text-gray-500">
-      登录成功后会跳转回拦截前的页面
+    <view class="mt-30rpx text-center text-24rpx text-gray-500">
+      未注册邮箱将自动注册账户
     </view>
   </view>
 </template>
@@ -36,106 +46,117 @@
 <script lang="ts" setup>
 import { currRoute } from '@/utils'
 import { useUserStore } from '@/store'
-import { accountLoginAPI, bindMiniProgramAccountAPI } from '@/service/auth'
+import { sendEmailCodeAPI, emailLoginAPI } from '@/service/auth'
 
 const userStore = useUserStore()
 
-const formRef = ref()
+const emailFormRef = ref()
 const submitting = ref(false)
+const countdown = ref(0)
+let timer: any = null
 
-const form = reactive({
-  username: '',
-  password: '',
+const emailForm = reactive({
+  email: '',
+  code: '',
 })
 
-const rules = reactive({
-  username: [{ required: true, message: '请输入账号', trigger: ['blur', 'change'] }],
-  password: [{ required: true, message: '请输入密码', trigger: ['blur', 'change'] }],
+const emailRules = reactive({
+  email: [
+    { required: true, message: '请输入邮箱', trigger: ['blur', 'change'] },
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: ['blur', 'change'] }
+  ],
+  code: [{ required: true, message: '请输入验证码', trigger: ['blur', 'change'] }],
 })
+
+onUnmounted(() => {
+  if (timer) clearInterval(timer)
+})
+
+const sendCode = async () => {
+  if (countdown.value > 0) return
+  
+  // Validate email first
+  try {
+     // Manually validate single field somewhat or use form validateField if available, 
+     // but simplest is just check regex here for UX
+     if (!emailForm.email) {
+       uni.showToast({ title: '请输入邮箱', icon: 'none' })
+       return
+     }
+     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+     if (!emailRegex.test(emailForm.email)) {
+       uni.showToast({ title: '邮箱格式不正确', icon: 'none' })
+       return
+     }
+     
+     uni.showLoading({ title: '发送中' })
+     const res = await sendEmailCodeAPI({ email: emailForm.email })
+     uni.hideLoading()
+     
+     uni.showToast({ title: res.msg || '验证码已发送', icon: 'success' })
+     
+     countdown.value = 60
+     timer = setInterval(() => {
+       countdown.value--
+       if (countdown.value <= 0) {
+         clearInterval(timer)
+       }
+     }, 1000)
+     
+  } catch (err: any) {
+    uni.hideLoading()
+    uni.showToast({ title: err?.msg || '发送失败', icon: 'none' })
+  }
+}
 
 const redirectBack = () => {
   const { query } = currRoute()
   if (query.redirect) {
     uni.redirectTo({ url: query.redirect })
   } else {
-    // 未带 redirect 时，使用 reLaunch 进入首页，避免非 tabBar 页切换报错
     uni.reLaunch({ url: '/pages/index/index' })
   }
 }
 
 const onSubmit = async () => {
-  try {
-    await formRef.value.validate()
-  } catch (e) {
-    return
-  }
-
   if (submitting.value) return
-  submitting.value = true
+  
   try {
-    // 约定：账号密码登录也走 /auth/login，区分参数
-    const params = {
-      grantType: 'password',
-      username: form.username,
-      password: form.password,
-      clientId: 'e5cd7e4891bf95d1d19206ce24a7b32e',
-    }
-    const res = await accountLoginAPI(params)
+       await emailFormRef.value.validate()
+       submitting.value = true
+       const params = {
+         email: emailForm.email,
+         code: emailForm.code
+       }
+       const res = await emailLoginAPI(params)
+       // Email login returns 'access' and 'refresh' (simplejwt default)
+        const accessToken = res.data?.access
+        const refreshToken = res.data?.refresh
+        
+        if (accessToken) {
+           userStore.setUserInfo({
+             token: accessToken,
+             refreshToken,
+             userId: res.data.userId,
+             name: res.data.name,
+             avatar: res.data.avatar,
+           })
+           uni.showToast({ title: '登录成功', icon: 'success' })
+           
+           // Fetch full user info
+           // userStore.fetchUserInfo().catch(err => console.log('Fetch info err', err))
 
-    // 按照当前接口返回（access_token/refresh_token）
-    const accessToken = res && res.data && res.data.access_token
-    const refreshToken = res && res.data && res.data.refresh_token
-    if (accessToken) {
-      userStore.setUserInfo({
-        token: accessToken,
-        refreshToken,
-        userId: res.data.userId,
-        openid: res.data.openid ?? null,
-        scope: res.data.scope ?? null,
-        expireIn: res.data.expire_in,
-        refreshExpireIn: res.data.refresh_expire_in ?? null,
-        clientId: res.data.client_id,
-      })
-
-      uni.showToast({ title: res.msg || '登录成功', icon: 'success' })
-      
-      // 登录成功后获取用户详细信息
-      try {
-        await userStore.fetchUserInfo()
-        console.log('登录后用户详细信息获取成功')
-      } catch (error) {
-        console.error('登录后获取用户详细信息失败:', error)
-        // 不影响登录流程，只记录错误
-      }
-      // 调用小程序账号绑定接口（不阻塞跳转）
-      uni
-        .login({ provider: 'weixin' })
-        .then((lr: any) => {
-          if (!lr || !lr.code) return
-          const payload = {
-            source: 'wechat_mini_program',
-            socialCode: lr.code,
-            socialState: 'state',
-          }
-          bindMiniProgramAccountAPI(payload).catch(() => {})
-        })
-        .catch(() => {})
-
-      setTimeout(redirectBack, 600)
-    } else {
-      uni.showToast({ title: res?.msg || '登录失败', icon: 'none' })
-    }
+           setTimeout(redirectBack, 600)
+        } else {
+           throw new Error(res.msg || '登录失败')
+        }
   } catch (err: any) {
     uni.showToast({ title: err?.msg || err?.message || '登录失败', icon: 'none' })
   } finally {
     submitting.value = false
   }
 }
-
-onLoad((opt) => {
-  // 记录下从哪里来
-  console.log('login onLoad', opt)
-})
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

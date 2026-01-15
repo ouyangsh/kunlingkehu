@@ -40,7 +40,7 @@ const httpInterceptor = {
     const { token } = userStore.userInfo
     console.log('请求拦截器 - 用户登录状态:', userStore.isLogined)
     console.log('请求拦截器 - Token:', token ? '已设置' : '未设置')
-    if (token) {
+    if (token && !options.url.includes('/api/email_code') && !options.url.includes('/api/email_login')) {
       options.header.Authorization = `Bearer ${token}`
       console.log('请求拦截器 - Authorization头已设置')
     } else {

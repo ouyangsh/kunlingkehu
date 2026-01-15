@@ -1,0 +1,68 @@
+import { http } from '@/utils/http'
+
+/**
+ * 获取群组列表
+ */
+export const getGroupListAPI = () => {
+    return http({
+        url: '/api/signin/group/',
+        method: 'GET',
+    })
+}
+
+/**
+ * 通过邮箱加入对方的群组
+ * @param {Object} data { email: string }
+ */
+export const joinGroupByEmailAPI = (data) => {
+    return http({
+        url: '/api/signin/group/join_by_email/',
+        method: 'POST',
+        data,
+    })
+}
+
+/**
+ * 加入群组（通过ID）
+ * @param {string|number} id Group ID
+ */
+export const joinGroupAPI = (id) => {
+    return http({
+        url: `/api/signin/group/${id}/join/`,
+        method: 'POST',
+    })
+}
+
+/**
+ * 签到
+ * @param {string|number} id Group ID
+ */
+export const checkInAPI = (id) => {
+    return http({
+        url: `/api/signin/group/${id}/checkin/`,
+        method: 'POST',
+    })
+}
+
+/**
+ * 获取签到历史
+ * @param {string|number} id Group ID
+ */
+export const getCheckInHistoryAPI = (id) => {
+    return http({
+        url: `/api/signin/group/${id}/history/`,
+        method: 'GET',
+    })
+}
+
+/**
+ * 更新用户信息
+ * @param {Object} data { name: string, etc... }
+ */
+export const updateUserInfoAPI = (data) => {
+    return http({
+        url: '/api/system/user/update_user_info/',
+        method: 'PUT',
+        data
+    })
+}

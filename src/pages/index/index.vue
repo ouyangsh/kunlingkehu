@@ -3,87 +3,398 @@
   style: {
     navigationStyle: 'custom',
     navigationBarTitleText: '首页',
+    disableScroll: true,
   },
 }
 </route>
 
 <template>
-  <view class="page-container">
-    <!-- Top Section: User Info -->
-    <view class="top-section">
-      <view class="user-info-row" @click="editName">
-        <text class="label">你的姓名</text>
-        <uv-icon name="edit-pen" size="16" color="#999" class="ml-10rpx"></uv-icon>
+  <view class="fixed inset-0 overflow-hidden bg-white flex flex-col items-center px-40rpx box-border">
+    <!-- Top Header Spacer (for Safe Area) -->
+    <view class="w-full h-80rpx flex-shrink-0"></view>
+    
+    <!-- Top Header -->
+    <view class="w-full h-88rpx flex items-center justify-center relative mb-10rpx flex-shrink-0">
+      <view class="absolute left-10rpx top-0 h-full w-100rpx flex items-center justify-center text-gray-400" @click="isForceJoin ? isForceJoin = false : openDrawer()">
+        <view :class="isForceJoin ? 'i-carbon-chevron-left' : 'i-carbon-menu'" class="text-44rpx" />
       </view>
-      <view class="user-name-display">{{ userInfo.name || userInfo.nickname || '未设置' }}</view>
-
-      <view class="user-info-row mt-40rpx" @click="editGroupEmail">
-        <text class="label">当前所在群组(点击切换)</text>
-        <uv-icon name="edit-pen" size="16" color="#999" class="ml-10rpx"></uv-icon>
-      </view>
-      <view class="user-email-display">{{ currentGroup?.owner_email || '暂无群组' }}</view>
-      <view class="text-24rpx text-gray-400 mt-10rpx" v-if="currentGroup">
-          输入其他用户的邮箱即可加入其群组
+      <text class="text-40rpx font-700 tracking-wider text-[#333]">
+        {{ currentGroup?.member_count === 2 ? 'Love' : 'Family' }}
+      </text>
+      <view class="absolute right-10rpx top-0 h-full w-100rpx flex items-center justify-center text-gray-400" @click="openRelationModal">
+        <view class="i-carbon-information text-44rpx" />
       </view>
     </view>
 
-    <!-- Center Section: Check-in Button -->
-    <view class="center-section">
-      <view class="current-group-info mb-40rpx text-center" v-if="currentGroup">
-          <view class="text-32rpx font-bold mb-10rpx">{{ currentGroup.name }}</view>
-          <view class="text-24rpx text-primary bg-primary-50 px-20rpx py-6rpx rounded-full inline-block">
-              已签到 {{ currentGroup.checked_in_count }} / {{ currentGroup.member_count }} 人
-          </view>
-      </view>
-
-      <view class="checkin-btn-outer">
-        <view class="checkin-btn-inner" @click="handleCheckIn" :class="{'disabled': !currentGroup}">
-          <view class="icon-wrapper">
-             <text class="emoji-icon">{{ isCheckedIn ? '✅' : '👻' }}</text>
-          </view>
-          <text class="btn-text">{{ isCheckedIn ? '已签到' : '今日签到' }}</text>
+    <!-- Content Area: Flexible -->
+    <template v-if="isInitLoaded">
+        <view v-if="currentGroup && !isForceJoin" class="flex-1 w-full flex flex-col items-center justify-center overflow-hidden">
+        <!-- Main Artistic Card -->
+        <view class="w-full h-0 flex-1 max-h-600rpx rounded-24rpx overflow-hidden mb-30rpx">
+            <ParticleHeart 
+                :memberCount="currentGroup?.member_count || 0"
+                :checkedCount="currentGroup?.checked_in_count || 0"
+                :isMeChecked="isCheckedIn"
+                @heartClick="handleCheckIn" 
+            />
         </view>
-      </view>
-      
-      <view class="mt-40rpx text-center text-primary" @click="editGroupEmail">
-          <text class="text-28rpx underline">切换群组 / 加入新群组</text>
-      </view>
+
+        <view class="flex flex-col items-center mb-20rpx px-40rpx text-center">
+            <view class="text-22rpx text-gray-700 mb-8rpx tracking-widest uppercase">{{ currentGroup?.group_status_text }}</view>
+            <view class="text-28rpx text-gray-500 font-500 mb-2rpx">
+                和 {{ displayRelationNames }} 已连续爱了
+            </view>
+        </view>
+
+        <!-- Indicators (Decorative dots) -->
+        <view class="flex space-x-12rpx mb-40rpx">
+            <view class="w-12rpx h-12rpx rounded-full bg-gray-50"></view>
+            <view class="w-12rpx h-12rpx rounded-full bg-gray-100"></view>
+            <view class="w-12rpx h-12rpx rounded-full bg-gray-50"></view>
+        </view>
+
+        <!-- Days Counter -->
+        <view class="flex items-baseline mb-20rpx">
+            <text class="text-140rpx font-800 text-[#333] tracking-tighter leading-none">{{ streakCount }}</text>
+            <text class="text-32rpx font-700 text-[#333] ml-16rpx">天</text>
+        </view>
+
+        <!-- Total Days (Sub-stat) -->
+        <view class="flex items-center text-gray-300 text-24rpx mb-40rpx">
+            <text>相伴第 {{ totalDays }} 天</text>
+        </view>
     </view>
 
-    <!-- Bottom Section: Notice -->
-    <view class="bottom-section">
-      <view class="notice-box">
-        <view class="notice-icon">!</view>
-        <text class="notice-text">多日未签到，系统将以你的名义，在次日邮件通知你的紧急联系人</text>
-      </view>
-
-      <view class="agreement-text">
-        签到即同意 <text class="link">用户协议</text> 和 <text class="link">隐私政策</text>
-      </view>
-
-      <view class="mt-40rpx text-center">
-        <button size="mini" type="warn" @click="handleLogout">测试：清除缓存并退出</button>
-      </view>
+    <!-- Empty State: No Relationships / Join UI -->
+    <view v-else class="flex-1 w-full flex flex-col items-center justify-center px-40rpx text-center">
+        <view class="i-carbon-user-multiple text-120rpx text-gray-200 mb-40rpx" />
+        <view class="text-36rpx font-700 text-[#333] mb-20rpx">开启你的守护</view>
+        <view class="text-28rpx text-gray-400 mb-60rpx leading-relaxed">
+            当前没有关系，输入你要加入的邮箱<br/>开启你们的专属签到空间
+        </view>
+        
+        <view class="w-full flex flex-col items-center space-y-30rpx">
+            <view class="w-full h-100rpx bg-gray-50 rounded-full flex items-center px-40rpx border border-gray-100">
+                <view class="i-carbon-email text-gray-400 mr-20rpx text-36rpx" />
+                <input 
+                    v-model="joinEmail" 
+                    class="flex-1 h-full text-28rpx" 
+                    placeholder="输入对方的邮箱账号" 
+                    placeholder-class="text-gray-300"
+                />
+            </view>
+            <view 
+                class="w-full h-100rpx bg-[#333] rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all"
+                @click="handleJoin"
+            >
+                <text class="text-white text-30rpx font-700">进入关系</text>
+            </view>
+        </view>
     </view>
+</template>
+    
+    <!-- Loading State: Prevents initial flicker -->
+    <view v-else class="flex-1 w-full flex flex-col items-center justify-center">
+        <!-- Subtle loading indicator -->
+        <view class="w-100rpx h-100rpx rounded-full bg-gray-50 flex items-center justify-center animate-pulse">
+            <view class="i-carbon-circle-dash text-gray-200 text-40rpx" />
+        </view>
+    </view>
+
+    <!-- Bottom Action & Navigation Bar -->
+    <view v-if="currentGroup" class="w-full flex flex-col items-center pb-20rpx flex-shrink-0">
+        <!-- Main Check-in Action Area -->
+        <view class="flex flex-col items-center mb-30rpx">
+            <view class="flex items-center space-x-20rpx mb-20rpx">
+                <!-- Status Pill -->
+                <view 
+                    class="w-320rpx h-90rpx rounded-full flex items-center px-10rpx shadow-[0_4rpx_20rpx_rgb(0,0,0,0.02)] transition-all bg-[#fcfcfc] border border-gray-50"
+                    @click="handleCheckIn"
+                >
+                    <view class="w-70rpx h-70rpx rounded-full bg-white flex items-center justify-center shadow-sm">
+                        <image 
+                            :src="!isCheckedIn ? '/static/used-images/checkin_todo_icon.png' : (uncompletedCount > 0 ? '/static/used-images/checkin_warning_icon.png' : '/static/used-images/checkin_done_icon.png')" 
+                            class="w-40rpx h-40rpx" 
+                            mode="aspectFit"
+                        />
+                    </view>
+                    <text 
+                        class="flex-1 text-center text-28rpx font-600 mr-10rpx"
+                        :class="isCheckedIn && uncompletedCount === 0 ? 'text-gray-400' : 'text-[#555]'"
+                    >
+                        <template v-if="!isCheckedIn">
+                            {{ uncompletedCount < (currentGroup?.member_count || 0) ? '今日未完成' : '今日未完成' }}
+                        </template>
+                        <template v-else>
+                            {{ uncompletedCount > 0 ? `${uncompletedCount}人未完成` : '今日已完成' }}
+                        </template>
+                    </text>
+                </view>
+
+                <!-- Restart Button -->
+                <view 
+                    class="w-90rpx h-90rpx rounded-full bg-[#fcfcfc] border border-gray-50 flex items-center justify-center shadow-[0_4rpx_20rpx_rgb(0,0,0,0.02)] transition-all"
+                    @click="handleCheckIn"
+                >
+                    <image 
+                        :src="isCheckedIn && uncompletedCount === 0 ? '/static/used-images/checkin_restart_icon.png' : '/static/used-images/checkin_restart_inactive_icon.png'" 
+                        class="w-48rpx h-48rpx" 
+                        mode="aspectFit"
+                    />
+                </view>
+            </view>
+            
+            <!-- Remind Link Area -->
+            <view v-if="!isCheckedIn || uncompletedCount > 0" class="flex flex-col items-center" @click="handleRemind">
+                <view class="flex items-center text-gray-400">
+                    <text class="text-28rpx">去提醒她/他</text>
+                    <view class="i-carbon-chevron-right text-28rpx ml-4rpx" />
+                </view>
+            </view>
+        </view>
+
+        <!-- New Bottom Pill Navigation -->
+        <view class="w-600rpx h-100rpx rounded-full bg-white border border-gray-50 shadow-[0_4rpx_24rpx_rgb(0,0,0,0.1)] flex items-center justify-around px-20rpx mb-20rpx">
+            <view class="flex-1 flex items-center justify-center h-full" @click="activeTab = 0">
+                <image 
+                    :src="activeTab === 0 ? '/static/used-images/nav_love_active_new.png' : '/static/used-images/nav_love_inactive_new.png'" 
+                    class="w-52rpx h-52rpx transition-all duration-300" 
+                    mode="aspectFit" 
+                />
+            </view>
+            <view class="flex-1 flex items-center justify-center h-full" @click="uni.showToast({ title: '广场暂未开放，敬请期待', icon: 'none' })">
+                <image 
+                    :src="activeTab === 1 ? '/static/used-images/nav_send_active_new.png' : '/static/used-images/nav_send_inactive_new.png'" 
+                    class="w-52rpx h-52rpx transition-all duration-300" 
+                    mode="aspectFit" 
+                />
+            </view>
+            <view class="flex-1 flex items-center justify-center h-full" @click="goToMessages">
+                <image 
+                    :src="activeTab === 2 ? (hasUnreadMessages ? '/static/used-images/nav_timeline_unread_new.png' : '/static/used-images/nav_timeline_active_new.png') : '/static/used-images/nav_timeline_inactive_new.png'" 
+                    class="w-52rpx h-52rpx transition-all duration-300" 
+                    mode="aspectFit" 
+                />
+            </view>
+        </view>
+        <!-- Bottom Tab Safe Spacer -->
+        <view class="w-full h-safe flex-shrink-0"></view>
+    </view>
+
+    <!-- Sidebar Drawer -->
+    <uv-popup ref="popup" v-model="showDrawer" mode="left" width="560rpx">
+      <view class="h-100vh bg-white flex flex-col relative overflow-hidden">
+        <!-- Top Status Bar Spacer -->
+        <view class="w-full flex-shrink-0" style="height: var(--status-bar-height);"></view>
+        <view class="w-full h-20rpx flex-shrink-0"></view>
+        
+        <!-- User Info Section -->
+        <view class="flex items-center space-x-30rpx px-60rpx mb-40rpx flex-shrink-0">
+          <image 
+            :src="userInfo.avatar || '/static/used-images/default_avatar.png'" 
+            class="w-130rpx h-130rpx rounded-full border-4 border-white shadow-lg" 
+            mode="aspectFill" 
+          />
+          <view class="flex flex-col">
+            <text class="text-34rpx font-700 text-[#333] mb-8rpx">{{ userInfo.name || '家人' }}</text>
+            <view class="bg-[#4e526e] rounded-full px-16rpx py-4rpx flex items-center w-fit">
+              <text class="text-white text-18rpx font-500 tracking-wider">VIP 会员</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- Divider -->
+        <view class="mx-60rpx h-1rpx bg-gray-50 mb-40rpx flex-shrink-0"></view>
+
+        <!-- Scrollable Content Part -->
+        <view class="flex-1 overflow-y-auto">
+            <!-- Menu List -->
+            <view class="px-60rpx space-y-40rpx mb-60rpx">
+                <view class="flex items-center space-x-36rpx" @click="editName">
+                    <view class="i-carbon-user text-gray-500 text-44rpx" />
+                    <text class="text-30rpx font-500 text-[#444]">个人信息</text>
+                </view>
+                <view class="flex items-center space-x-36rpx" @click="popup.close(); showDrawer = false; isForceJoin = true">
+                    <view class="i-carbon-add-alt text-gray-500 text-44rpx" />
+                    <text class="text-30rpx font-500 text-[#444]">加入新的关系</text>
+                </view>
+                <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
+                    <view class="i-carbon-locked text-gray-500 text-44rpx" />
+                    <text class="text-30rpx font-500 text-[#444]">隐私设置</text>
+                </view>
+                <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
+                    <view class="i-carbon-badge text-gray-500 text-44rpx" />
+                    <text class="text-30rpx font-500 text-[#444]">会员中心</text>
+                </view>
+                <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
+                    <view class="i-carbon-help text-gray-500 text-44rpx" />
+                    <text class="text-30rpx font-500 text-[#444]">帮助与反馈</text>
+                </view>
+                <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
+                    <view class="i-carbon-settings text-gray-500 text-44rpx" />
+                    <text class="text-30rpx font-500 text-[#444]">设置</text>
+                </view>
+                <view class="flex items-center w-full justify-between" @click="goToMessages">
+                    <view class="flex items-center space-x-36rpx">
+                        <view class="i-carbon-email text-gray-500 text-44rpx" />
+                        <text class="text-30rpx font-500 text-[#444]">消息中心</text>
+                    </view>
+                    <view v-if="hasUnreadMessages" class="bg-[#ff4d4f] w-16rpx h-16rpx rounded-full"></view>
+                </view>
+            </view>
+
+            <!-- Promotion Card Section -->
+            <view class="px-30rpx mb-20rpx pb-20rpx">
+                <view class="bg-[#f2f2f4] rounded-32rpx p-40rpx flex flex-col items-start shadow-sm">
+                    <text class="text-30rpx font-700 text-[#333] mb-20rpx">每日爱了吗</text>
+                    <uv-button 
+                        type="primary" 
+                        shape="circle" 
+                        customStyle="background: #4a4e69; border: none; width: 100%; height: 80rpx; font-weight: 600; font-size: 28rpx;"
+                        @click="handleCheckIn"
+                    >
+                        立即签到
+                    </uv-button>
+                    <text class="text-22rpx text-gray-400 mt-20rpx leading-relaxed">
+                        已连续打卡 {{ streakCount }} 天，再打卡 {{ 365 - streakCount }} 天获得奖励
+                    </text>
+                </view>
+            </view>
+        </view>
+
+        <!-- Logout Footer -->
+        <view class="flex items-center justify-center py-40rpx border-t border-gray-50 flex-shrink-0 bg-white pb-100rpx" @click="handleLogout">
+            <view class="i-carbon-logout text-gray-600 text-40rpx mr-20rpx" />
+            <text class="text-30rpx font-500 text-gray-600">退出登录</text>
+        </view>
+        <!-- Bottom Tab Safe Spacer -->
+        <view class="w-full h-safe flex-shrink-0 bg-white"></view>
+      </view>
+    </uv-popup>
+    
+    <!-- Connection Status (Relation) Modal -->
+    <uv-popup ref="relationPopup" v-model="showRelationModal" mode="center" round="40rpx" :safeAreaInsetBottom="false">
+        <view class="w-540rpx bg-white p-40rpx flex flex-col relative overflow-hidden">
+            <!-- Modal Header -->
+            <view class="flex items-center justify-center mb-40rpx relative">
+                <text class="text-34rpx font-700 text-[#333]">爱了吗成员关系</text>
+                <view class="absolute -right-20rpx -top-20rpx p-20rpx text-gray-300 z-10" @click="closeRelationModal">
+                    <view class="i-carbon-close-filled text-48rpx" />
+                </view>
+            </view>
+            
+            <!-- Modal Body Image -->
+            <view class="w-full h-340rpx rounded-32rpx overflow-hidden mb-40rpx shadow-sm">
+                <image 
+                    src="/static/used-images/home_featured.png" 
+                    class="w-full h-full" 
+                    mode="aspectFill" 
+                />
+            </view>
+            
+            <!-- Modal Footer Link -->
+            <view class="flex items-center justify-center " @click="goToManage">
+                <text class="text-26rpx text-gray-400 font-500">管理/解除关系 ></text>
+            </view>
+        </view>
+    </uv-popup>
+
   </view>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useUserStore } from '@/store'
-import { onLoad, onShow } from '@dcloudio/uni-app'
-import { getGroupListAPI, checkInAPI, getCheckInHistoryAPI, joinGroupByEmailAPI, updateUserInfoAPI } from '@/service/signin'
+import { onLoad, onShow, onHide } from '@dcloudio/uni-app'
+import { getGroupListAPI, checkInAPI, getCheckInHistoryAPI, joinGroupByEmailAPI, updateUserInfoAPI, remindGroupAPI, getNotificationsAPI } from '@/service/signin'
+import ParticleHeart from '@/components/ParticleHeart.vue'
 import dayjs from 'dayjs'
 
 const userStore = useUserStore()
 const userInfo = ref({})
+const isInitLoaded = ref(false)
+const isForceJoin = ref(false)
 const currentGroup = ref(null)
 const isCheckedIn = ref(false)
+const showDrawer = ref(false)
+const showRelationModal = ref(false)
+const popup = ref(null)
+const relationPopup = ref(null)
+const activeTab = ref(0)
+const hasUnreadMessages = ref(false)
+const joinEmail = ref('')
+
+const openDrawer = () => {
+    showDrawer.value = true
+    if (popup.value) {
+        popup.value.open()
+    }
+}
+
+const openRelationModal = () => {
+    showRelationModal.value = true
+    if (relationPopup.value) {
+        relationPopup.value.open()
+    }
+}
+
+const closeRelationModal = () => {
+    showRelationModal.value = false
+    if (relationPopup.value) {
+        relationPopup.value.close()
+    }
+}
+
+
+
+const streakCount = computed(() => {
+    return currentGroup.value?.streak_count || 0
+})
+
+const totalDays = computed(() => {
+    return currentGroup.value?.total_days || 0
+})
+
+const uncompletedCount = computed(() => {
+    if (!currentGroup.value) return 0
+    const total = currentGroup.value.member_count || 0
+    const done = currentGroup.value.checked_in_count || 0
+    return Math.max(0, total - done)
+})
+
+const displayRelationNames = computed(() => {
+    if (!currentGroup.value || !currentGroup.value.member_details) return ''
+    
+    const myId = userStore.userInfo?.userId || userStore.userInfo?.id
+    const others = currentGroup.value.member_details.filter(m => String(m.id) !== String(myId))
+    
+    if (others.length === 0) return ''
+
+    if (currentGroup.value.member_count === 2) {
+        const other = others[0]
+        return other?.nickName || other?.nickname || other?.name || '对方'
+    } else {
+        const names = others.slice(0, 2).map(o => o.nickName || o.nickname || o.name || '成员')
+        return names.join('、') + (others.length > 2 ? ' 等人' : '')
+    }
+})
+
+
+const fetchUnreadStatus = async () => {
+    try {
+        const res = await getNotificationsAPI()
+        const list = res.data?.results || res.data || []
+        hasUnreadMessages.value = list.some(n => !n.is_read)
+    } catch (e) {
+        console.error(e)
+    }
+}
 
 onShow(() => {
     // Refresh user info from store in case it updated
     userInfo.value = userStore.userInfo || {}
     loadLatestGroup()
+    fetchUnreadStatus()
     connectWebSocket()
 })
 
@@ -94,59 +405,85 @@ onHide(() => {
 const loadLatestGroup = async () => {
     try {
         const res = await getGroupListAPI()
-        const list = res.data?.results || res.data || []
+        const rawList = res.data?.results || res.data || []
+        // Only show groups with more than one member (actual relationships/groups)
+        const list = rawList.filter(item => (item.member_count || 0) > 1)
+        
         if (list.length > 0) {
-            currentGroup.value = list[0]
-            checkTodayStatus(currentGroup.value.id)
+            // Check for pinned group
+            const pId = uni.getStorageSync('pinnedGroupId')
+            let item = list[0]
+            
+            if (pId) {
+                const pinnedItem = list.find(g => String(g.id) === String(pId))
+                if (pinnedItem) {
+                    item = pinnedItem
+                }
+            }
+            
+            currentGroup.value = item
+            isCheckedIn.value = item.is_checked_in_today || false
         } else {
             currentGroup.value = null
         }
     } catch (e) {
         console.error(e)
+    } finally {
+        isInitLoaded.value = true
     }
 }
 
-const checkTodayStatus = async (groupId) => {
-    try {
-        const res = await getCheckInHistoryAPI(groupId)
-        const list = res.data?.results || res.data || []
-        const myId = userStore.userInfo.userId
-        const todayStr = dayjs().format('YYYY-MM-DD')
-        const found = list.find(item => item.user === myId && item.date === todayStr)
-        if (found) {
-            isCheckedIn.value = true
-        } else {
-            isCheckedIn.value = false
-        }
-    } catch(e) {
-        console.error(e)
+const goToDetail = () => {
+    if (currentGroup.value) {
+        uni.navigateTo({
+            url: `/pages/group/detail?id=${currentGroup.value.id}&name=${encodeURIComponent(currentGroup.value.name)}`
+        })
     }
 }
+
+
 
 const handleCheckIn = async () => {
+    // 强制刷新：只要点击就开始拉取新数据（包含随机文案）
+    loadLatestGroup()
+
     if (!currentGroup.value) {
         uni.showToast({ title: '请先加入一个群组', icon: 'none' })
         editGroupEmail()
         return
     }
+    
+    // If everyone is done, or user is already done, show toast but still refresh for new greeting
+    if (isCheckedIn.value && uncompletedCount.value === 0) {
+        uni.showToast({ title: '今日爱意已发送', icon: 'success' })
+        return
+    }
+
     if (isCheckedIn.value) {
-         uni.showToast({ title: '今日已签到', icon: 'none' })
+         uni.showToast({ title: '今日爱意已发送', icon: 'none' })
          return
     }
 
-    uni.showLoading({ title: '打卡中' })
+    uni.showLoading({ title: '爱意发送中...' })
     try {
         await checkInAPI(currentGroup.value.id)
-        uni.showToast({ title: '签到成功', icon: 'success' })
+        uni.showToast({ title: '爱意已发送', icon: 'success' })
         isCheckedIn.value = true
         // Refresh to update counts
         loadLatestGroup()
     } catch(e) {
-        if (e.msg && e.msg.includes('已签到')) {
-             uni.showToast({ title: '今日已签到', icon: 'none' })
+        // Correctly parse message from backend response object
+        const errorMsg = e.data?.msg || e.msg || '爱意发送失败'
+        
+        if (errorMsg.includes('已发送')) {
+             uni.showToast({ title: '今日已发送', icon: 'none' })
              isCheckedIn.value = true
+             // Redundant state sync
+             if (currentGroup.value) loadLatestGroup()
         } else {
-             uni.showToast({ title: e.msg || '签到失败', icon: 'none' })
+             // If http.ts already showed a toast, we might be double-toasting here.
+             // But we use the real error message now.
+             uni.showToast({ title: errorMsg, icon: 'none' })
         }
     } finally {
         uni.hideLoading()
@@ -208,6 +545,77 @@ const editGroupEmail = () => {
             }
         }
     })
+}
+
+const handleJoin = async () => {
+    if (!joinEmail.value) {
+        uni.showToast({ title: '请输入邮箱', icon: 'none' })
+        return
+    }
+    if (!joinEmail.value.includes('@')) {
+        uni.showToast({ title: '邮箱格式不正确', icon: 'none' })
+        return
+    }
+    try {
+        uni.showLoading({ title: '加入中...' })
+        await joinGroupByEmailAPI({ email: joinEmail.value })
+        uni.showToast({ title: '加入成功', icon: 'success' })
+        joinEmail.value = ''
+        setTimeout(() => {
+            isForceJoin.value = false
+            loadLatestGroup()
+        }, 800)
+    } catch(e) {
+        uni.showToast({ title: e.msg || '加入失败', icon: 'none' })
+    } finally {
+        uni.hideLoading()
+    }
+}
+
+const goToManage = () => {
+    // Force close popups
+    if (relationPopup.value) {
+        relationPopup.value.close()
+    }
+    if (popup.value) {
+        popup.value.close()
+    }
+    showRelationModal.value = false
+    showDrawer.value = false
+    uni.navigateTo({
+        url: '/pages/index/manage'
+    })
+}
+
+const goToMessages = () => {
+    if (popup.value) {
+        popup.value.close()
+    }
+    showDrawer.value = false
+    hasUnreadMessages.value = false
+    uni.navigateTo({
+        url: '/pages/index/messages'
+    })
+}
+
+const handleRemind = async () => {
+    if (!currentGroup.value) return
+    
+    uni.showLoading({ title: '正在提醒...' })
+    try {
+        const res = await remindGroupAPI(currentGroup.value.id)
+        uni.showToast({
+            title: res.msg || '已发送提醒',
+            icon: 'success'
+        })
+    } catch (e) {
+        console.error(e)
+        // Correctly parse message from backend response object
+        const errorMsg = e.data?.msg || e.msg || '提醒失败'
+        uni.showToast({ title: errorMsg, icon: 'none' })
+    } finally {
+        uni.hideLoading()
+    }
 }
 
 const handleLogout = () => {
@@ -297,31 +705,46 @@ const connectWebSocket = () => {
             
             // 处理实时签到更新
             if (data.type === 'group_update' || data.contentType === 'group_update') {
-                 console.log('Received group update via WebSocket')
+                 console.log('Received group update via WebSocket', data)
+                 // 只要收到群组更新消息，无视 ID 差异，强制刷新数据，确保解绑或重绑能即刻生效
                  loadLatestGroup()
                  
-                 // Show greeting if present
-                 if (data.greeting) {
-                     uni.showToast({
-                         title: data.greeting,
-                         icon: 'none',
-                         duration: 3000
-                     })
+                 // 显示文案
+                 if (data.msg && data.msg.includes('签到')) {
+                      // ...
                  }
             }
             
             // 处理离线期间的待发送文案
             if (data.type === 'pending_greeting') {
                 console.log('Received pending greeting:', data)
+                // Refresh to ensure counts are current
                 loadLatestGroup()
                 
                 // 显示离线期间的文案
                 if (data.greeting) {
-                    const checkInUser = data.checkInUser || '群成员'
+                    const checkInUser = data.checkInUser || '伙伴'
                     uni.showToast({
-                        title: `${checkInUser}的签到: ${data.greeting}`,
+                        title: `${checkInUser}的提醒: ${data.greeting}`,
                         icon: 'none',
                         duration: 4000
+                    })
+                }
+            }
+
+            // 处理新提醒通知
+            if (data.type === 'new_notification') {
+                console.log('Received new notification via WebSocket')
+                hasUnreadMessages.value = true
+                
+                // 收到新通知时也主动刷新一下数据，确保心形状态是最新的
+                loadLatestGroup()
+
+                if (data.content) {
+                    uni.showToast({
+                        title: data.content,
+                        icon: 'none',
+                        duration: 3000
                     })
                 }
             }
@@ -367,139 +790,23 @@ const closeWebSocket = () => {
 </script>
 
 <style lang="scss" scoped>
-.page-container {
-  min-height: 100vh;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  padding: 140rpx 60rpx 60rpx;
+:deep(page),
+page {
+  background-color: #fff !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  overflow: hidden !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  box-sizing: border-box !important;
 }
 
-.top-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 40rpx;
 
-  .user-info-row {
-    display: flex;
-    align-items: center;
-    color: #999;
-    font-size: 28rpx;
-    margin-bottom: 10rpx;
-  }
-  
-  .user-name-display, .user-email-display {
-      font-size: 32rpx;
-      color: #333;
-      font-weight: 500;
-  }
-}
 
-.center-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.checkin-btn-outer {
-  width: 500rpx;
-  height: 500rpx;
-  border-radius: 50%;
-  background-color: #E8F5E9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.3s;
-}
-
-.checkin-btn-inner {
-  width: 400rpx;
-  height: 400rpx;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #00E676 0%, #00C853 100%);
-  box-shadow: 0 10rpx 30rpx rgba(0, 200, 83, 0.3);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  
-  &:active {
-      transform: scale(0.95);
-      transition: transform 0.1s;
-  }
-
-  &.disabled {
-      background: #ccc;
-      box-shadow: none;
-  }
-}
-
-.icon-wrapper {
-    margin-bottom: 20rpx;
-}
-.emoji-icon {
-    font-size: 80rpx;
-}
-
-.btn-text {
-  font-size: 40rpx;
-  font-weight: bold;
-}
-
-.text-primary {
-    color: #00C853;
-}
-.bg-primary-50 {
-    background-color: rgba(0, 200, 83, 0.1);
-}
-
-.bottom-section {
-  margin-top: 80rpx;
-}
-
-.notice-box {
-  background-color: #F8F9FA;
-  padding: 30rpx;
-  border-radius: 12rpx;
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 40rpx;
-}
-
-.notice-icon {
-  width: 32rpx;
-  height: 32rpx;
-  background-color: #00C853;
-  color: white;
-  border-radius: 50%;
-  font-size: 20rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 20rpx;
-  margin-top: 4rpx;
-  flex-shrink: 0;
-}
-
-.notice-text {
-  flex: 1;
-  font-size: 26rpx;
-  color: #666;
-  line-height: 1.5;
-}
-
-.agreement-text {
-  text-align: center;
-  font-size: 24rpx;
-  color: #999;
-  
-  .link {
-    color: #00C853;
-    margin: 0 6rpx;
-  }
+/* Custom icons or tweaks if needed */
+.i-carbon-menu, .i-carbon-information, .i-carbon-checkmark, .i-carbon-favorite, .i-carbon-share, .i-carbon-chevron-left, .i-carbon-chevron-right {
+  display: inline-block;
 }
 </style>
+

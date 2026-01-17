@@ -29,11 +29,11 @@ export const http = <T>(options: CustomRequestOptions) => {
           if (responseData && (responseData.code === 200 || responseData.code === 2000)) {
             // 2.1 提取核心数据 res.data
             resolve(responseData)
-          } else if (responseData && responseData.code === 401) {
+          } else if (responseData && (responseData.code === 401)) {
             console.log('收到401错误, 执行自动登出')
             const userStore = useUserStore()
             userStore.clearUserInfo()
-            uni.reLaunch({ url: '/pages/login/login' })
+            uni.reLaunch({ url: '/pages/login/index' })
             reject(res)
           } else {
             // 其他业务错误 -> 根据后端错误信息轻提示
@@ -49,7 +49,7 @@ export const http = <T>(options: CustomRequestOptions) => {
           console.log('收到HTTP 401错误, 执行自动登出')
           const userStore = useUserStore()
           userStore.clearUserInfo()
-          uni.reLaunch({ url: '/pages/login/login' })
+          uni.reLaunch({ url: '/pages/login/index' })
           reject(res)
         } else {
           // HTTP状态码错误
@@ -90,7 +90,7 @@ export const uniFileUpload = <T>(options: CustomRequestOptions) => {
           // 401错误  -> 清理用户信息，跳转到登录页
           const userStore = useUserStore()
           userStore.clearUserInfo()
-          uni.reLaunch({ url: '/pages/login/login' })
+          uni.reLaunch({ url: '/pages/login/index' })
           reject(res)
         } else {
           // 其他错误 -> 根据后端错误信息轻提示

@@ -69,7 +69,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #f2f5fa;
+  background-color: #ffffff;
 
   .header {
     display: flex;

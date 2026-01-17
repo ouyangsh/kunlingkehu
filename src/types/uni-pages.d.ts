@@ -8,16 +8,14 @@ interface NavigateToOptions {
        "/pages/group/detail" |
        "/pages/group/join" |
        "/pages/group/list" |
-       "/pages/login/index" |
-       "/pages/shaicha/index" |
-       "/pages/user-center/index" |
-       "/pages/wendang/index" |
-       "/pages/zixun/index";
+       "/pages/index/manage" |
+       "/pages/index/messages" |
+       "/pages/login/index";
 }
 interface RedirectToOptions extends NavigateToOptions {}
 
 interface SwitchTabOptions {
-  url: "/pages/index/index" | "/pages/shaicha/index" | "/pages/zixun/index" | "/pages/user-center/index"
+  
 }
 
 type ReLaunchOptions = NavigateToOptions | SwitchTabOptions;

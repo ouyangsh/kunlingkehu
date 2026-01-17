@@ -16,50 +16,14 @@
       "^(?!z-paging-refresh|z-paging-load-more)z-paging(.*)": "z-paging/components/z-paging$1/z-paging$1.vue"
     }
   },
-  "tabBar": {
-    "custom": true,
-    "color": "#999999",
-    "selectedColor": "#018d71",
-    "backgroundColor": "#F8F8F8",
-    "borderStyle": "black",
-    "height": "50px",
-    "fontSize": "10px",
-    "iconWidth": "24px",
-    "spacing": "3px",
-    "list": [
-      {
-        "iconPath": "static/tabbar/home.png",
-        "selectedIconPath": "static/tabbar/homeHL.png",
-        "pagePath": "pages/index/index",
-        "text": "首页"
-      },
-      {
-        "iconPath": "static/tabbar/search.png",
-        "selectedIconPath": "static/tabbar/searchHL.png",
-        "pagePath": "pages/shaicha/index",
-        "text": "单笔筛查"
-      },
-      {
-        "iconPath": "static/tabbar/news.png",
-        "selectedIconPath": "static/tabbar/newsHL.png",
-        "pagePath": "pages/zixun/index",
-        "text": "法律法规"
-      },
-      {
-        "iconPath": "static/tabbar/personal.png",
-        "selectedIconPath": "static/tabbar/personalHL.png",
-        "pagePath": "pages/user-center/index",
-        "text": "我的"
-      }
-    ]
-  },
   "pages": [
     {
       "path": "pages/index/index",
       "type": "home",
       "style": {
         "navigationStyle": "custom",
-        "navigationBarTitleText": "首页"
+        "navigationBarTitleText": "首页",
+        "disableScroll": true
       }
     },
     {
@@ -84,43 +48,32 @@
       }
     },
     {
-      "path": "pages/login/index",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "邮箱登录"
-      }
-    },
-    {
-      "path": "pages/shaicha/index",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "分类",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/user-center/index",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "用户中心",
-        "navigationStyle": "custom"
-      },
-      "needLogin": true
-    },
-    {
-      "path": "pages/wendang/index",
-      "type": "page",
-      "style": {
-        "navigationBarTitleText": "文档",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/zixun/index",
+      "path": "pages/index/manage",
       "type": "page",
       "style": {
         "navigationStyle": "custom",
-        "navigationBarTitleText": "购物车"
+        "navigationBarTitleText": "消息"
+      }
+    },
+    {
+      "path": "pages/index/messages",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "消息",
+        "backgroundColor": "#fff"
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "type": "page",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "邮箱登录",
+        "backgroundColor": "#fffcfc",
+        "backgroundColorBottom": "#fffcfc",
+        "backgroundColorTop": "#fffcfc",
+        "disableScroll": true
       }
     }
   ],

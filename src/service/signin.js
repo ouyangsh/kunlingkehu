@@ -5,7 +5,7 @@ import { http } from '@/utils/http'
  */
 export const getGroupListAPI = () => {
     return http({
-        url: '/api/signin/group/',
+        url: `/api/signin/group/?_t=${Date.now()}`,
         method: 'GET',
     })
 }
@@ -64,5 +64,54 @@ export const updateUserInfoAPI = (data) => {
         url: '/api/system/user/update_user_info/',
         method: 'PUT',
         data
+    })
+}
+/**
+ * 提醒群组成员
+ * @param {string|number} id Group ID
+ */
+export const remindGroupAPI = (id) => {
+    return http({
+        url: `/api/signin/group/${id}/remind/`,
+        method: 'POST',
+    })
+}
+
+/**
+ * 获取通知列表
+ */
+export const getNotificationsAPI = () => {
+    return http({
+        url: '/api/signin/notification/',
+        method: 'GET',
+    })
+}
+
+/**
+ * 标记所有通知为已读
+ */
+export const markAllNotificationsReadAPI = () => {
+    return http({
+        url: '/api/signin/notification/mark_all_as_read/',
+        method: 'POST',
+    })
+}
+
+/**
+ * 标记单个通知为已读
+ */
+export const markNotificationReadAPI = (id) => {
+    return http({
+        url: `/api/signin/notification/${id}/mark_as_read/`,
+        method: 'POST',
+    })
+}
+/**
+ * 退出群组/解除关系
+ */
+export const quitGroupAPI = (id) => {
+    return http({
+        url: `/api/signin/group/${id}/quit/`,
+        method: 'POST',
     })
 }

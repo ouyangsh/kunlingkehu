@@ -55,13 +55,30 @@ export default defineConfig({
       commaStyleColorFunction: true,
     }) as Preset,
   ],
+  theme: {
+    colors: {
+      primary: '#ff9a9e', // Soft Pink
+      secondary: '#fad0c4', // Peach
+      accent: '#ff6b6b', // Coral Red
+      warm: {
+        50: '#fffcfc',
+        100: '#fff0f1',
+        200: '#ffcdd2',
+        500: '#ff9a9e',
+        600: '#ff6b6b',
+      },
+    },
+  },
   /**
    * 自定义快捷语句
    * @see https://github.com/unocss/unocss#shortcuts
    */
   shortcuts: [
     ['center', 'flex justify-center items-center'],
-    ['text-primary', 'text-yellow'],
+    ['text-primary', 'text-warm-600'],
+    ['bg-primary', 'bg-gradient-to-r from-warm-500 to-secondary'],
+    ['btn-primary', 'bg-gradient-to-r from-warm-500 to-warm-600 text-white shadow-md active:opacity-90'],
+    ['card', 'bg-white rounded-3xl shadow-sm p-30rpx'],
   ],
   transformers: [
     ...transformers,

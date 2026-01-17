@@ -1,44 +1,98 @@
 <route lang="json5" type="page">
 {
-  style: { navigationBarTitleText: '邮箱登录' },
+  style: { 
+    navigationStyle: 'custom', 
+    navigationBarTitleText: '邮箱登录',
+    backgroundColor: '#fffcfc',
+    backgroundColorBottom: '#fffcfc',
+    backgroundColorTop: '#fffcfc',
+    disableScroll: true
+  },
 }
 </route>
 
 <template>
-  <view class="px-40rpx py-40rpx">
-    <view class="text-center mt-40rpx mb-60rpx">
-      <image src="/static/used-images/logo.png" class="w-120rpx h-120rpx rounded-16rpx" mode="aspectFit" />
-      <view class="text-36rpx font-600 mt-20rpx">欢迎登录</view>
-      <view class="text-26rpx text-gray-500 mt-10rpx">请输入邮箱验证码登录/注册</view>
+  <view class="fixed inset-0 flex flex-col items-center px-40rpx overflow-hidden bg-[#fffcfc]">
+    <!-- Custom Header -->
+    <view class="w-full h-88rpx flex items-center justify-center flex-shrink-0" :style="{ paddingTop: statusBarHeight + 'px' }">
+      <text class="text-34rpx font-500 text-[#333]">邮箱登录</text>
     </view>
 
-    <!-- Email Login Form -->
-    <uv-form ref="emailFormRef" :model="emailForm" :rules="emailRules" labelWidth="0">
-      <uv-form-item prop="email">
-        <uv-input v-model="emailForm.email" placeholder="请输入邮箱地址" prefixIcon="email" clearable border="surround" />
-      </uv-form-item>
-      <uv-form-item prop="code" class="mt-30rpx">
-        <view class="flex items-center w-full">
-           <view class="flex-1">
-             <uv-input v-model="emailForm.code" placeholder="请输入验证码" prefixIcon="chat" clearable border="surround" />
-           </view>
-           <view class="ml-20rpx">
-             <uv-button size="small" type="primary" :plain="true" :disabled="countdown > 0" @click="sendCode">
-               {{ countdown > 0 ? `${countdown}s后重试` : '获取验证码' }}
-             </uv-button>
-           </view>
+    <!-- Featured Image & Welcome Section -->
+    <view class="w-full flex-1 flex flex-col items-center justify-center min-h-0 py-30rpx">
+      <view class="w-400rpx h-520rpx rounded-32rpx overflow-hidden shadow-lg border-[12rpx] border-white relative flex-shrink-0">
+        <image 
+          src="/static/used-images/login_featured.png" 
+          class="w-full h-full" 
+          mode="aspectFill" 
+        />
+        <view class="absolute bottom-30rpx left-0 right-0 text-center">
+          <view class="text-white text-24rpx font-500 tracking-wider shadow-sm">Family & Love</view>
         </view>
-      </uv-form-item>
-    </uv-form>
-
-    <view class="mt-60rpx">
-      <uv-button type="primary" shape="circle" :loading="submitting" :disabled="submitting" @click="onSubmit">
-        登录
-      </uv-button>
+      </view>
+      
+      <view class="mt-20rpx text-center flex-shrink-0">
+        <view class="text-40rpx font-600 text-[#333] tracking-wider mb-8rpx">欢迎回家</view>
+        <view class="text-24rpx text-gray-400">记载每一个相爱的时刻</view>
+      </view>
     </view>
 
-    <view class="mt-30rpx text-center text-24rpx text-gray-500">
-      未注册邮箱将自动注册账户
+    <!-- Login Card -->
+    <view class="w-full bg-white rounded-40rpx p-50rpx  mb-40rpx flex-shrink-0">
+      <uv-form ref="emailFormRef" :model="emailForm" :rules="emailRules" labelWidth="0">
+        <uv-form-item prop="email" :border-bottom="false" :customStyle="{ paddingBottom: '10rpx' }">
+          <view class="bg-[#fcfafa] rounded-24rpx px-30rpx py-8rpx min-h-88rpx flex items-center w-full">
+            <view class="flex-1">
+              <uv-input 
+                v-model="emailForm.email" 
+                placeholder="请输入您的邮箱" 
+                prefixIcon="email" 
+                :border="'none'"
+                placeholderStyle="color: #ccc; font-size: 26rpx"
+              />
+            </view>
+          </view>
+        </uv-form-item>
+        <uv-form-item prop="code" :border-bottom="false" :customStyle="{ paddingTop: '10rpx' }">
+          <view class="bg-[#fcfafa] rounded-24rpx px-30rpx py-8rpx flex items-center w-full min-h-88rpx">
+            <view class="flex-1">
+               <uv-input 
+                v-model="emailForm.code" 
+                placeholder="验证码" 
+                prefixIcon="chat" 
+                :border="'none'"
+                placeholderStyle="color: #ccc; font-size: 26rpx"
+               />
+             </view>
+             <view class="ml-20rpx border-l border-gray-100 pl-20rpx">
+               <text 
+                class="text-24rpx font-500" 
+                :class="countdown > 0 ? 'text-gray-300' : 'text-[#ff9a9e]'"
+                @click="sendCode"
+               >
+                 {{ countdown > 0 ? `${countdown}s` : '获取验证码' }}
+               </text>
+             </view>
+          </view>
+        </uv-form-item>
+      </uv-form>
+
+      <view class="mt-40rpx">
+        <uv-button 
+          type="primary" 
+          shape="circle" 
+          :loading="submitting" 
+          :disabled="submitting" 
+          @click="onSubmit"
+          customStyle="background: linear-gradient(to right, #ff9a9e, #fad0c4); border: none; height: 88rpx; font-size: 30rpx; font-weight: 500;"
+        >
+          安全登录
+        </uv-button>
+      </view>
+
+      <view class="mt-24rpx text-center text-22rpx text-gray-300">
+        未注册账号将为您自动创建
+      </view>
     </view>
   </view>
 </template>
@@ -48,6 +102,7 @@ import { currRoute } from '@/utils'
 import { useUserStore } from '@/store'
 import { sendEmailCodeAPI, emailLoginAPI } from '@/service/auth'
 
+const statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 0
 const userStore = useUserStore()
 
 const emailFormRef = ref()
@@ -60,13 +115,14 @@ const emailForm = reactive({
   code: '',
 })
 
-const emailRules = reactive({
+const emailRules = {
   email: [
-    { required: true, message: '请输入邮箱', trigger: ['blur', 'change'] },
-    { type: 'email', message: '请输入正确的邮箱格式', trigger: ['blur', 'change'] }
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
   ],
-  code: [{ required: true, message: '请输入验证码', trigger: ['blur', 'change'] }],
-})
+  code: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
+} as any
+  
 
 onUnmounted(() => {
   if (timer) clearInterval(timer)
@@ -158,5 +214,19 @@ const onSubmit = async () => {
 }
 </script>
 
+<style lang="scss">
+page {
+  background-color: #fffcfc !important;
+}
+</style>
+
 <style lang="scss" scoped>
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
 </style>

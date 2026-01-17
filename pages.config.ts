@@ -21,41 +21,4 @@ export default defineUniPages({
         'z-paging/components/z-paging$1/z-paging$1.vue',
     },
   },
-  tabBar: {
-    custom: true,
-    color: '#999999',
-    selectedColor: '#018d71',
-    backgroundColor: '#F8F8F8',
-    borderStyle: 'black',
-    height: '50px',
-    fontSize: '10px',
-    iconWidth: '24px',
-    spacing: '3px',
-    list: [
-      {
-        iconPath: 'static/tabbar/home.png',
-        selectedIconPath: 'static/tabbar/homeHL.png',
-        pagePath: 'pages/index/index',
-        text: '首页',
-      },
-      {
-        iconPath: 'static/tabbar/search.png',
-        selectedIconPath: 'static/tabbar/searchHL.png',
-        pagePath: 'pages/shaicha/index',
-        text: '单笔筛查',
-      },
-      {
-        iconPath: 'static/tabbar/news.png',
-        selectedIconPath: 'static/tabbar/newsHL.png',
-        pagePath: 'pages/zixun/index',
-        text: '法律法规',
-      },
-      {
-        iconPath: 'static/tabbar/personal.png',
-        selectedIconPath: 'static/tabbar/personalHL.png',
-        pagePath: 'pages/user-center/index',
-        text: '我的',
-      },
-    ],
-  },
 })

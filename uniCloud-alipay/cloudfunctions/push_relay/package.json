@@ -1,0 +1,10 @@
+{
+    "name": "push_relay",
+    "version": "1.0.0",
+    "description": "UniPush 2.0 relay cloud function",
+    "main": "index.js",
+    "dependencies": {},
+    "extensions": {
+        "uni-cloud-push": {}
+    }
+}

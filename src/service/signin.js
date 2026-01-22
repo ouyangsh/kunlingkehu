@@ -115,3 +115,14 @@ export const quitGroupAPI = (id) => {
         method: 'POST',
     })
 }
+/**
+ * 注册推送 CID
+ * @param {string} cid Client ID
+ */
+export const registerPushCIDAPI = (cid) => {
+    return http({
+        url: '/api/signin/push/register_cid/',
+        method: 'POST',
+        data: { cid }
+    })
+}

@@ -29,9 +29,10 @@ const httpInterceptor = {
     }
     // 2. 请求超时（仅在未显式传入时设置默认值）
     options.timeout = options.timeout ?? 10000 // 10s
-    // 3. 添加小程序端请求头标识
+    // 3. 添加平台请求头标识
+    const systemInfo = uni.getSystemInfoSync()
     options.header = {
-      platform: 'mp-weixin', // 可选值与 uniapp 定义的平台一致，告诉后台来源
+      platform: systemInfo.uniPlatform || systemInfo.platform || 'unknown', // 动态获取平台标识
       clientid: 'e5cd7e4891bf95d1d19206ce24a7b32e',
       ...options.header,
     }

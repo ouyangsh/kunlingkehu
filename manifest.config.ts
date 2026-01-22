@@ -40,7 +40,11 @@ export default defineManifestConfig({
       delay: 0,
     },
     /* 模块配置 */
-    modules: {},
+    modules: {
+      Push: {
+        description: 'UniPush 2.0 推送模块',
+      },
+    },
     /* 应用发布信息 */
     distribute: {
       /* android打包配置 */
@@ -69,7 +73,13 @@ export default defineManifestConfig({
       /* ios打包配置 */
       ios: {},
       /* SDK配置 */
-      sdkConfigs: {},
+      sdkConfigs: {
+        push: {
+          unipush: {
+            version: '2',
+          },
+        },
+      },
       /* 图标配置 */
       icons: {
         android: {},

@@ -19,8 +19,8 @@
         />
       </view>
 
-      <!-- Square / Send Tab (Placeholder) -->
-      <view class="flex-1 flex items-center justify-center h-full" @click="showSquareToast">
+      <!-- Square / Send Tab (Placeholder) - Commented out -->
+      <!-- <view class="flex-1 flex items-center justify-center h-full" @click="showSquareToast">
         <image
           :src="
             active === 1
@@ -30,7 +30,7 @@
           class="w-52rpx h-52rpx transition-all duration-300"
           mode="aspectFit"
         />
-      </view>
+      </view> -->
 
       <!-- Messages / Timeline Tab -->
       <view class="flex-1 flex items-center justify-center h-full" @click="navigateTo(2)">

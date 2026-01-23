@@ -126,3 +126,14 @@ export const registerPushCIDAPI = (cid) => {
         data: { cid }
     })
 }
+
+/**
+ * 搜索用户（联想功能）
+ * @param {string} q 搜索关键词
+ */
+export const searchUsersAPI = (q) => {
+    return http({
+        url: `/api/signin/group/search_users/?q=${encodeURIComponent(q)}`,
+        method: 'GET',
+    })
+}

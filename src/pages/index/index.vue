@@ -69,19 +69,40 @@
         <view class="i-carbon-user-multiple text-120rpx text-gray-200 mb-40rpx" />
         <view class="text-36rpx font-700 text-[#333] mb-20rpx">开启你的守护</view>
         <view class="text-28rpx text-gray-400 mb-60rpx leading-relaxed">
-            当前没有关系，输入你要加入的邮箱<br/>开启你们的专属签到空间
+            当前没有关系，输入你要加入的邮箱/用户名<br/>开启你们的专属签到空间
         </view>
         
         <view class="w-540rpx flex flex-col items-center space-y-30rpx">
-            <view class="w-full h-100rpx bg-gray-50 rounded-full flex items-center px-40rpx border border-gray-100 box-border">
-                <view class="i-carbon-email text-gray-400 mr-20rpx text-36rpx" />
-                <input 
-                    v-model="joinEmail" 
-                    class="flex-1 h-full text-28rpx" 
-                    placeholder="输入对方的邮箱账号" 
-                    placeholder-class="text-gray-300"
-                />
+            <!-- Search Container with Suggestions -->
+            <view class="w-full relative">
+                <view class="w-full h-100rpx bg-gray-50 rounded-full flex items-center px-40rpx border border-gray-100 box-border relative z-20">
+                    <view class="i-carbon-search text-gray-400 mr-20rpx text-36rpx" />
+                    <input 
+                        v-model="joinEmail" 
+                        @input="onSearchInput"
+                        class="flex-1 h-full text-28rpx" 
+                        placeholder="请输入邮箱/用户名" 
+                        placeholder-class="text-gray-300"
+                    />
+                </view>
+
+                <!-- Suggestion Dropdown (Docked) -->
+                <view v-if="suggestions.length > 0 && showSuggestions" class="absolute top-80rpx left-20rpx right-20rpx bg-white rounded-b-32rpx shadow-2xl border border-gray-100 z-10 overflow-y-auto max-h-400rpx pt-30rpx">
+                    <view 
+                        v-for="user in suggestions" 
+                        :key="user.id"
+                        class="flex items-center px-30rpx py-24rpx border-b border-gray-50 active:bg-gray-50 flex-shrink-0"
+                        @click="selectUser(user)"
+                    >
+                        <image :src="user.avatar || '/static/default_avatar.png'" class="w-64rpx h-64rpx rounded-full mr-20rpx" mode="aspectFill" />
+                        <view class="flex flex-col items-start flex-1 overflow-hidden">
+                            <text class="text-28rpx text-[#333] font-600 truncate w-full flex-shrink-0 text-left">{{ user.name }}</text>
+                            <text class="text-22rpx text-gray-400 truncate w-full flex-shrink-0 text-left">{{ user.email }}</text>
+                        </view>
+                    </view>
+                </view>
             </view>
+
             <view 
                 class="w-full h-100rpx bg-[#333] rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all"
                 @click="handleJoin"
@@ -193,7 +214,7 @@
                     <view class="i-carbon-add-alt text-gray-500 text-44rpx" />
                     <text class="text-30rpx font-500 text-[#444]">加入新的关系</text>
                 </view>
-                <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
+                <!-- <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
                     <view class="i-carbon-locked text-gray-500 text-44rpx" />
                     <text class="text-30rpx font-500 text-[#444]">隐私设置</text>
                 </view>
@@ -208,7 +229,7 @@
                 <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
                     <view class="i-carbon-settings text-gray-500 text-44rpx" />
                     <text class="text-30rpx font-500 text-[#444]">设置</text>
-                </view>
+                </view> -->
                 <view class="flex items-center w-full justify-between" @click="goToMessages">
                     <view class="flex items-center space-x-36rpx">
                         <view class="i-carbon-email text-gray-500 text-44rpx" />
@@ -276,15 +297,15 @@
 
     <!-- Completion Greeting Modal -->
     <uv-popup ref="greetingPopup" v-model="showGreetingPopup" mode="center" round="48rpx" :safeAreaInsetBottom="false">
-        <view class="w-600rpx bg-[#f2f2f4] p-60rpx flex flex-col items-center relative overflow-hidden">
-            <view class="mb-40rpx flex flex-col items-center">
+        <view class="w-560rpx bg-[#f2f2f4] p-48rpx flex flex-col items-center relative overflow-hidden">
+            <view class="mb-32rpx flex flex-col items-center">
                 <text class="text-44rpx mb-16rpx">🌟</text>
                 <text class="text-36rpx font-700 text-[#333] mb-12rpx">今日份爱意已满员</text>
                 <view class="w-80rpx h-4rpx bg-[#4a4e69] rounded-full opacity-20"></view>
             </view>
             
-            <view class="w-full mb-60rpx text-center">
-                <text class="text-32rpx text-gray-600 leading-relaxed font-500 italic">
+            <view class="w-full mb-48rpx text-center">
+                <text class="text-30rpx text-gray-600 leading-relaxed font-500 italic">
                     "{{ currentGreeting }}"
                 </text>
             </view>
@@ -300,6 +321,37 @@
         </view>
     </uv-popup>
 
+    <!-- Edit Name Modal -->
+    <uv-popup ref="editNamePopup" v-model="showEditNamePopup" mode="center" round="48rpx" :safeAreaInsetBottom="false">
+        <view class="w-560rpx bg-[#f2f2f4] p-48rpx flex flex-col items-center relative overflow-hidden">
+            <view class="mb-32rpx flex flex-col items-center">
+                <text class="text-32rpx font-700 text-[#333] mb-8rpx">修改姓名</text>
+                <text class="text-24rpx text-gray-400">当前：{{ userInfo.name || '未设置' }}</text>
+            </view>
+            
+            <view class="w-full mb-40rpx">
+                <input 
+                    v-model="newName"
+                    class="w-full h-80rpx bg-white rounded-24rpx px-30rpx text-28rpx border border-gray-100"
+                    placeholder="请输入新的姓名"
+                    placeholder-class="text-gray-300"
+                />
+            </view>
+            
+            <uv-button 
+                type="primary" 
+                shape="circle" 
+                customStyle="background: #4a4e69; border: none; width: 100%; height: 80rpx; font-weight: 700; font-size: 28rpx;"
+                @click="handleUpdateName"
+            >
+                确认修改
+            </uv-button>
+            <view class="mt-24rpx" @click="showEditNamePopup = false; editNamePopup.close()">
+                <text class="text-26rpx text-gray-400">取消</text>
+            </view>
+        </view>
+    </uv-popup>
+
   </view>
 </template>
 
@@ -307,7 +359,7 @@
 import { ref, computed } from 'vue'
 import { useUserStore } from '@/store'
 import { onLoad, onShow, onHide } from '@dcloudio/uni-app'
-import { getGroupListAPI, checkInAPI, getCheckInHistoryAPI, joinGroupByEmailAPI, updateUserInfoAPI, remindGroupAPI, getNotificationsAPI } from '@/service/signin'
+import { getGroupListAPI, checkInAPI, getCheckInHistoryAPI, joinGroupByEmailAPI, updateUserInfoAPI, remindGroupAPI, getNotificationsAPI, searchUsersAPI } from '@/service/signin'
 import ParticleHeart from '@/components/ParticleHeart.vue'
 import BottomNav from '@/components/BottomNav.vue'
 import dayjs from 'dayjs'
@@ -324,9 +376,15 @@ const popup = ref(null)
 const relationPopup = ref(null)
 const greetingPopup = ref(null)
 const hasUnreadMessages = ref(false)
-const showGreetingPopup = ref(false)
 const currentGreeting = ref('')
 const joinEmail = ref('')
+const showEditNamePopup = ref(false)
+const editNamePopup = ref(null)
+const newName = ref('')
+
+const suggestions = ref([])
+const showSuggestions = ref(false)
+let searchTimer = null
 
 const openDrawer = () => {
     showDrawer.value = true
@@ -507,30 +565,35 @@ const handleCheckIn = async () => {
 }
 
 const editName = () => {
-  uni.showModal({
-      title: '修改姓名',
-      editable: true,
-      placeholderText: '请输入新的姓名',
-      content: userInfo.value.name || '',
-      success: async (res) => {
-          if (res.confirm && res.content) {
-              try {
-                  uni.showLoading({ title: '修改中' })
-                  await updateUserInfoAPI({ name: res.content })
-                  userInfo.value.name = res.content
-                  // Update store if needed, usually requires relogin or store mutation
-                  userStore.userInfo.name = res.content
-                  userStore.userInfo.nickname = res.content 
-                  
-                  uni.showToast({ title: '修改成功', icon: 'success' })
-              } catch(e) {
-                  uni.showToast({ title: e.msg || '修改失败', icon: 'none' })
-              } finally {
-                  uni.hideLoading()
-              }
-          }
-      }
-  })
+    newName.value = userInfo.value.name || ''
+    showEditNamePopup.value = true
+    if (editNamePopup.value) {
+        editNamePopup.value.open()
+    }
+}
+
+const handleUpdateName = async () => {
+    if (!newName.value) {
+        uni.showToast({ title: '请输入姓名', icon: 'none' })
+        return
+    }
+    try {
+        uni.showLoading({ title: '修改中' })
+        await updateUserInfoAPI({ name: newName.value })
+        userInfo.value.name = newName.value
+        userStore.userInfo.name = newName.value
+        userStore.userInfo.nickname = newName.value 
+        
+        uni.showToast({ title: '修改成功', icon: 'success' })
+        showEditNamePopup.value = false
+        if (editNamePopup.value) {
+            editNamePopup.value.close()
+        }
+    } catch(e) {
+        uni.showToast({ title: e.msg || '修改失败', icon: 'none' })
+    } finally {
+        uni.hideLoading()
+    }
 }
 
 const editGroupEmail = () => {
@@ -586,6 +649,36 @@ const handleJoin = async () => {
     } finally {
         uni.hideLoading()
     }
+}
+
+const onSearchInput = (e) => {
+    const val = e.detail.value
+    console.log('Search input value:', val)
+    if (searchTimer) clearTimeout(searchTimer)
+    
+    if (!val || val.length < 1) {
+        suggestions.value = []
+        showSuggestions.value = false
+        return
+    }
+
+    searchTimer = setTimeout(async () => {
+        try {
+            console.log('Firing search API for:', val)
+            const res = await searchUsersAPI(val)
+            suggestions.value = res.data || []
+            showSuggestions.value = suggestions.value.length > 0
+            console.log('Suggestions updated:', suggestions.value.length, 'showSuggestions:', showSuggestions.value)
+        } catch (e) {
+            console.error('Search failed', e)
+        }
+    }, 500)
+}
+
+const selectUser = (user) => {
+    joinEmail.value = user.email
+    suggestions.value = []
+    showSuggestions.value = false
 }
 
 const goToManage = () => {

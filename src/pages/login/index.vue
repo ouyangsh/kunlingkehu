@@ -84,7 +84,7 @@
           :loading="submitting" 
           :disabled="submitting" 
           @click="onSubmit"
-          customStyle="background: linear-gradient(to right, #ff9a9e, #fad0c4); border: none; height: 88rpx; font-size: 30rpx; font-weight: 500;"
+          customStyle="background: linear-gradient(to right, #ff5f6d, #ffc371); border: none; height: 88rpx; font-size: 30rpx; font-weight: 500;"
         >
           安全登录
         </uv-button>

@@ -9,7 +9,7 @@
 </route>
 
 <template>
-  <view class="flex flex-col h-screen bg-[#fcfcfc] overflow-hidden">
+  <view class="fixed inset-0 bg-white flex flex-col items-center overflow-hidden box-border">
     <!-- Top Status Bar Spacer -->
     <view class="w-full flex-shrink-0 bg-white" :style="{ height: statusBarHeight + 'px' }"></view>
     
@@ -65,20 +65,8 @@
       </view>
     </scroll-view>
 
-    <!-- Bottom Navigation Component (Assuming it matches Home but local for index-based navigation) -->
-    <view class="w-full flex-shrink-0 pb-safe bg-white flex items-center justify-center">
-        <view class="w-600rpx h-100rpx rounded-full bg-white border border-gray-50 shadow-[0_4rpx_24rpx_rgb(0,0,0,0.03)] flex items-center justify-around px-20rpx mb-20rpx mt-20rpx">
-            <view class="flex-1 flex items-center justify-center h-full" @click="navigateTo(0)">
-                <image src="/static/used-images/nav_love_inactive_new.png" class="w-52rpx h-52rpx" mode="aspectFit" />
-            </view>
-            <view class="flex-1 flex items-center justify-center h-full" @click="navigateTo(1)">
-                <image src="/static/used-images/nav_send_inactive_new.png" class="w-52rpx h-52rpx" mode="aspectFit" />
-            </view>
-            <view class="flex-1 flex items-center justify-center h-full">
-                <image src="/static/used-images/nav_timeline_active_new.png" class="w-52rpx h-52rpx" mode="aspectFit" />
-            </view>
-        </view>
-    </view>
+    <!-- Bottom Navigation Component -->
+    <BottomNav :active="2" :has-unread="false" />
   </view>
 </template>
 
@@ -86,6 +74,7 @@
 import { ref } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { getNotificationsAPI, markAllNotificationsReadAPI, markNotificationReadAPI } from '@/service/signin'
+import BottomNav from '@/components/BottomNav.vue'
 import dayjs from 'dayjs'
 
 const statusBarHeight = uni.getSystemInfoSync().statusBarHeight
@@ -128,11 +117,6 @@ const goBack = () => {
     uni.navigateBack()
 }
 
-const navigateTo = (index) => {
-    if (index === 0) uni.reLaunch({ url: '/pages/index/index' })
-    // Add other routes as needed
-}
-
 const handleMessageClick = (item) => {
     if (!item.is_read) {
         // Simple local update for UI
@@ -172,7 +156,19 @@ onShow(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+:deep(page),
+page {
+  background-color: #fff !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  overflow: hidden !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  box-sizing: border-box !important;
+}
+
 .truncate {
     overflow: hidden;
     text-overflow: ellipsis;

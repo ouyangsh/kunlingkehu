@@ -9,12 +9,12 @@
 </route>
 
 <template>
-  <view class="fixed inset-0 overflow-hidden bg-white flex flex-col items-center px-40rpx box-border">
+  <view class="fixed inset-0 overflow-hidden bg-white flex flex-col items-center box-border">
     <!-- Top Header Spacer (for Safe Area) -->
     <view class="w-full h-80rpx flex-shrink-0"></view>
     
     <!-- Top Header -->
-    <view class="w-full h-88rpx flex items-center justify-center relative mb-10rpx flex-shrink-0">
+    <view class="w-full h-88rpx flex items-center justify-center relative mb-10rpx px-40rpx flex-shrink-0 box-border">
       <view class="absolute left-10rpx top-0 h-full w-100rpx flex items-center justify-center text-gray-400" @click="isForceJoin ? isForceJoin = false : openDrawer()">
         <view :class="isForceJoin ? 'i-carbon-chevron-left' : 'i-carbon-menu'" class="text-44rpx" />
       </view>
@@ -40,7 +40,6 @@
         </view>
 
         <view class="flex flex-col items-center mb-20rpx px-40rpx text-center">
-            <view class="text-22rpx text-gray-700 mb-8rpx tracking-widest uppercase">{{ currentGroup?.group_status_text }}</view>
             <view class="text-28rpx text-gray-500 font-500 mb-2rpx">
                 和 {{ displayRelationNames }} 已连续爱了
             </view>
@@ -66,15 +65,15 @@
     </view>
 
     <!-- Empty State: No Relationships / Join UI -->
-    <view v-else class="flex-1 w-full flex flex-col items-center justify-center px-40rpx text-center">
+    <view v-else class="flex-1 w-full flex flex-col items-center justify-center px-60rpx text-center box-border">
         <view class="i-carbon-user-multiple text-120rpx text-gray-200 mb-40rpx" />
         <view class="text-36rpx font-700 text-[#333] mb-20rpx">开启你的守护</view>
         <view class="text-28rpx text-gray-400 mb-60rpx leading-relaxed">
             当前没有关系，输入你要加入的邮箱<br/>开启你们的专属签到空间
         </view>
         
-        <view class="w-full flex flex-col items-center space-y-30rpx">
-            <view class="w-full h-100rpx bg-gray-50 rounded-full flex items-center px-40rpx border border-gray-100">
+        <view class="w-540rpx flex flex-col items-center space-y-30rpx">
+            <view class="w-full h-100rpx bg-gray-50 rounded-full flex items-center px-40rpx border border-gray-100 box-border">
                 <view class="i-carbon-email text-gray-400 mr-20rpx text-36rpx" />
                 <input 
                     v-model="joinEmail" 
@@ -102,9 +101,9 @@
     </view>
 
     <!-- Bottom Action & Navigation Bar -->
-    <view v-if="currentGroup" class="w-full flex flex-col items-center pb-20rpx flex-shrink-0">
+    <view v-if="currentGroup" class="w-full flex flex-col items-center flex-shrink-0">
         <!-- Main Check-in Action Area -->
-        <view class="flex flex-col items-center mb-30rpx">
+        <view class="flex flex-col items-center mb-30rpx px-40rpx">
             <view class="flex items-center space-x-20rpx mb-20rpx">
                 <!-- Status Pill -->
                 <view 
@@ -153,32 +152,8 @@
             </view>
         </view>
 
-        <!-- New Bottom Pill Navigation -->
-        <view class="w-600rpx h-100rpx rounded-full bg-white border border-gray-50 shadow-[0_4rpx_24rpx_rgb(0,0,0,0.1)] flex items-center justify-around px-20rpx mb-20rpx">
-            <view class="flex-1 flex items-center justify-center h-full" @click="activeTab = 0">
-                <image 
-                    :src="activeTab === 0 ? '/static/used-images/nav_love_active_new.png' : '/static/used-images/nav_love_inactive_new.png'" 
-                    class="w-52rpx h-52rpx transition-all duration-300" 
-                    mode="aspectFit" 
-                />
-            </view>
-            <view class="flex-1 flex items-center justify-center h-full" @click="uni.showToast({ title: '广场暂未开放，敬请期待', icon: 'none' })">
-                <image 
-                    :src="activeTab === 1 ? '/static/used-images/nav_send_active_new.png' : '/static/used-images/nav_send_inactive_new.png'" 
-                    class="w-52rpx h-52rpx transition-all duration-300" 
-                    mode="aspectFit" 
-                />
-            </view>
-            <view class="flex-1 flex items-center justify-center h-full" @click="goToMessages">
-                <image 
-                    :src="activeTab === 2 ? (hasUnreadMessages ? '/static/used-images/nav_timeline_unread_new.png' : '/static/used-images/nav_timeline_active_new.png') : '/static/used-images/nav_timeline_inactive_new.png'" 
-                    class="w-52rpx h-52rpx transition-all duration-300" 
-                    mode="aspectFit" 
-                />
-            </view>
-        </view>
-        <!-- Bottom Tab Safe Spacer -->
-        <view class="w-full h-safe flex-shrink-0"></view>
+        <!-- Bottom Navigation component -->
+        <BottomNav :active="0" :has-unread="hasUnreadMessages" />
     </view>
 
     <!-- Sidebar Drawer -->
@@ -299,6 +274,32 @@
         </view>
     </uv-popup>
 
+    <!-- Completion Greeting Modal -->
+    <uv-popup ref="greetingPopup" v-model="showGreetingPopup" mode="center" round="48rpx" :safeAreaInsetBottom="false">
+        <view class="w-600rpx bg-[#f2f2f4] p-60rpx flex flex-col items-center relative overflow-hidden">
+            <view class="mb-40rpx flex flex-col items-center">
+                <text class="text-44rpx mb-16rpx">🌟</text>
+                <text class="text-36rpx font-700 text-[#333] mb-12rpx">今日份爱意已满员</text>
+                <view class="w-80rpx h-4rpx bg-[#4a4e69] rounded-full opacity-20"></view>
+            </view>
+            
+            <view class="w-full mb-60rpx text-center">
+                <text class="text-32rpx text-gray-600 leading-relaxed font-500 italic">
+                    "{{ currentGreeting }}"
+                </text>
+            </view>
+            
+            <uv-button 
+                type="primary" 
+                shape="circle" 
+                customStyle="background: #4a4e69; border: none; width: 100%; height: 90rpx; font-weight: 700; font-size: 30rpx; letter-spacing: 4rpx;"
+                @click="showGreetingPopup = false; greetingPopup.close()"
+            >
+                收到心意
+            </uv-button>
+        </view>
+    </uv-popup>
+
   </view>
 </template>
 
@@ -308,6 +309,7 @@ import { useUserStore } from '@/store'
 import { onLoad, onShow, onHide } from '@dcloudio/uni-app'
 import { getGroupListAPI, checkInAPI, getCheckInHistoryAPI, joinGroupByEmailAPI, updateUserInfoAPI, remindGroupAPI, getNotificationsAPI } from '@/service/signin'
 import ParticleHeart from '@/components/ParticleHeart.vue'
+import BottomNav from '@/components/BottomNav.vue'
 import dayjs from 'dayjs'
 
 const userStore = useUserStore()
@@ -320,8 +322,10 @@ const showDrawer = ref(false)
 const showRelationModal = ref(false)
 const popup = ref(null)
 const relationPopup = ref(null)
-const activeTab = ref(0)
+const greetingPopup = ref(null)
 const hasUnreadMessages = ref(false)
+const showGreetingPopup = ref(false)
+const currentGreeting = ref('')
 const joinEmail = ref('')
 
 const openDrawer = () => {
@@ -466,8 +470,20 @@ const handleCheckIn = async () => {
 
     uni.showLoading({ title: '爱意发送中...' })
     try {
-        await checkInAPI(currentGroup.value.id)
-        uni.showToast({ title: '爱意已发送', icon: 'success' })
+        const res = await checkInAPI(currentGroup.value.id)
+        
+        // 如果签到后群组已满员，展示文案弹窗
+        if (res.data?.is_complete && res.data?.greeting) {
+            currentGreeting.value = res.data.greeting
+            setTimeout(() => {
+                if (greetingPopup.value) {
+                    greetingPopup.value.open()
+                }
+            }, 300)
+        } else {
+            uni.showToast({ title: '爱意已发送', icon: 'success' })
+        }
+        
         isCheckedIn.value = true
         // Refresh to update counts
         loadLatestGroup()
@@ -706,29 +722,31 @@ const connectWebSocket = () => {
             // 处理实时签到更新
             if (data.type === 'group_update' || data.contentType === 'group_update') {
                  console.log('Received group update via WebSocket', data)
-                 // 只要收到群组更新消息，无视 ID 差异，强制刷新数据，确保解绑或重绑能即刻生效
                  loadLatestGroup()
-                 
-                 // 显示文案
-                 if (data.msg && data.msg.includes('签到')) {
-                      // ...
+            }
+
+            // 处理群组打卡满员
+            if (data.type === 'group_completion') {
+                 console.log('Received group completion via WebSocket', data)
+                 loadLatestGroup()
+                 if (data.greeting) {
+                     currentGreeting.value = data.greeting
+                     if (greetingPopup.value) {
+                         greetingPopup.value.open()
+                     }
                  }
             }
             
             // 处理离线期间的待发送文案
             if (data.type === 'pending_greeting') {
                 console.log('Received pending greeting:', data)
-                // Refresh to ensure counts are current
                 loadLatestGroup()
                 
-                // 显示离线期间的文案
                 if (data.greeting) {
-                    const checkInUser = data.checkInUser || '伙伴'
-                    uni.showToast({
-                        title: `${checkInUser}的提醒: ${data.greeting}`,
-                        icon: 'none',
-                        duration: 4000
-                    })
+                    currentGreeting.value = data.greeting
+                    if (greetingPopup.value) {
+                        greetingPopup.value.open()
+                    }
                 }
             }
 

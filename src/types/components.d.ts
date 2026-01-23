@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AppTest: typeof import('./../components/AppTest.vue')['default']
     AppTest2: typeof import('./../components/app-test-dir/AppTest2.vue')['default']
+    BottomNav: typeof import('./../components/BottomNav.vue')['default']
     Buju: typeof import('./../components/buju/buju.vue')['default']
     Dingbu: typeof import('./../components/dingbu/dingbu.vue')['default']
     FlyContent: typeof import('./../components/fly-content/fly-content.vue')['default']

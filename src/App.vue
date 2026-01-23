@@ -5,38 +5,61 @@ import { useUserStore } from '@/store/user'
 import { autoLogin } from '@/utils/autoLogin'
 import { setLoginPromise } from '@/utils/loginWaiter'
 
+import { watch } from 'vue'
+
 const userStore = useUserStore()
+
+// 1. 顶层监听推送消息，确保在 App 启动的第一时间就开始监听
+// #ifdef APP-PLUS
+uni.onPushMessage((res) => {
+  console.log('【收到推送消息核心回调】:', JSON.stringify(res))
+  // 无论什么类型，都先弹出一个简单提示协助排查
+  if (res.type === 'receive') {
+    uni.showModal({
+      title: res.data?.title || '新消息',
+      content: res.data?.content || '您收到一条新消息',
+      showCancel: false
+    })
+  }
+})
+// #endif
 
 const registerPush = () => {
   // #ifdef APP-PLUS
-  console.log('检查推送环境...')
+  if (!userStore.isLogined) {
+    console.log('未登录，跳过 CID 注册')
+    return
+  }
+  
+  console.log('--- 开始注册推送 CID ---')
   uni.getPushClientId({
     success: (res) => {
       const { cid } = res
-      console.log('获取推送 CID 成功:', cid)
+      console.log('App.vue - 当前设备的最新 CID:', cid)
+      console.log('App.vue - 当前登录用户 ID:', userStore.userInfo.userId)
       if (cid) {
         registerPushCIDAPI(cid)
-          .then(() => console.log('CID 注册接口调用成功'))
-          .catch((err) => console.error('CID 注册接口调用失败:', err))
-      } else {
-        console.warn('获取到的 CID 为空')
+          .then(() => console.log('✅ CID 后端绑定成功'))
+          .catch((err) => console.error('❌ CID 后端绑定失败:', err))
       }
     },
     fail: (err) => {
-      console.error('获取推送 CID 失败 (可能是模拟器限制):', err)
+      console.error('获取推送 CID 失败:', err)
     }
   })
-
-  // 监听推送消息
-  uni.onPushMessage((res) => {
-    console.log('收到推送消息:', res)
-  })
+  
+  // 检查 iOS 通知权限状态
+  if (uni.getSystemInfoSync().platform === 'ios') {
+    plus.push.getClientInfoAsync((info) => {
+       console.log('iOS 推送详情:', JSON.stringify(info))
+    })
+  }
   // #endif
 }
 
-// 监听登录状态，登录成功后立即注册推送
+// 监听登录状态
 watch(() => userStore.isLogined, (newVal) => {
-  console.log('登录状态变化:', newVal)
+  console.log('App.vue - 登录状态监听触发:', newVal)
   if (newVal) {
     registerPush()
   }
@@ -68,6 +91,8 @@ onLaunch(async () => {
 
 onShow(() => {
   console.log('App Show')
+  // 每次显示时尝试注册一次，确保 CID 最早时间同步
+  registerPush()
 })
 
 onHide(() => {

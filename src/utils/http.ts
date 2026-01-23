@@ -38,10 +38,13 @@ export const http = <T>(options: CustomRequestOptions) => {
           } else {
             // 其他业务错误 -> 根据后端错误信息轻提示
             console.error('业务错误:', responseData)
-            uni.showToast({
-              icon: 'none',
-              title: responseData?.msg || '请求错误',
-            })
+            // 如果是身份认证错误(4000)，静默处理，不弹窗提示
+            if (responseData?.code !== 4000) {
+              uni.showToast({
+                icon: 'none',
+                title: responseData?.msg || '请求错误',
+              })
+            }
             reject(res)
           }
         } else if (res.statusCode === 401) {

@@ -268,9 +268,9 @@
             <view
               class="flex items-center space-x-36rpx"
               @click="
-                popup.close()
-                showDrawer = false
-                isForceJoin = true
+                popup.close();
+                showDrawer = false;
+                isForceJoin = true;
               "
             >
               <view class="i-carbon-add-alt text-gray-500 text-44rpx" />
@@ -400,8 +400,8 @@
           shape="circle"
           customStyle="background: #4a4e69; border: none; width: 100%; height: 90rpx; font-weight: 700; font-size: 30rpx; letter-spacing: 4rpx;"
           @click="
-            showGreetingPopup = false
-            greetingPopup.close()
+            showGreetingPopup = false;
+            greetingPopup.close();
           "
         >
           收到心意
@@ -445,8 +445,8 @@
         <view
           class="mt-24rpx"
           @click="
-            showEditNamePopup = false
-            editNamePopup.close()
+            showEditNamePopup = false;
+            editNamePopup.close();
           "
         >
           <text class="text-26rpx text-gray-400">取消</text>

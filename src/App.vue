@@ -18,7 +18,7 @@ uni.onPushMessage((res) => {
     uni.showModal({
       title: res.data?.title || '新消息',
       content: res.data?.content || '您收到一条新消息',
-      showCancel: false
+      showCancel: false,
     })
   }
 })
@@ -30,7 +30,7 @@ const registerPush = () => {
     console.log('未登录，跳过 CID 注册')
     return
   }
-  
+
   console.log('--- 开始注册推送 CID ---')
   uni.getPushClientId({
     success: (res) => {
@@ -45,25 +45,29 @@ const registerPush = () => {
     },
     fail: (err) => {
       console.error('获取推送 CID 失败:', err)
-    }
+    },
   })
-  
+
   // 检查 iOS 通知权限状态
   if (uni.getSystemInfoSync().platform === 'ios') {
     plus.push.getClientInfoAsync((info) => {
-       console.log('iOS 推送详情:', JSON.stringify(info))
+      console.log('iOS 推送详情:', JSON.stringify(info))
     })
   }
   // #endif
 }
 
 // 监听登录状态
-watch(() => userStore.isLogined, (newVal) => {
-  console.log('App.vue - 登录状态监听触发:', newVal)
-  if (newVal) {
-    registerPush()
-  }
-}, { immediate: true })
+watch(
+  () => userStore.isLogined,
+  (newVal) => {
+    console.log('App.vue - 登录状态监听触发:', newVal)
+    if (newVal) {
+      registerPush()
+    }
+  },
+  { immediate: true },
+)
 
 onLaunch(async () => {
   console.log('App Launch')
@@ -74,18 +78,28 @@ onLaunch(async () => {
   setLoginPromise(loginPromise)
   try {
     await loginPromise
-    console.log('自动登录完成，当前登录状态：', userStore.isLogined)
+    console.log('App.vue - 自动登录完成，当前登录状态：', userStore.isLogined)
     if (!userStore.isLogined) {
       throw new Error('未登录')
     }
   } catch (error) {
-    console.log('自动登录失败或未登录：', error?.message || error || '未知错误')
-    // 如果不在登录页，则跳转
-    const pages = getCurrentPages()
-    const currentPage = pages[pages.length - 1]
-    if (!currentPage || currentPage.route !== 'pages/login/index') {
-      uni.reLaunch({ url: '/pages/login/index' })
-    }
+    console.log('App.vue - 自动登录失败或未登录：', error?.message || error || '未知错误')
+    // 延迟跳转，确保页面栈初始化完成
+    setTimeout(() => {
+      const pages = getCurrentPages()
+      const currentPage = pages[pages.length - 1]
+      const currentPath = currentPage ? currentPage.route : ''
+      console.log('App.vue - 当前页面路径:', currentPath)
+
+      if (currentPath !== 'pages/login/index') {
+        console.log('App.vue - 执行重定向到登录页')
+        uni.reLaunch({
+          url: '/pages/login/index',
+          success: () => console.log('App.vue - 重定向成功'),
+          fail: (err) => console.error('App.vue - 重定向失败:', err),
+        })
+      }
+    }, 100)
   }
 })
 

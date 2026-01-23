@@ -12,187 +12,242 @@
   <view class="fixed inset-0 overflow-hidden bg-white flex flex-col items-center box-border">
     <!-- Top Header Spacer (for Safe Area) -->
     <view class="w-full h-80rpx flex-shrink-0"></view>
-    
+
     <!-- Top Header -->
-    <view class="w-full h-88rpx flex items-center justify-center relative mb-10rpx px-40rpx flex-shrink-0 box-border">
-      <view class="absolute left-10rpx top-0 h-full w-100rpx flex items-center justify-center text-gray-400" @click="isForceJoin ? isForceJoin = false : openDrawer()">
+    <view
+      class="w-full h-88rpx flex items-center justify-center relative mb-10rpx px-40rpx flex-shrink-0 box-border"
+    >
+      <view
+        class="absolute left-10rpx top-0 h-full w-100rpx flex items-center justify-center text-gray-400"
+        @click="isForceJoin ? (isForceJoin = false) : openDrawer()"
+      >
         <view :class="isForceJoin ? 'i-carbon-chevron-left' : 'i-carbon-menu'" class="text-44rpx" />
       </view>
       <text class="text-40rpx font-700 tracking-wider text-[#333]">
         {{ currentGroup?.member_count === 2 ? 'Love' : 'Family' }}
       </text>
-      <view class="absolute right-10rpx top-0 h-full w-100rpx flex items-center justify-center text-gray-400" @click="openRelationModal">
+      <view
+        class="absolute right-10rpx top-0 h-full w-100rpx flex items-center justify-center text-gray-400"
+        @click="openRelationModal"
+      >
         <view class="i-carbon-information text-44rpx" />
       </view>
     </view>
 
     <!-- Content Area: Flexible -->
     <template v-if="isInitLoaded">
-        <view v-if="currentGroup && !isForceJoin" class="flex-1 w-full flex flex-col items-center justify-center overflow-hidden">
+      <view
+        v-if="currentGroup && !isForceJoin"
+        class="flex-1 w-full flex flex-col items-center justify-center overflow-hidden"
+      >
         <!-- Main Artistic Card -->
         <view class="w-full h-0 flex-1 max-h-600rpx rounded-24rpx overflow-hidden mb-30rpx">
-            <ParticleHeart 
-                :memberCount="currentGroup?.member_count || 0"
-                :checkedCount="currentGroup?.checked_in_count || 0"
-                :isMeChecked="isCheckedIn"
-                @heartClick="handleCheckIn" 
-            />
+          <ParticleHeart
+            :memberCount="currentGroup?.member_count || 0"
+            :checkedCount="currentGroup?.checked_in_count || 0"
+            :isMeChecked="isCheckedIn"
+            @heartClick="handleCheckIn"
+          />
         </view>
 
         <view class="flex flex-col items-center mb-20rpx px-40rpx text-center">
-            <view class="text-28rpx text-gray-500 font-500 mb-2rpx">
-                和 {{ displayRelationNames }} 已连续爱了
-            </view>
+          <view class="text-28rpx text-gray-500 font-500 mb-2rpx">
+            和 {{ displayRelationNames }} 已连续爱了
+          </view>
         </view>
 
         <!-- Indicators (Decorative dots) -->
         <view class="flex space-x-12rpx mb-40rpx">
-            <view class="w-12rpx h-12rpx rounded-full bg-gray-50"></view>
-            <view class="w-12rpx h-12rpx rounded-full bg-gray-100"></view>
-            <view class="w-12rpx h-12rpx rounded-full bg-gray-50"></view>
+          <view class="w-12rpx h-12rpx rounded-full bg-gray-50"></view>
+          <view class="w-12rpx h-12rpx rounded-full bg-gray-100"></view>
+          <view class="w-12rpx h-12rpx rounded-full bg-gray-50"></view>
         </view>
 
         <!-- Days Counter -->
         <view class="flex items-baseline mb-20rpx">
-            <text class="text-140rpx font-800 text-[#333] tracking-tighter leading-none">{{ streakCount }}</text>
-            <text class="text-32rpx font-700 text-[#333] ml-16rpx">天</text>
+          <text class="text-140rpx font-800 text-[#333] tracking-tighter leading-none">
+            {{ streakCount }}
+          </text>
+          <text class="text-32rpx font-700 text-[#333] ml-16rpx">天</text>
         </view>
 
         <!-- Total Days (Sub-stat) -->
         <view class="flex items-center text-gray-300 text-24rpx mb-40rpx">
-            <text>相伴第 {{ totalDays }} 天</text>
+          <text>相伴第 {{ totalDays }} 天</text>
         </view>
-    </view>
+      </view>
 
-    <!-- Empty State: No Relationships / Join UI -->
-    <view v-else class="flex-1 w-full flex flex-col items-center justify-center px-60rpx text-center box-border">
+      <!-- Empty State: No Relationships / Join UI -->
+      <view
+        v-else
+        class="flex-1 w-full flex flex-col items-center justify-center px-60rpx text-center box-border"
+      >
         <view class="i-carbon-user-multiple text-120rpx text-gray-200 mb-40rpx" />
         <view class="text-36rpx font-700 text-[#333] mb-20rpx">开启你的守护</view>
         <view class="text-28rpx text-gray-400 mb-60rpx leading-relaxed">
-            当前没有关系，输入你要加入的邮箱/用户名<br/>开启你们的专属签到空间
+          当前没有关系，输入你要加入的邮箱/用户名
+          <br />
+          开启你们的专属签到空间
         </view>
-        
+
         <view class="w-540rpx flex flex-col items-center space-y-30rpx">
-            <!-- Search Container with Suggestions -->
-            <view class="w-full relative">
-                <view class="w-full h-100rpx bg-gray-50 rounded-full flex items-center px-40rpx border border-gray-100 box-border relative z-20">
-                    <view class="i-carbon-search text-gray-400 mr-20rpx text-36rpx" />
-                    <input 
-                        v-model="joinEmail" 
-                        @input="onSearchInput"
-                        class="flex-1 h-full text-28rpx" 
-                        placeholder="请输入邮箱/用户名" 
-                        placeholder-class="text-gray-300"
-                    />
-                </view>
-
-                <!-- Suggestion Dropdown (Docked) -->
-                <view v-if="suggestions.length > 0 && showSuggestions" class="absolute top-80rpx left-20rpx right-20rpx bg-white rounded-b-32rpx shadow-2xl border border-gray-100 z-10 overflow-y-auto max-h-400rpx pt-30rpx">
-                    <view 
-                        v-for="user in suggestions" 
-                        :key="user.id"
-                        class="flex items-center px-30rpx py-24rpx border-b border-gray-50 active:bg-gray-50 flex-shrink-0"
-                        @click="selectUser(user)"
-                    >
-                        <image :src="user.avatar || '/static/default_avatar.png'" class="w-64rpx h-64rpx rounded-full mr-20rpx" mode="aspectFill" />
-                        <view class="flex flex-col items-start flex-1 overflow-hidden">
-                            <text class="text-28rpx text-[#333] font-600 truncate w-full flex-shrink-0 text-left">{{ user.name }}</text>
-                            <text class="text-22rpx text-gray-400 truncate w-full flex-shrink-0 text-left">{{ user.email }}</text>
-                        </view>
-                    </view>
-                </view>
-            </view>
-
-            <view 
-                class="w-full h-100rpx bg-[#333] rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all"
-                @click="handleJoin"
+          <!-- Search Container with Suggestions -->
+          <view class="w-full relative">
+            <view
+              class="w-full h-100rpx bg-gray-50 rounded-full flex items-center px-40rpx border border-gray-100 box-border relative z-20"
             >
-                <text class="text-white text-30rpx font-700">进入关系</text>
+              <view class="i-carbon-search text-gray-400 mr-20rpx text-36rpx" />
+              <input
+                v-model="joinEmail"
+                @input="onSearchInput"
+                class="flex-1 h-full text-28rpx"
+                placeholder="请输入邮箱/用户名"
+                placeholder-class="text-gray-300"
+              />
             </view>
+
+            <!-- Suggestion Dropdown (Docked) -->
+            <view
+              v-if="suggestions.length > 0 && showSuggestions"
+              class="absolute top-80rpx left-20rpx right-20rpx bg-white rounded-b-32rpx shadow-2xl border border-gray-100 z-10 overflow-y-auto max-h-400rpx pt-30rpx"
+            >
+              <view
+                v-for="user in suggestions"
+                :key="user.id"
+                class="flex items-center px-30rpx py-24rpx border-b border-gray-50 active:bg-gray-50 flex-shrink-0"
+                @click="selectUser(user)"
+              >
+                <image
+                  :src="user.avatar || '/static/default_avatar.png'"
+                  class="w-64rpx h-64rpx rounded-full mr-20rpx"
+                  mode="aspectFill"
+                />
+                <view class="flex flex-col items-start flex-1 overflow-hidden">
+                  <text
+                    class="text-28rpx text-[#333] font-600 truncate w-full flex-shrink-0 text-left"
+                  >
+                    {{ user.name }}
+                  </text>
+                  <text class="text-22rpx text-gray-400 truncate w-full flex-shrink-0 text-left">
+                    {{ user.email }}
+                  </text>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <view
+            class="w-full h-100rpx bg-[#333] rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all"
+            @click="handleJoin"
+          >
+            <text class="text-white text-30rpx font-700">进入关系</text>
+          </view>
         </view>
-    </view>
-</template>
-    
+      </view>
+    </template>
+
     <!-- Loading State: Prevents initial flicker -->
     <view v-else class="flex-1 w-full flex flex-col items-center justify-center">
-        <!-- Subtle loading indicator -->
-        <view class="w-100rpx h-100rpx rounded-full bg-gray-50 flex items-center justify-center animate-pulse">
-            <view class="i-carbon-circle-dash text-gray-200 text-40rpx" />
-        </view>
+      <!-- Subtle loading indicator -->
+      <view
+        class="w-100rpx h-100rpx rounded-full bg-gray-50 flex items-center justify-center animate-pulse"
+      >
+        <view class="i-carbon-circle-dash text-gray-200 text-40rpx" />
+      </view>
     </view>
 
     <!-- Bottom Action & Navigation Bar -->
     <view v-if="currentGroup" class="w-full flex flex-col items-center flex-shrink-0">
-        <!-- Main Check-in Action Area -->
-        <view class="flex flex-col items-center mb-30rpx px-40rpx">
-            <view class="flex items-center space-x-20rpx mb-20rpx">
-                <!-- Status Pill -->
-                <view 
-                    class="w-320rpx h-90rpx rounded-full flex items-center px-10rpx shadow-[0_4rpx_20rpx_rgb(0,0,0,0.02)] transition-all bg-[#fcfcfc] border border-gray-50"
-                    @click="handleCheckIn"
-                >
-                    <view class="w-70rpx h-70rpx rounded-full bg-white flex items-center justify-center shadow-sm">
-                        <image 
-                            :src="!isCheckedIn ? '/static/used-images/checkin_todo_icon.png' : (uncompletedCount > 0 ? '/static/used-images/checkin_warning_icon.png' : '/static/used-images/checkin_done_icon.png')" 
-                            class="w-40rpx h-40rpx" 
-                            mode="aspectFit"
-                        />
-                    </view>
-                    <text 
-                        class="flex-1 text-center text-28rpx font-600 mr-10rpx"
-                        :class="isCheckedIn && uncompletedCount === 0 ? 'text-gray-400' : 'text-[#555]'"
-                    >
-                        <template v-if="!isCheckedIn">
-                            {{ uncompletedCount < (currentGroup?.member_count || 0) ? '今日未完成' : '今日未完成' }}
-                        </template>
-                        <template v-else>
-                            {{ uncompletedCount > 0 ? `${uncompletedCount}人未完成` : '今日已完成' }}
-                        </template>
-                    </text>
-                </view>
+      <!-- Main Check-in Action Area -->
+      <view class="flex flex-col items-center mb-30rpx px-40rpx">
+        <view class="flex items-center space-x-20rpx mb-20rpx">
+          <!-- Status Pill -->
+          <view
+            class="w-320rpx h-90rpx rounded-full flex items-center px-10rpx shadow-[0_4rpx_20rpx_rgb(0,0,0,0.02)] transition-all bg-[#fcfcfc] border border-gray-50"
+            @click="handleCheckIn"
+          >
+            <view
+              class="w-70rpx h-70rpx rounded-full bg-white flex items-center justify-center shadow-sm"
+            >
+              <image
+                :src="
+                  !isCheckedIn
+                    ? '/static/used-images/checkin_todo_icon.png'
+                    : uncompletedCount > 0
+                      ? '/static/used-images/checkin_warning_icon.png'
+                      : '/static/used-images/checkin_done_icon.png'
+                "
+                class="w-40rpx h-40rpx"
+                mode="aspectFit"
+              />
+            </view>
+            <text
+              class="flex-1 text-center text-28rpx font-600 mr-10rpx"
+              :class="isCheckedIn && uncompletedCount === 0 ? 'text-gray-400' : 'text-[#555]'"
+            >
+              <template v-if="!isCheckedIn">
+                {{
+                  uncompletedCount < (currentGroup?.member_count || 0) ? '今日未完成' : '今日未完成'
+                }}
+              </template>
+              <template v-else>
+                {{ uncompletedCount > 0 ? `${uncompletedCount}人未完成` : '今日已完成' }}
+              </template>
+            </text>
+          </view>
 
-                <!-- Restart Button -->
-                <view 
-                    class="w-90rpx h-90rpx rounded-full bg-[#fcfcfc] border border-gray-50 flex items-center justify-center shadow-[0_4rpx_20rpx_rgb(0,0,0,0.02)] transition-all"
-                    @click="handleCheckIn"
-                >
-                    <image 
-                        :src="isCheckedIn && uncompletedCount === 0 ? '/static/used-images/checkin_restart_icon.png' : '/static/used-images/checkin_restart_inactive_icon.png'" 
-                        class="w-48rpx h-48rpx" 
-                        mode="aspectFit"
-                    />
-                </view>
-            </view>
-            
-            <!-- Remind Link Area -->
-            <view v-if="!isCheckedIn || uncompletedCount > 0" class="flex flex-col items-center" @click="handleRemind">
-                <view class="flex items-center text-gray-400">
-                    <text class="text-28rpx">去提醒她/他</text>
-                    <view class="i-carbon-chevron-right text-28rpx ml-4rpx" />
-                </view>
-            </view>
+          <!-- Restart Button -->
+          <view
+            class="w-90rpx h-90rpx rounded-full bg-[#fcfcfc] border border-gray-50 flex items-center justify-center shadow-[0_4rpx_20rpx_rgb(0,0,0,0.02)] transition-all"
+            @click="handleCheckIn"
+          >
+            <image
+              :src="
+                isCheckedIn && uncompletedCount === 0
+                  ? '/static/used-images/checkin_restart_icon.png'
+                  : '/static/used-images/checkin_restart_inactive_icon.png'
+              "
+              class="w-48rpx h-48rpx"
+              mode="aspectFit"
+            />
+          </view>
         </view>
 
-        <!-- Bottom Navigation component -->
-        <BottomNav :active="0" :has-unread="hasUnreadMessages" />
+        <!-- Remind Link Area -->
+        <view
+          v-if="!isCheckedIn || uncompletedCount > 0"
+          class="flex flex-col items-center"
+          @click="handleRemind"
+        >
+          <view class="flex items-center text-gray-400">
+            <text class="text-28rpx">去提醒她/他</text>
+            <view class="i-carbon-chevron-right text-28rpx ml-4rpx" />
+          </view>
+        </view>
+      </view>
+
+      <!-- Bottom Navigation component -->
+      <BottomNav :active="0" :has-unread="hasUnreadMessages" />
     </view>
 
     <!-- Sidebar Drawer -->
     <uv-popup ref="popup" v-model="showDrawer" mode="left" width="560rpx">
       <view class="h-100vh bg-white flex flex-col relative overflow-hidden">
         <!-- Top Status Bar Spacer -->
-        <view class="w-full flex-shrink-0" style="height: var(--status-bar-height);"></view>
+        <view class="w-full flex-shrink-0" style="height: var(--status-bar-height)"></view>
         <view class="w-full h-20rpx flex-shrink-0"></view>
-        
+
         <!-- User Info Section -->
         <view class="flex items-center space-x-30rpx px-60rpx mb-40rpx flex-shrink-0">
-          <image 
-            :src="userInfo.avatar || '/static/used-images/default_avatar.png'" 
-            class="w-130rpx h-130rpx rounded-full border-4 border-white shadow-lg" 
-            mode="aspectFill" 
+          <image
+            :src="userInfo.avatar || '/static/used-images/default_avatar.png'"
+            class="w-130rpx h-130rpx rounded-full border-4 border-white shadow-lg"
+            mode="aspectFill"
           />
           <view class="flex flex-col">
-            <text class="text-34rpx font-700 text-[#333] mb-8rpx">{{ userInfo.name || '家人' }}</text>
+            <text class="text-34rpx font-700 text-[#333] mb-8rpx">
+              {{ userInfo.name || '家人' }}
+            </text>
             <view class="bg-[#4e526e] rounded-full px-16rpx py-4rpx flex items-center w-fit">
               <text class="text-white text-18rpx font-500 tracking-wider">VIP 会员</text>
             </view>
@@ -204,17 +259,24 @@
 
         <!-- Scrollable Content Part -->
         <view class="flex-1 overflow-y-auto">
-            <!-- Menu List -->
-            <view class="px-60rpx space-y-40rpx mb-60rpx">
-                <view class="flex items-center space-x-36rpx" @click="editName">
-                    <view class="i-carbon-user text-gray-500 text-44rpx" />
-                    <text class="text-30rpx font-500 text-[#444]">个人信息</text>
-                </view>
-                <view class="flex items-center space-x-36rpx" @click="popup.close(); showDrawer = false; isForceJoin = true">
-                    <view class="i-carbon-add-alt text-gray-500 text-44rpx" />
-                    <text class="text-30rpx font-500 text-[#444]">加入新的关系</text>
-                </view>
-                <!-- <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
+          <!-- Menu List -->
+          <view class="px-60rpx space-y-40rpx mb-60rpx">
+            <view class="flex items-center space-x-36rpx" @click="editName">
+              <view class="i-carbon-user text-gray-500 text-44rpx" />
+              <text class="text-30rpx font-500 text-[#444]">个人信息</text>
+            </view>
+            <view
+              class="flex items-center space-x-36rpx"
+              @click="
+                popup.close()
+                showDrawer = false
+                isForceJoin = true
+              "
+            >
+              <view class="i-carbon-add-alt text-gray-500 text-44rpx" />
+              <text class="text-30rpx font-500 text-[#444]">加入新的关系</text>
+            </view>
+            <!-- <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
                     <view class="i-carbon-locked text-gray-500 text-44rpx" />
                     <text class="text-30rpx font-500 text-[#444]">隐私设置</text>
                 </view>
@@ -230,128 +292,167 @@
                     <view class="i-carbon-settings text-gray-500 text-44rpx" />
                     <text class="text-30rpx font-500 text-[#444]">设置</text>
                 </view> -->
-                <view class="flex items-center w-full justify-between" @click="goToMessages">
-                    <view class="flex items-center space-x-36rpx">
-                        <view class="i-carbon-email text-gray-500 text-44rpx" />
-                        <text class="text-30rpx font-500 text-[#444]">消息中心</text>
-                    </view>
-                    <view v-if="hasUnreadMessages" class="bg-[#ff4d4f] w-16rpx h-16rpx rounded-full"></view>
-                </view>
+            <view class="flex items-center w-full justify-between" @click="goToMessages">
+              <view class="flex items-center space-x-36rpx">
+                <view class="i-carbon-email text-gray-500 text-44rpx" />
+                <text class="text-30rpx font-500 text-[#444]">消息中心</text>
+              </view>
+              <view
+                v-if="hasUnreadMessages"
+                class="bg-[#ff4d4f] w-16rpx h-16rpx rounded-full"
+              ></view>
             </view>
+          </view>
 
-            <!-- Promotion Card Section -->
-            <view class="px-30rpx mb-20rpx pb-20rpx">
-                <view class="bg-[#f2f2f4] rounded-32rpx p-40rpx flex flex-col items-start shadow-sm">
-                    <text class="text-30rpx font-700 text-[#333] mb-20rpx">每日爱了吗</text>
-                    <uv-button 
-                        type="primary" 
-                        shape="circle" 
-                        customStyle="background: #4a4e69; border: none; width: 100%; height: 80rpx; font-weight: 600; font-size: 28rpx;"
-                        @click="handleCheckIn"
-                    >
-                        立即签到
-                    </uv-button>
-                    <text class="text-22rpx text-gray-400 mt-20rpx leading-relaxed">
-                        已连续打卡 {{ streakCount }} 天，再打卡 {{ 365 - streakCount }} 天获得奖励
-                    </text>
-                </view>
+          <!-- Promotion Card Section -->
+          <view class="px-30rpx mb-20rpx pb-20rpx">
+            <view class="bg-[#f2f2f4] rounded-32rpx p-40rpx flex flex-col items-start shadow-sm">
+              <text class="text-30rpx font-700 text-[#333] mb-20rpx">每日爱了吗</text>
+              <uv-button
+                type="primary"
+                shape="circle"
+                customStyle="background: #4a4e69; border: none; width: 100%; height: 80rpx; font-weight: 600; font-size: 28rpx;"
+                @click="handleCheckIn"
+              >
+                立即签到
+              </uv-button>
+              <text class="text-22rpx text-gray-400 mt-20rpx leading-relaxed">
+                已连续打卡 {{ streakCount }} 天，再打卡 {{ 365 - streakCount }} 天获得奖励
+              </text>
             </view>
+          </view>
         </view>
 
         <!-- Logout Footer -->
-        <view class="flex items-center justify-center py-40rpx border-t border-gray-50 flex-shrink-0 bg-white pb-100rpx" @click="handleLogout">
-            <view class="i-carbon-logout text-gray-600 text-40rpx mr-20rpx" />
-            <text class="text-30rpx font-500 text-gray-600">退出登录</text>
+        <view
+          class="flex items-center justify-center py-40rpx border-t border-gray-50 flex-shrink-0 bg-white pb-100rpx"
+          @click="handleLogout"
+        >
+          <view class="i-carbon-logout text-gray-600 text-40rpx mr-20rpx" />
+          <text class="text-30rpx font-500 text-gray-600">退出登录</text>
         </view>
         <!-- Bottom Tab Safe Spacer -->
         <view class="w-full h-safe flex-shrink-0 bg-white"></view>
       </view>
     </uv-popup>
-    
+
     <!-- Connection Status (Relation) Modal -->
-    <uv-popup ref="relationPopup" v-model="showRelationModal" mode="center" round="40rpx" :safeAreaInsetBottom="false">
-        <view class="w-540rpx bg-white p-40rpx flex flex-col relative overflow-hidden">
-            <!-- Modal Header -->
-            <view class="flex items-center justify-center mb-40rpx relative">
-                <text class="text-34rpx font-700 text-[#333]">爱了吗成员关系</text>
-                <view class="absolute -right-20rpx -top-20rpx p-20rpx text-gray-300 z-10" @click="closeRelationModal">
-                    <view class="i-carbon-close-filled text-48rpx" />
-                </view>
-            </view>
-            
-            <!-- Modal Body Image -->
-            <view class="w-full h-340rpx rounded-32rpx overflow-hidden mb-40rpx shadow-sm">
-                <image 
-                    src="/static/used-images/home_featured.png" 
-                    class="w-full h-full" 
-                    mode="aspectFill" 
-                />
-            </view>
-            
-            <!-- Modal Footer Link -->
-            <view class="flex items-center justify-center " @click="goToManage">
-                <text class="text-26rpx text-gray-400 font-500">管理/解除关系 ></text>
-            </view>
+    <uv-popup
+      ref="relationPopup"
+      v-model="showRelationModal"
+      mode="center"
+      round="40rpx"
+      :safeAreaInsetBottom="false"
+    >
+      <view class="w-540rpx bg-white p-40rpx flex flex-col relative overflow-hidden">
+        <!-- Modal Header -->
+        <view class="flex items-center justify-center mb-40rpx relative">
+          <text class="text-34rpx font-700 text-[#333]">爱了吗成员关系</text>
+          <view
+            class="absolute -right-20rpx -top-20rpx p-20rpx text-gray-300 z-10"
+            @click="closeRelationModal"
+          >
+            <view class="i-carbon-close-filled text-48rpx" />
+          </view>
         </view>
+
+        <!-- Modal Body Image -->
+        <view class="w-full h-340rpx rounded-32rpx overflow-hidden mb-40rpx shadow-sm">
+          <image
+            src="/static/used-images/home_featured.png"
+            class="w-full h-full"
+            mode="aspectFill"
+          />
+        </view>
+
+        <!-- Modal Footer Link -->
+        <view class="flex items-center justify-center" @click="goToManage">
+          <text class="text-26rpx text-gray-400 font-500">管理/解除关系 ></text>
+        </view>
+      </view>
     </uv-popup>
 
     <!-- Completion Greeting Modal -->
-    <uv-popup ref="greetingPopup" v-model="showGreetingPopup" mode="center" round="48rpx" :safeAreaInsetBottom="false">
-        <view class="w-560rpx bg-[#f2f2f4] p-48rpx flex flex-col items-center relative overflow-hidden">
-            <view class="mb-32rpx flex flex-col items-center">
-                <text class="text-44rpx mb-16rpx">🌟</text>
-                <text class="text-36rpx font-700 text-[#333] mb-12rpx">今日份爱意已满员</text>
-                <view class="w-80rpx h-4rpx bg-[#4a4e69] rounded-full opacity-20"></view>
-            </view>
-            
-            <view class="w-full mb-48rpx text-center">
-                <text class="text-30rpx text-gray-600 leading-relaxed font-500 italic">
-                    "{{ currentGreeting }}"
-                </text>
-            </view>
-            
-            <uv-button 
-                type="primary" 
-                shape="circle" 
-                customStyle="background: #4a4e69; border: none; width: 100%; height: 90rpx; font-weight: 700; font-size: 30rpx; letter-spacing: 4rpx;"
-                @click="showGreetingPopup = false; greetingPopup.close()"
-            >
-                收到心意
-            </uv-button>
+    <uv-popup
+      ref="greetingPopup"
+      v-model="showGreetingPopup"
+      mode="center"
+      round="48rpx"
+      :safeAreaInsetBottom="false"
+    >
+      <view
+        class="w-560rpx bg-[#f2f2f4] p-48rpx flex flex-col items-center relative overflow-hidden"
+      >
+        <view class="mb-32rpx flex flex-col items-center">
+          <text class="text-44rpx mb-16rpx">🌟</text>
+          <text class="text-36rpx font-700 text-[#333] mb-12rpx">今日份爱意已满员</text>
+          <view class="w-80rpx h-4rpx bg-[#4a4e69] rounded-full opacity-20"></view>
         </view>
+
+        <view class="w-full mb-48rpx text-center">
+          <text class="text-30rpx text-gray-600 leading-relaxed font-500 italic">
+            "{{ currentGreeting }}"
+          </text>
+        </view>
+
+        <uv-button
+          type="primary"
+          shape="circle"
+          customStyle="background: #4a4e69; border: none; width: 100%; height: 90rpx; font-weight: 700; font-size: 30rpx; letter-spacing: 4rpx;"
+          @click="
+            showGreetingPopup = false
+            greetingPopup.close()
+          "
+        >
+          收到心意
+        </uv-button>
+      </view>
     </uv-popup>
 
     <!-- Edit Name Modal -->
-    <uv-popup ref="editNamePopup" v-model="showEditNamePopup" mode="center" round="48rpx" :safeAreaInsetBottom="false">
-        <view class="w-560rpx bg-[#f2f2f4] p-48rpx flex flex-col items-center relative overflow-hidden">
-            <view class="mb-32rpx flex flex-col items-center">
-                <text class="text-32rpx font-700 text-[#333] mb-8rpx">修改姓名</text>
-                <text class="text-24rpx text-gray-400">当前：{{ userInfo.name || '未设置' }}</text>
-            </view>
-            
-            <view class="w-full mb-40rpx">
-                <input 
-                    v-model="newName"
-                    class="w-full h-80rpx bg-white rounded-24rpx px-30rpx text-28rpx border border-gray-100"
-                    placeholder="请输入新的姓名"
-                    placeholder-class="text-gray-300"
-                />
-            </view>
-            
-            <uv-button 
-                type="primary" 
-                shape="circle" 
-                customStyle="background: #4a4e69; border: none; width: 100%; height: 80rpx; font-weight: 700; font-size: 28rpx;"
-                @click="handleUpdateName"
-            >
-                确认修改
-            </uv-button>
-            <view class="mt-24rpx" @click="showEditNamePopup = false; editNamePopup.close()">
-                <text class="text-26rpx text-gray-400">取消</text>
-            </view>
+    <uv-popup
+      ref="editNamePopup"
+      v-model="showEditNamePopup"
+      mode="center"
+      round="48rpx"
+      :safeAreaInsetBottom="false"
+    >
+      <view
+        class="w-560rpx bg-[#f2f2f4] p-48rpx flex flex-col items-center relative overflow-hidden"
+      >
+        <view class="mb-32rpx flex flex-col items-center">
+          <text class="text-32rpx font-700 text-[#333] mb-8rpx">修改姓名</text>
+          <text class="text-24rpx text-gray-400">当前：{{ userInfo.name || '未设置' }}</text>
         </view>
-    </uv-popup>
 
+        <view class="w-full mb-40rpx">
+          <input
+            v-model="newName"
+            class="w-full h-80rpx bg-white rounded-24rpx px-30rpx text-28rpx border border-gray-100"
+            placeholder="请输入新的姓名"
+            placeholder-class="text-gray-300"
+          />
+        </view>
+
+        <uv-button
+          type="primary"
+          shape="circle"
+          customStyle="background: #4a4e69; border: none; width: 100%; height: 80rpx; font-weight: 700; font-size: 28rpx;"
+          @click="handleUpdateName"
+        >
+          确认修改
+        </uv-button>
+        <view
+          class="mt-24rpx"
+          @click="
+            showEditNamePopup = false
+            editNamePopup.close()
+          "
+        >
+          <text class="text-26rpx text-gray-400">取消</text>
+        </view>
+      </view>
+    </uv-popup>
   </view>
 </template>
 
@@ -359,7 +460,16 @@
 import { ref, computed } from 'vue'
 import { useUserStore } from '@/store'
 import { onLoad, onShow, onHide } from '@dcloudio/uni-app'
-import { getGroupListAPI, checkInAPI, getCheckInHistoryAPI, joinGroupByEmailAPI, updateUserInfoAPI, remindGroupAPI, getNotificationsAPI, searchUsersAPI } from '@/service/signin'
+import {
+  getGroupListAPI,
+  checkInAPI,
+  getCheckInHistoryAPI,
+  joinGroupByEmailAPI,
+  updateUserInfoAPI,
+  remindGroupAPI,
+  getNotificationsAPI,
+  searchUsersAPI,
+} from '@/service/signin'
 import ParticleHeart from '@/components/ParticleHeart.vue'
 import BottomNav from '@/components/BottomNav.vue'
 import dayjs from 'dayjs'
@@ -387,379 +497,378 @@ const showSuggestions = ref(false)
 let searchTimer = null
 
 const openDrawer = () => {
-    showDrawer.value = true
-    if (popup.value) {
-        popup.value.open()
-    }
+  showDrawer.value = true
+  if (popup.value) {
+    popup.value.open()
+  }
 }
 
 const openRelationModal = () => {
-    showRelationModal.value = true
-    if (relationPopup.value) {
-        relationPopup.value.open()
-    }
+  showRelationModal.value = true
+  if (relationPopup.value) {
+    relationPopup.value.open()
+  }
 }
 
 const closeRelationModal = () => {
-    showRelationModal.value = false
-    if (relationPopup.value) {
-        relationPopup.value.close()
-    }
+  showRelationModal.value = false
+  if (relationPopup.value) {
+    relationPopup.value.close()
+  }
 }
 
-
-
 const streakCount = computed(() => {
-    return currentGroup.value?.streak_count || 0
+  return currentGroup.value?.streak_count || 0
 })
 
 const totalDays = computed(() => {
-    return currentGroup.value?.total_days || 0
+  return currentGroup.value?.total_days || 0
 })
 
 const uncompletedCount = computed(() => {
-    if (!currentGroup.value) return 0
-    const total = currentGroup.value.member_count || 0
-    const done = currentGroup.value.checked_in_count || 0
-    return Math.max(0, total - done)
+  if (!currentGroup.value) return 0
+  const total = currentGroup.value.member_count || 0
+  const done = currentGroup.value.checked_in_count || 0
+  return Math.max(0, total - done)
 })
 
 const displayRelationNames = computed(() => {
-    if (!currentGroup.value || !currentGroup.value.member_details) return ''
-    
-    const myId = userStore.userInfo?.userId || userStore.userInfo?.id
-    const others = currentGroup.value.member_details.filter(m => String(m.id) !== String(myId))
-    
-    if (others.length === 0) return ''
+  if (!currentGroup.value || !currentGroup.value.member_details) return ''
 
-    if (currentGroup.value.member_count === 2) {
-        const other = others[0]
-        return other?.nickName || other?.nickname || other?.name || '对方'
-    } else {
-        const names = others.slice(0, 2).map(o => o.nickName || o.nickname || o.name || '成员')
-        return names.join('、') + (others.length > 2 ? ' 等人' : '')
-    }
+  const myId = userStore.userInfo?.userId || userStore.userInfo?.id
+  const others = currentGroup.value.member_details.filter((m) => String(m.id) !== String(myId))
+
+  if (others.length === 0) return ''
+
+  if (currentGroup.value.member_count === 2) {
+    const other = others[0]
+    return other?.nickName || other?.nickname || other?.name || '对方'
+  } else {
+    const names = others.slice(0, 2).map((o) => o.nickName || o.nickname || o.name || '成员')
+    return names.join('、') + (others.length > 2 ? ' 等人' : '')
+  }
 })
 
-
 const fetchUnreadStatus = async () => {
-    try {
-        const res = await getNotificationsAPI()
-        const list = res.data?.results || res.data || []
-        hasUnreadMessages.value = list.some(n => !n.is_read)
-    } catch (e) {
-        console.error(e)
-    }
+  try {
+    const res = await getNotificationsAPI()
+    const list = res.data?.results || res.data || []
+    hasUnreadMessages.value = list.some((n) => !n.is_read)
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 onShow(() => {
-    // Refresh user info from store in case it updated
-    userInfo.value = userStore.userInfo || {}
-    loadLatestGroup()
-    fetchUnreadStatus()
-    connectWebSocket()
+  // Refresh user info from store in case it updated
+  userInfo.value = userStore.userInfo || {}
+  loadLatestGroup()
+  fetchUnreadStatus()
+  connectWebSocket()
 })
 
 onHide(() => {
-    closeWebSocket()
+  closeWebSocket()
 })
 
 const loadLatestGroup = async () => {
-    try {
-        const res = await getGroupListAPI()
-        const rawList = res.data?.results || res.data || []
-        // Only show groups with more than one member (actual relationships/groups)
-        const list = rawList.filter(item => (item.member_count || 0) > 1)
-        
-        if (list.length > 0) {
-            // Check for pinned group
-            const pId = uni.getStorageSync('pinnedGroupId')
-            let item = list[0]
-            
-            if (pId) {
-                const pinnedItem = list.find(g => String(g.id) === String(pId))
-                if (pinnedItem) {
-                    item = pinnedItem
-                }
-            }
-            
-            currentGroup.value = item
-            isCheckedIn.value = item.is_checked_in_today || false
-        } else {
-            currentGroup.value = null
+  try {
+    const res = await getGroupListAPI()
+    const list = res.data?.results || res.data || []
+    // 保留所有群组,包括单人模式和新创建的群组
+
+    if (list.length > 0) {
+      // Check for pinned group
+      const pId = uni.getStorageSync('pinnedGroupId')
+      let item = list[0]
+
+      if (pId) {
+        const pinnedItem = list.find((g) => String(g.id) === String(pId))
+        if (pinnedItem) {
+          item = pinnedItem
         }
-    } catch (e) {
-        console.error(e)
-    } finally {
-        isInitLoaded.value = true
+      }
+
+      currentGroup.value = item
+      isCheckedIn.value = item.is_checked_in_today || false
+    } else {
+      currentGroup.value = null
     }
+  } catch (e) {
+    console.error(e)
+  } finally {
+    isInitLoaded.value = true
+  }
 }
 
 const goToDetail = () => {
-    if (currentGroup.value) {
-        uni.navigateTo({
-            url: `/pages/group/detail?id=${currentGroup.value.id}&name=${encodeURIComponent(currentGroup.value.name)}`
-        })
-    }
+  if (currentGroup.value) {
+    uni.navigateTo({
+      url: `/pages/group/detail?id=${currentGroup.value.id}&name=${encodeURIComponent(currentGroup.value.name)}`,
+    })
+  }
 }
 
-
-
 const handleCheckIn = async () => {
-    // 强制刷新：只要点击就开始拉取新数据（包含随机文案）
+  // 强制刷新：只要点击就开始拉取新数据（包含随机文案）
+  loadLatestGroup()
+
+  if (!currentGroup.value) {
+    uni.showToast({ title: '请先加入一个群组', icon: 'none' })
+    editGroupEmail()
+    return
+  }
+
+  // If everyone is done, or user is already done, show toast but still refresh for new greeting
+  if (isCheckedIn.value && uncompletedCount.value === 0) {
+    uni.showToast({ title: '今日爱意已发送', icon: 'success' })
+    return
+  }
+
+  if (isCheckedIn.value) {
+    uni.showToast({ title: '今日爱意已发送', icon: 'none' })
+    return
+  }
+
+  uni.showLoading({ title: '爱意发送中...' })
+  try {
+    const res = await checkInAPI(currentGroup.value.id)
+
+    // 如果签到后群组已满员，展示文案弹窗
+    if (res.data?.is_complete && res.data?.greeting) {
+      currentGreeting.value = res.data.greeting
+      setTimeout(() => {
+        if (greetingPopup.value) {
+          greetingPopup.value.open()
+        }
+      }, 300)
+    } else {
+      uni.showToast({ title: '爱意已发送', icon: 'success' })
+    }
+
+    isCheckedIn.value = true
+    // Refresh to update counts
     loadLatestGroup()
+  } catch (e) {
+    // Correctly parse message from backend response object
+    const errorMsg = e.data?.msg || e.msg || '爱意发送失败'
 
-    if (!currentGroup.value) {
-        uni.showToast({ title: '请先加入一个群组', icon: 'none' })
-        editGroupEmail()
-        return
+    if (errorMsg.includes('已发送')) {
+      uni.showToast({ title: '今日已发送', icon: 'none' })
+      isCheckedIn.value = true
+      // Redundant state sync
+      if (currentGroup.value) loadLatestGroup()
+    } else {
+      // If http.ts already showed a toast, we might be double-toasting here.
+      // But we use the real error message now.
+      uni.showToast({ title: errorMsg, icon: 'none' })
     }
-    
-    // If everyone is done, or user is already done, show toast but still refresh for new greeting
-    if (isCheckedIn.value && uncompletedCount.value === 0) {
-        uni.showToast({ title: '今日爱意已发送', icon: 'success' })
-        return
-    }
-
-    if (isCheckedIn.value) {
-         uni.showToast({ title: '今日爱意已发送', icon: 'none' })
-         return
-    }
-
-    uni.showLoading({ title: '爱意发送中...' })
-    try {
-        const res = await checkInAPI(currentGroup.value.id)
-        
-        // 如果签到后群组已满员，展示文案弹窗
-        if (res.data?.is_complete && res.data?.greeting) {
-            currentGreeting.value = res.data.greeting
-            setTimeout(() => {
-                if (greetingPopup.value) {
-                    greetingPopup.value.open()
-                }
-            }, 300)
-        } else {
-            uni.showToast({ title: '爱意已发送', icon: 'success' })
-        }
-        
-        isCheckedIn.value = true
-        // Refresh to update counts
-        loadLatestGroup()
-    } catch(e) {
-        // Correctly parse message from backend response object
-        const errorMsg = e.data?.msg || e.msg || '爱意发送失败'
-        
-        if (errorMsg.includes('已发送')) {
-             uni.showToast({ title: '今日已发送', icon: 'none' })
-             isCheckedIn.value = true
-             // Redundant state sync
-             if (currentGroup.value) loadLatestGroup()
-        } else {
-             // If http.ts already showed a toast, we might be double-toasting here.
-             // But we use the real error message now.
-             uni.showToast({ title: errorMsg, icon: 'none' })
-        }
-    } finally {
-        uni.hideLoading()
-    }
+  } finally {
+    uni.hideLoading()
+  }
 }
 
 const editName = () => {
-    newName.value = userInfo.value.name || ''
-    showEditNamePopup.value = true
-    if (editNamePopup.value) {
-        editNamePopup.value.open()
-    }
+  newName.value = userInfo.value.name || ''
+  showEditNamePopup.value = true
+  if (editNamePopup.value) {
+    editNamePopup.value.open()
+  }
 }
 
 const handleUpdateName = async () => {
-    if (!newName.value) {
-        uni.showToast({ title: '请输入姓名', icon: 'none' })
-        return
+  if (!newName.value) {
+    uni.showToast({ title: '请输入姓名', icon: 'none' })
+    return
+  }
+  try {
+    uni.showLoading({ title: '修改中' })
+    await updateUserInfoAPI({ name: newName.value })
+    userInfo.value.name = newName.value
+    userStore.userInfo.name = newName.value
+    userStore.userInfo.nickname = newName.value
+
+    uni.showToast({ title: '修改成功', icon: 'success' })
+    showEditNamePopup.value = false
+    if (editNamePopup.value) {
+      editNamePopup.value.close()
     }
-    try {
-        uni.showLoading({ title: '修改中' })
-        await updateUserInfoAPI({ name: newName.value })
-        userInfo.value.name = newName.value
-        userStore.userInfo.name = newName.value
-        userStore.userInfo.nickname = newName.value 
-        
-        uni.showToast({ title: '修改成功', icon: 'success' })
-        showEditNamePopup.value = false
-        if (editNamePopup.value) {
-            editNamePopup.value.close()
-        }
-    } catch(e) {
-        uni.showToast({ title: e.msg || '修改失败', icon: 'none' })
-    } finally {
-        uni.hideLoading()
-    }
+  } catch (e) {
+    uni.showToast({ title: e.msg || '修改失败', icon: 'none' })
+  } finally {
+    uni.hideLoading()
+  }
 }
 
 const editGroupEmail = () => {
-    uni.showModal({
-        title: '切换/加入群组',
-        editable: true,
-        placeholderText: '请输入对方的邮箱',
-        content: '',
-        success: async (res) => {
-            if (res.confirm && res.content) {
-                if (!res.content.includes('@')) {
-                     uni.showToast({ title: '邮箱格式不正确', icon: 'none' })
-                     return
-                }
-                try {
-                    uni.showLoading({ title: '加入中' })
-                    await joinGroupByEmailAPI({ email: res.content })
-                    uni.showToast({ title: '加入成功', icon: 'success' })
-                    // Refresh group info
-                    setTimeout(() => {
-                        loadLatestGroup()
-                    }, 500)
-                } catch(e) {
-                    uni.showToast({ title: e.msg || '加入失败', icon: 'none' })
-                } finally {
-                    uni.hideLoading()
-                }
-            }
+  uni.showModal({
+    title: '切换/加入群组',
+    editable: true,
+    placeholderText: '请输入对方的邮箱',
+    content: '',
+    success: async (res) => {
+      if (res.confirm && res.content) {
+        if (!res.content.includes('@')) {
+          uni.showToast({ title: '邮箱格式不正确', icon: 'none' })
+          return
         }
-    })
+        try {
+          uni.showLoading({ title: '加入中' })
+          await joinGroupByEmailAPI({ email: res.content })
+          uni.showToast({ title: '加入成功', icon: 'success' })
+          // Refresh group info
+          setTimeout(() => {
+            loadLatestGroup()
+          }, 500)
+        } catch (e) {
+          uni.showToast({ title: e.msg || '加入失败', icon: 'none' })
+        } finally {
+          uni.hideLoading()
+        }
+      }
+    },
+  })
 }
 
 const handleJoin = async () => {
-    if (!joinEmail.value) {
-        uni.showToast({ title: '请输入邮箱', icon: 'none' })
-        return
-    }
-    if (!joinEmail.value.includes('@')) {
-        uni.showToast({ title: '邮箱格式不正确', icon: 'none' })
-        return
-    }
-    try {
-        uni.showLoading({ title: '加入中...' })
-        await joinGroupByEmailAPI({ email: joinEmail.value })
-        uni.showToast({ title: '加入成功', icon: 'success' })
-        joinEmail.value = ''
-        setTimeout(() => {
-            isForceJoin.value = false
-            loadLatestGroup()
-        }, 800)
-    } catch(e) {
-        uni.showToast({ title: e.msg || '加入失败', icon: 'none' })
-    } finally {
-        uni.hideLoading()
-    }
+  if (!joinEmail.value) {
+    uni.showToast({ title: '请输入邮箱', icon: 'none' })
+    return
+  }
+  if (!joinEmail.value.includes('@')) {
+    uni.showToast({ title: '邮箱格式不正确', icon: 'none' })
+    return
+  }
+  try {
+    uni.showLoading({ title: '加入中...' })
+    await joinGroupByEmailAPI({ email: joinEmail.value })
+    uni.showToast({ title: '加入成功', icon: 'success' })
+    joinEmail.value = ''
+    setTimeout(() => {
+      isForceJoin.value = false
+      loadLatestGroup()
+    }, 800)
+  } catch (e) {
+    uni.showToast({ title: e.msg || '加入失败', icon: 'none' })
+  } finally {
+    uni.hideLoading()
+  }
 }
 
 const onSearchInput = (e) => {
-    const val = e.detail.value
-    console.log('Search input value:', val)
-    if (searchTimer) clearTimeout(searchTimer)
-    
-    if (!val || val.length < 1) {
-        suggestions.value = []
-        showSuggestions.value = false
-        return
-    }
+  const val = e.detail.value
+  console.log('Search input value:', val)
+  if (searchTimer) clearTimeout(searchTimer)
 
-    searchTimer = setTimeout(async () => {
-        try {
-            console.log('Firing search API for:', val)
-            const res = await searchUsersAPI(val)
-            suggestions.value = res.data || []
-            showSuggestions.value = suggestions.value.length > 0
-            console.log('Suggestions updated:', suggestions.value.length, 'showSuggestions:', showSuggestions.value)
-        } catch (e) {
-            console.error('Search failed', e)
-        }
-    }, 500)
+  if (!val || val.length < 1) {
+    suggestions.value = []
+    showSuggestions.value = false
+    return
+  }
+
+  searchTimer = setTimeout(async () => {
+    try {
+      console.log('Firing search API for:', val)
+      const res = await searchUsersAPI(val)
+      suggestions.value = res.data || []
+      showSuggestions.value = suggestions.value.length > 0
+      console.log(
+        'Suggestions updated:',
+        suggestions.value.length,
+        'showSuggestions:',
+        showSuggestions.value,
+      )
+    } catch (e) {
+      console.error('Search failed', e)
+    }
+  }, 500)
 }
 
 const selectUser = (user) => {
-    joinEmail.value = user.email
-    suggestions.value = []
-    showSuggestions.value = false
+  joinEmail.value = user.email
+  suggestions.value = []
+  showSuggestions.value = false
 }
 
 const goToManage = () => {
-    // Force close popups
-    if (relationPopup.value) {
-        relationPopup.value.close()
-    }
-    if (popup.value) {
-        popup.value.close()
-    }
-    showRelationModal.value = false
-    showDrawer.value = false
-    uni.navigateTo({
-        url: '/pages/index/manage'
-    })
+  // Force close popups
+  if (relationPopup.value) {
+    relationPopup.value.close()
+  }
+  if (popup.value) {
+    popup.value.close()
+  }
+  showRelationModal.value = false
+  showDrawer.value = false
+  uni.navigateTo({
+    url: '/pages/index/manage',
+  })
 }
 
 const goToMessages = () => {
-    if (popup.value) {
-        popup.value.close()
-    }
-    showDrawer.value = false
-    hasUnreadMessages.value = false
-    uni.navigateTo({
-        url: '/pages/index/messages'
-    })
+  if (popup.value) {
+    popup.value.close()
+  }
+  showDrawer.value = false
+  hasUnreadMessages.value = false
+  uni.navigateTo({
+    url: '/pages/index/messages',
+  })
 }
 
 const handleRemind = async () => {
-    if (!currentGroup.value) return
-    
-    uni.showLoading({ title: '正在提醒...' })
-    try {
-        const res = await remindGroupAPI(currentGroup.value.id)
-        uni.showToast({
-            title: res.msg || '已发送提醒',
-            icon: 'success'
-        })
-    } catch (e) {
-        console.error(e)
-        // Correctly parse message from backend response object
-        const errorMsg = e.data?.msg || e.msg || '提醒失败'
-        uni.showToast({ title: errorMsg, icon: 'none' })
-    } finally {
-        uni.hideLoading()
-    }
+  if (!currentGroup.value) return
+
+  uni.showLoading({ title: '正在提醒...' })
+  try {
+    const res = await remindGroupAPI(currentGroup.value.id)
+    uni.showToast({
+      title: res.msg || '已发送提醒',
+      icon: 'success',
+    })
+  } catch (e) {
+    console.error(e)
+    // Correctly parse message from backend response object
+    const errorMsg = e.data?.msg || e.msg || '提醒失败'
+    uni.showToast({ title: errorMsg, icon: 'none' })
+  } finally {
+    uni.hideLoading()
+  }
 }
 
 const handleLogout = () => {
-    uni.showModal({
-        title: '确认退出',
-        content: '确定要清除缓存并退出登录吗？',
-        success: (res) => {
-            if (res.confirm) {
-                try {
-                    // Stop WebSocket
-                    closeWebSocket()
-                    
-                    // Clear store using available methods
-                    userStore.clearUserInfo()
-                    userStore.reset()
-                    // Clear local storage
-                    uni.clearStorageSync()
-                    // Redirect
-                    uni.reLaunch({
-                        url: '/pages/login/index',
-                        success: () => {
-                            console.log('Redirect to login success')
-                        },
-                        fail: (err) => {
-                            console.error('Redirect to login failed', err)
-                            uni.showToast({ title: '跳转失败: ' + JSON.stringify(err), icon: 'none' })
-                        }
-                    })
-                } catch(e) {
-                    console.error('Logout error', e)
-                    uni.showToast({ title: '退出失败', icon: 'none' })
-                }
-            }
+  uni.showModal({
+    title: '确认退出',
+    content: '确定要清除缓存并退出登录吗？',
+    success: (res) => {
+      if (res.confirm) {
+        try {
+          // Stop WebSocket
+          closeWebSocket()
+
+          // Clear store using available methods
+          userStore.clearUserInfo()
+          userStore.reset()
+          // Clear local storage
+          uni.clearStorageSync()
+          // Redirect
+          uni.reLaunch({
+            url: '/pages/login/index',
+            success: () => {
+              console.log('Redirect to login success')
+            },
+            fail: (err) => {
+              console.error('Redirect to login failed', err)
+              uni.showToast({ title: '跳转失败: ' + JSON.stringify(err), icon: 'none' })
+            },
+          })
+        } catch (e) {
+          console.error('Logout error', e)
+          uni.showToast({ title: '退出失败', icon: 'none' })
         }
-    })
+      }
+    },
+  })
 }
 
 // WebSocket Implementation
@@ -767,157 +876,159 @@ let socketTask = null
 let socketReconnectTimer = null
 
 const connectWebSocket = () => {
-    if (socketTask) return
-    const baseUrl = import.meta.env.VITE_SERVER_BASEURL || 'http://127.0.0.1:8000'
-    const token = userStore.userInfo.token
-    if (!token) return
+  if (socketTask) return
+  const baseUrl = import.meta.env.VITE_SERVER_BASEURL || 'http://127.0.0.1:8000'
+  const token = userStore.userInfo.token
+  if (!token) return
 
-    // Convert http/https to ws/wss
-    const wsUrl = baseUrl.replace(/^http/, 'ws') + `/ws/${token}/`
-    
-    console.log('Connecting to WebSocket:', wsUrl)
+  // Convert http/https to ws/wss
+  const wsUrl = baseUrl.replace(/^http/, 'ws') + `/ws/${token}/`
 
-    socketTask = uni.connectSocket({
-        url: wsUrl,
-        success: () => {
-             console.log('WebSocket connection initiated')
-        },
-        fail: (err) => {
-             console.error('WebSocket connection failed', err)
-             socketTask = null
-             reconnectWebSocket()
+  console.log('Connecting to WebSocket:', wsUrl)
+
+  socketTask = uni.connectSocket({
+    url: wsUrl,
+    success: () => {
+      console.log('WebSocket connection initiated')
+    },
+    fail: (err) => {
+      console.error('WebSocket connection failed', err)
+      socketTask = null
+      reconnectWebSocket()
+    },
+  })
+
+  socketTask.onOpen((res) => {
+    console.log('WebSocket Open', res)
+    // Clear reconnect timer if any
+    if (socketReconnectTimer) {
+      clearTimeout(socketReconnectTimer)
+      socketReconnectTimer = null
+    }
+  })
+
+  socketTask.onMessage((res) => {
+    // console.log('WebSocket Message', res.data)
+    try {
+      const data = JSON.parse(res.data)
+      // Backend sends: {"type": "push.message", "json": {...}}
+      // Or simpler custom format.
+      // Check websocketConfig.pyset_message format or notify_users format.
+      // notify_users sends: { "type": "push.message", "json": { "type": "group_update", "groupId": ... }}
+
+      // Wait, Channel layer group_send calls "push.message" method on Consumer?
+      // "type": "push.message" in group_send usually maps to push_message method in consumer.
+      // In Consumer (MegCenter): `await self.send(text_data=json.dumps(message))` where message is event['json'].
+      // So data received here IS event['json'].
+
+      // 处理实时签到更新
+      if (data.type === 'group_update' || data.contentType === 'group_update') {
+        console.log('Received group update via WebSocket', data)
+        loadLatestGroup()
+      }
+
+      // 处理群组打卡满员
+      if (data.type === 'group_completion') {
+        console.log('Received group completion via WebSocket', data)
+        loadLatestGroup()
+        if (data.greeting) {
+          currentGreeting.value = data.greeting
+          if (greetingPopup.value) {
+            greetingPopup.value.open()
+          }
         }
-    })
+      }
 
-    socketTask.onOpen((res) => {
-        console.log('WebSocket Open', res)
-        // Clear reconnect timer if any
-        if (socketReconnectTimer) {
-             clearTimeout(socketReconnectTimer)
-             socketReconnectTimer = null
+      // 处理离线期间的待发送文案
+      if (data.type === 'pending_greeting') {
+        console.log('Received pending greeting:', data)
+        loadLatestGroup()
+
+        if (data.greeting) {
+          currentGreeting.value = data.greeting
+          if (greetingPopup.value) {
+            greetingPopup.value.open()
+          }
         }
-    })
+      }
 
-    socketTask.onMessage((res) => {
-        // console.log('WebSocket Message', res.data)
-        try {
-            const data = JSON.parse(res.data)
-            // Backend sends: {"type": "push.message", "json": {...}}
-            // Or simpler custom format.
-            // Check websocketConfig.pyset_message format or notify_users format.
-            // notify_users sends: { "type": "push.message", "json": { "type": "group_update", "groupId": ... }}
-            
-            // Wait, Channel layer group_send calls "push.message" method on Consumer?
-            // "type": "push.message" in group_send usually maps to push_message method in consumer.
-            // In Consumer (MegCenter): `await self.send(text_data=json.dumps(message))` where message is event['json'].
-            // So data received here IS event['json'].
-            
-            // 处理实时签到更新
-            if (data.type === 'group_update' || data.contentType === 'group_update') {
-                 console.log('Received group update via WebSocket', data)
-                 loadLatestGroup()
-            }
+      // 处理新提醒通知
+      if (data.type === 'new_notification') {
+        console.log('Received new notification via WebSocket')
+        hasUnreadMessages.value = true
 
-            // 处理群组打卡满员
-            if (data.type === 'group_completion') {
-                 console.log('Received group completion via WebSocket', data)
-                 loadLatestGroup()
-                 if (data.greeting) {
-                     currentGreeting.value = data.greeting
-                     if (greetingPopup.value) {
-                         greetingPopup.value.open()
-                     }
-                 }
-            }
-            
-            // 处理离线期间的待发送文案
-            if (data.type === 'pending_greeting') {
-                console.log('Received pending greeting:', data)
-                loadLatestGroup()
-                
-                if (data.greeting) {
-                    currentGreeting.value = data.greeting
-                    if (greetingPopup.value) {
-                        greetingPopup.value.open()
-                    }
-                }
-            }
+        // 收到新通知时也主动刷新一下数据，确保心形状态是最新的
+        loadLatestGroup()
 
-            // 处理新提醒通知
-            if (data.type === 'new_notification') {
-                console.log('Received new notification via WebSocket')
-                hasUnreadMessages.value = true
-                
-                // 收到新通知时也主动刷新一下数据，确保心形状态是最新的
-                loadLatestGroup()
-
-                if (data.content) {
-                    uni.showToast({
-                        title: data.content,
-                        icon: 'none',
-                        duration: 3000
-                    })
-                }
-            }
-        } catch (e) {
-            console.error('WebSocket message parse error', e)
+        if (data.content) {
+          uni.showToast({
+            title: data.content,
+            icon: 'none',
+            duration: 3000,
+          })
         }
-    })
+      }
+    } catch (e) {
+      console.error('WebSocket message parse error', e)
+    }
+  })
 
-    socketTask.onError((err) => {
-        console.error('WebSocket Error', err)
-        socketTask = null
-        reconnectWebSocket()
-    })
+  socketTask.onError((err) => {
+    console.error('WebSocket Error', err)
+    socketTask = null
+    reconnectWebSocket()
+  })
 
-    socketTask.onClose(() => {
-        console.log('WebSocket Closed')
-        socketTask = null
-        reconnectWebSocket()
-    })
+  socketTask.onClose(() => {
+    console.log('WebSocket Closed')
+    socketTask = null
+    reconnectWebSocket()
+  })
 }
 
 const reconnectWebSocket = () => {
-    if (socketReconnectTimer) return
-    if (!userStore.isLogined) return
-    
-    socketReconnectTimer = setTimeout(() => {
-        console.log('Reconnecting WebSocket...')
-        socketReconnectTimer = null
-        connectWebSocket()
-    }, 5000)
+  if (socketReconnectTimer) return
+  if (!userStore.isLogined) return
+
+  socketReconnectTimer = setTimeout(() => {
+    console.log('Reconnecting WebSocket...')
+    socketReconnectTimer = null
+    connectWebSocket()
+  }, 5000)
 }
 
 const closeWebSocket = () => {
-    if (socketReconnectTimer) {
-        clearTimeout(socketReconnectTimer)
-        socketReconnectTimer = null
-    }
-    if (socketTask) {
-        socketTask.close()
-        socketTask = null
-    }
+  if (socketReconnectTimer) {
+    clearTimeout(socketReconnectTimer)
+    socketReconnectTimer = null
+  }
+  if (socketTask) {
+    socketTask.close()
+    socketTask = null
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 :deep(page),
 page {
-  background-color: #fff !important;
-  height: 100vh !important;
-  width: 100vw !important;
-  overflow: hidden !important;
   position: fixed !important;
   top: 0;
   left: 0;
   box-sizing: border-box !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+  background-color: #fff !important;
 }
-
-
-
 /* Custom icons or tweaks if needed */
-.i-carbon-menu, .i-carbon-information, .i-carbon-checkmark, .i-carbon-favorite, .i-carbon-share, .i-carbon-chevron-left, .i-carbon-chevron-right {
+.i-carbon-menu,
+.i-carbon-information,
+.i-carbon-checkmark,
+.i-carbon-favorite,
+.i-carbon-share,
+.i-carbon-chevron-left,
+.i-carbon-chevron-right {
   display: inline-block;
 }
 </style>
-

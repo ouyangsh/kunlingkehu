@@ -1,8 +1,8 @@
 <template>
   <view class="particle-heart-container" @touchstart="handleTouch" @touchmove="handleTouch" @click="handleHeartClick">
     <canvas 
-      canvas-id="heartCanvas" 
-      id="heartCanvas" 
+      :canvas-id="canvasId" 
+      :id="canvasId" 
       class="heart-canvas"
       :style="{ width: canvasWidth + 'px', height: canvasHeight + 'px' }"
     ></canvas>
@@ -10,9 +10,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick, getCurrentInstance } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, getCurrentInstance, watch } from 'vue'
 
 const props = defineProps({
+  active: { type: Boolean, default: true },
   memberCount: { type: Number, default: 0 },
   checkedCount: { type: Number, default: 0 },
   isMeChecked: { type: Boolean, default: false }
@@ -20,11 +21,26 @@ const props = defineProps({
 
 const emit = defineEmits(['heartClick'])
 
+const instance = getCurrentInstance()
+const canvasId = `heartCanvas_${Math.random().toString(36).substr(2, 9)}`
+
 const canvasWidth = ref(300)
 const canvasHeight = ref(300)
 let ctx = null
 let animationFrame = null
 let particles = []
+let isDestroyed = false
+
+// Watch active prop to restart animation when it becomes true
+watch(() => props.active, (newVal) => {
+  if (ctx && !isDestroyed) {
+    if (animationFrame) {
+      clearTimeout(animationFrame)
+    }
+    // Always draw once when active state changes to ensure visibility
+    animate()
+  }
+})
 
 // Particle Class
 class Particle {
@@ -182,21 +198,25 @@ const handleHeartClick = () => {
     emit('heartClick')
 }
 
-const instance = getCurrentInstance()
-let isDestroyed = false
-
 const animate = () => {
     if (!ctx || isDestroyed) return
     ctx.clearRect(0, 0, canvasWidth.value, canvasHeight.value)
     
     // Draw particles
     for (const p of particles) {
-        p.update(mouseX, mouseY, props.memberCount, props.checkedCount, props.isMeChecked)
+        // Only update particle positions when active
+        if (props.active) {
+            p.update(mouseX, mouseY, props.memberCount, props.checkedCount, props.isMeChecked)
+        }
         p.draw(ctx)
     }
     
     ctx.draw()
-    animationFrame = setTimeout(animate, 16) 
+    
+    // Only continue animation loop when active
+    if (props.active) {
+        animationFrame = setTimeout(animate, 16)
+    }
 }
 
 onMounted(() => {
@@ -206,7 +226,7 @@ onMounted(() => {
       if (data) {
         canvasWidth.value = data.width
         canvasHeight.value = data.height
-        ctx = uni.createCanvasContext('heartCanvas', instance)
+        ctx = uni.createCanvasContext(canvasId, instance)
         initHeart()
         animate()
       }

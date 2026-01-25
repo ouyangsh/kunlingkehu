@@ -37,47 +37,62 @@
     <!-- Content Area: Flexible -->
     <template v-if="isInitLoaded">
       <view
-        v-if="currentGroup && !isForceJoin"
+        v-if="groupList.length > 0 && !isForceJoin"
         class="flex-1 w-full flex flex-col items-center justify-center overflow-hidden"
       >
-        <!-- Main Artistic Card -->
-        <view class="w-full h-0 flex-1 max-h-600rpx rounded-24rpx overflow-hidden mb-30rpx">
-          <ParticleHeart
-            :memberCount="currentGroup?.member_count || 0"
-            :checkedCount="currentGroup?.checked_in_count || 0"
-            :isMeChecked="isCheckedIn"
-            @heartClick="handleCheckIn"
-          />
-        </view>
+        <!-- Swiper for multiple groups -->
+        <swiper
+          class="w-full h-full"
+          :current="currentIndex"
+          @change="handleSwiperChange"
+          :indicator-dots="groupList.length > 1"
+          indicator-color="rgba(0, 0, 0, .3)"
+          indicator-active-color="#ff69b4"
+        >
+          <swiper-item v-for="(group, idx) in groupList" :key="group.id" class="w-full h-full">
+            <view class="w-full h-full flex flex-col items-center justify-center overflow-hidden">
+              <!-- Main Artistic Card -->
+              <view class="w-full h-0 flex-1 max-h-600rpx rounded-24rpx overflow-hidden mb-30rpx">
+                <ParticleHeart
+                  :active="idx === currentIndex"
+                  :memberCount="group?.member_count || 0"
+                  :checkedCount="group?.checked_in_count || 0"
+                  :isMeChecked="group?.is_checked_in_today || false"
+                  @heartClick="handleCheckIn"
+                />
+              </view>
 
-        <view class="flex flex-col items-center mb-20rpx px-40rpx text-center">
-          <view class="text-28rpx text-gray-500 font-500 mb-2rpx">
-            <template v-if="currentGroup?.group_type !== 30">
-              和 {{ displayRelationNames }}
-            </template>
-            已连续爱了
-          </view>
-        </view>
+              <view class="flex flex-col items-center mb-20rpx px-40rpx text-center">
+                <view class="text-28rpx text-gray-500 font-500 mb-2rpx">
+                  <template v-if="group?.group_type !== 30">
+                    和 {{ getDisplayNames(group) }}
+                  </template>
+                  已连续爱了
+                </view>
+              </view>
 
-        <!-- Indicators (Decorative dots) -->
-        <view class="flex space-x-12rpx mb-40rpx">
-          <view class="w-12rpx h-12rpx rounded-full bg-gray-50"></view>
-          <view class="w-12rpx h-12rpx rounded-full bg-gray-100"></view>
-          <view class="w-12rpx h-12rpx rounded-full bg-gray-50"></view>
-        </view>
+              <!-- Indicators (Decorative dots) -->
+              <view class="flex space-x-12rpx mb-40rpx">
+                <view class="w-12rpx h-12rpx rounded-full bg-gray-50"></view>
+                <view class="w-12rpx h-12rpx rounded-full bg-gray-100"></view>
+                <view class="w-12rpx h-12rpx rounded-full bg-gray-50"></view>
+              </view>
 
-        <!-- Days Counter -->
-        <view class="flex items-baseline mb-20rpx">
-          <text class="text-140rpx font-800 text-[#333] tracking-tighter leading-none">
-            {{ streakCount }}
-          </text>
-          <text class="text-32rpx font-700 text-[#333] ml-16rpx">天</text>
-        </view>
+              <!-- Days Counter -->
+              <view class="flex items-baseline mb-20rpx">
+                <text class="text-140rpx font-800 text-[#333] tracking-tighter leading-none">
+                  {{ group?.streak_count || 0 }}
+                </text>
+                <text class="text-32rpx font-700 text-[#333] ml-16rpx">天</text>
+              </view>
 
-        <!-- Total Days (Sub-stat) -->
-        <view class="flex items-center text-gray-300 text-24rpx mb-40rpx">
-          <text>相伴第 {{ totalDays }} 天</text>
-        </view>
+              <!-- Total Days (Sub-stat) -->
+              <view class="flex items-center text-gray-300 text-24rpx mb-40rpx">
+                <text>相伴第 {{ group?.total_days || 0 }} 天</text>
+              </view>
+            </view>
+          </swiper-item>
+        </swiper>
       </view>
 
       <!-- Empty State: No Relationships / Join UI -->
@@ -278,9 +293,9 @@
             <view
               class="flex items-center space-x-36rpx"
               @click="
-                popup.close()
-                showDrawer = false
-                isForceJoin = true
+                popup.close();
+                showDrawer = false;
+                isForceJoin = true;
               "
             >
               <view class="i-carbon-add-alt text-gray-500 text-44rpx" />
@@ -441,8 +456,8 @@
           shape="circle"
           customStyle="background: #4a4e69; border: none; width: 100%; height: 90rpx; font-weight: 700; font-size: 30rpx; letter-spacing: 4rpx;"
           @click="
-            showGreetingPopup = false
-            greetingPopup.close()
+            showGreetingPopup = false;
+            greetingPopup.close();
           "
         >
           收到心意
@@ -486,8 +501,8 @@
         <view
           class="mt-24rpx"
           @click="
-            showEditNamePopup = false
-            editNamePopup.close()
+            showEditNamePopup = false;
+            editNamePopup.close();
           "
         >
           <text class="text-26rpx text-gray-400">取消</text>
@@ -546,8 +561,8 @@
           shape="circle"
           customStyle="width: 100%; height: 80rpx; border: 1px solid #eee; font-size: 28rpx; color: #999;"
           @click="
-            showJoinGroupListPopup = false
-            joinGroupListPopup.close()
+            showJoinGroupListPopup = false;
+            joinGroupListPopup.close();
           "
         >
           取消
@@ -607,7 +622,8 @@ watch(
 const userInfo = ref({})
 const isInitLoaded = ref(false)
 const isForceJoin = ref(false)
-const currentGroup = ref(null)
+const groupList = ref([])
+const currentIndex = ref(0)
 const isCheckedIn = ref(false)
 const showDrawer = ref(false)
 const showRelationModal = ref(false)
@@ -654,6 +670,10 @@ const closeRelationModal = () => {
     relationPopup.value.close()
   }
 }
+
+const currentGroup = computed(() => {
+  return groupList.value[currentIndex.value] || null
+})
 
 const streakCount = computed(() => {
   return currentGroup.value?.streak_count || 0
@@ -716,29 +736,48 @@ const loadLatestGroup = async () => {
   try {
     const res = await getGroupListAPI()
     const list = res.data?.results || res.data || []
-    // 保留所有群组,包括单人模式和新创建的群组
+    groupList.value = list
 
     if (list.length > 0) {
-      // Check for pinned group
+      // Check for pinned group and set as current index
       const pId = uni.getStorageSync('pinnedGroupId')
-      let item = list[0]
-
       if (pId) {
-        const pinnedItem = list.find((g) => String(g.id) === String(pId))
-        if (pinnedItem) {
-          item = pinnedItem
+        const pinnedIndex = list.findIndex((g) => String(g.id) === String(pId))
+        if (pinnedIndex !== -1) {
+          currentIndex.value = pinnedIndex
         }
       }
-
-      currentGroup.value = item
-      isCheckedIn.value = item.is_checked_in_today || false
-    } else {
-      currentGroup.value = null
+      isCheckedIn.value = list[currentIndex.value]?.is_checked_in_today || false
     }
   } catch (e) {
     console.error(e)
   } finally {
     isInitLoaded.value = true
+  }
+}
+
+const handleSwiperChange = (e) => {
+  currentIndex.value = e.detail.current
+  const current = groupList.value[currentIndex.value]
+  if (current) {
+    isCheckedIn.value = current.is_checked_in_today || false
+  }
+}
+
+const getDisplayNames = (group) => {
+  if (!group || !group.member_details) return ''
+
+  const myId = userStore.userInfo?.userId || userStore.userInfo?.id
+  const others = group.member_details.filter((m) => String(m.id) !== String(myId))
+
+  if (others.length === 0) return ''
+
+  if (group.member_count === 2) {
+    const other = others[0]
+    return other?.nickName || other?.nickname || other?.name || '对方'
+  } else {
+    const names = others.slice(0, 2).map((o) => o.nickName || o.nickname || o.name || '成员')
+    return names.join('、') + (others.length > 2 ? ' 等人' : '')
   }
 }
 

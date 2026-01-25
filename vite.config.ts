@@ -31,7 +31,7 @@ import imagemin from './vite-plugins/imagemin'
 console.log('process.platform -> ', process.platform)
 
 // https://vitejs.dev/config/
-export default ({ command, mode }) => {
+export default ({ command, mode }: { command: string; mode: string }) => {
   // console.log(mode === process.env.NODE_ENV) // true
 
   // mode: 区分生产环境还是开发环境
@@ -102,12 +102,12 @@ export default ({ command, mode }) => {
       },
       // 打包分析插件
       mode === 'production' &&
-        visualizer({
-          filename: './node_modules/.cache/visualizer/stats.html',
-          open: true,
-          gzipSize: true,
-          brotliSize: true,
-        }),
+      visualizer({
+        filename: './node_modules/.cache/visualizer/stats.html',
+        open: true,
+        gzipSize: true,
+        brotliSize: true,
+      }),
       // 这个图片压缩插件比较耗时，希望仅在生产环境使用
       // TODO: 缓存每次压缩过的图片，已经压缩过的不再压缩
       imagemin(mode === 'production'),
@@ -148,8 +148,8 @@ export default ({ command, mode }) => {
       watch:
         process.platform === 'win32' // 检测是否为 windows 系统
           ? {
-              exclude: ['node_modules/**', '/__uno.css'],
-            }
+            exclude: ['node_modules/**', '/__uno.css'],
+          }
           : null,
     },
   })

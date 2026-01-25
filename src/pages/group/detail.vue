@@ -44,7 +44,7 @@
               </view>
               <view>
                 <view class="text-28rpx font-500">{{ item.user_name || '无名氏' }}</view>
-                <view class="text-22rpx text-gray-400">连续签到 - 天</view>
+                <view class="text-22rpx text-gray-400">连续签到 {{ item.streak_count || 1 }} 天</view>
               </view>
             </view>
             <view class="text-24rpx text-primary font-bold bg-primary-50 px-20rpx py-6rpx rounded-full">

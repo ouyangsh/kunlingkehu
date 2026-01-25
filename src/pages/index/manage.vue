@@ -120,9 +120,21 @@
             </view>
           </view>
 
-          <!-- Right Icon -->
-          <view class="text-gray-300 ml-20rpx" @click.stop="openDisconnectModal(item)">
-            <view class="i-carbon-information text-48rpx" />
+          <!-- Right Icon Section -->
+          <view class="flex items-center space-x-24rpx ml-20rpx">
+            <!-- Visibility Toggle (Only for Owned Friendship groups) -->
+            <view
+              v-if="activeTab === 1 && item.group_type === 20"
+              class="w-80rpx h-80rpx rounded-full flex items-center justify-center transition-all active:scale-90"
+              :class="item.is_hidden ? 'bg-gray-100 text-gray-400' : 'bg-blue-50 text-blue-400'"
+              @click.stop="handleToggleVisibility(item)"
+            >
+              <view :class="item.is_hidden ? 'i-carbon-view-off' : 'i-carbon-view'" class="text-40rpx" />
+            </view>
+
+            <view class="text-gray-300" @click.stop="openDisconnectModal(item)">
+              <view class="i-carbon-information text-48rpx" />
+            </view>
           </view>
         </view>
 
@@ -162,20 +174,44 @@
     <!-- Disconnection Confirmation Modal -->
     <uv-popup ref="disconnectPopup" mode="center" round="40rpx" :safeAreaInsetBottom="false">
       <view class="w-540rpx bg-white p-60rpx flex flex-col items-center">
-        <text class="text-36rpx font-700 text-[#333] mb-40rpx text-center">
-          是否{{ selectedGroup?.is_owner ? '解散' : '退出'
-          }}{{ selectedGroup?.member_count === 2 ? '和' + getOtherName(selectedGroup) : '该' }}的{{
-            selectedGroup?.member_count === 2 ? '恋人' : '朋友'
-          }}群组
+        <text class="text-36rpx font-700 text-[#333] mb-40rpx text-center px-20rpx">
+          是否{{ selectedGroup?.is_owner ? '解散' : '退出' }}
+          <template v-if="selectedGroup?.group_type === 10">
+            和 {{ getOtherName(selectedGroup) }} 的爱情关系
+          </template>
+          <template v-else-if="selectedGroup?.group_type === 20">
+            该友情群组
+          </template>
+          <template v-else>
+            该单人关系
+          </template>
         </text>
 
-        <view class="w-full h-340rpx rounded-32rpx overflow-hidden mb-30rpx shadow-md">
-          <image
-            src="/static/used-images/home_featured.png"
-            class="w-full h-full"
-            mode="aspectFill"
-          />
-        </view>
+        <!-- Group Profile for Friendship, Image for others -->
+        <template v-if="selectedGroup?.group_type === 20">
+            <view class="w-full bg-[#f8f8f8] rounded-32rpx p-40rpx mb-40rpx flex flex-col items-center justify-center border border-gray-50 shadow-inner">
+                <view class="flex items-center -space-x-20rpx mb-24rpx">
+                    <image 
+                        v-for="(m, idx) in selectedGroup?.member_details" 
+                        :key="idx"
+                        :src="m.avatar || '/static/used-images/default_avatar.png'" 
+                        class="w-100rpx h-100rpx rounded-full border-4 border-white shadow-sm bg-white"
+                        mode="aspectFill"
+                    />
+                </view>
+                <text class="text-30rpx font-600 text-[#333]">{{ selectedGroup?.name }}</text>
+                <text class="text-22rpx text-gray-400 mt-8rpx">{{ selectedGroup?.member_count }} 位成员已加入</text>
+            </view>
+        </template>
+        <template v-else>
+            <view class="w-full h-340rpx rounded-32rpx overflow-hidden mb-40rpx shadow-md">
+                <image
+                    src="/static/used-images/home_featured.png"
+                    class="w-full h-full"
+                    mode="aspectFill"
+                />
+            </view>
+        </template>
 
         <text class="text-26rpx text-gray-400 mb-60rpx">爱意珍贵，每一步都值得深思</text>
 
@@ -211,10 +247,14 @@
         </view>
 
         <view class="w-full grid grid-cols-3 gap-16rpx mb-50rpx">
+          <!-- Love Type -->
           <view
-            class="h-90rpx rounded-24rpx flex flex-col items-center justify-center transition-all bg-white"
-            :class="newGroupType === 10 ? 'ring-2 ring-[#4a4e69] bg-white' : 'opacity-60'"
-            @click="newGroupType = 10"
+            class="h-100rpx rounded-24rpx flex flex-col items-center justify-center transition-all bg-white relative overflow-hidden"
+            :class="[
+              newGroupType === 10 ? 'ring-2 ring-[#4a4e69]' : '',
+              hasLoveGroup ? 'opacity-30' : 'opacity-100 active:scale-95'
+            ]"
+            @click="handleSelectType(10)"
           >
             <view
               class="i-carbon-favorite-filled text-28rpx mb-4rpx"
@@ -226,11 +266,16 @@
             >
               爱情
             </text>
+            <view v-if="hasLoveGroup" class="absolute inset-0 flex items-center justify-center bg-gray-50/50">
+               <view class="i-carbon-locked text-24rpx text-gray-400" />
+            </view>
           </view>
+
+          <!-- Friend Type -->
           <view
-            class="h-90rpx rounded-24rpx flex flex-col items-center justify-center transition-all bg-white"
-            :class="newGroupType === 20 ? 'ring-2 ring-[#4a4e69] bg-white' : 'opacity-60'"
-            @click="newGroupType = 20"
+            class="h-100rpx rounded-24rpx flex flex-col items-center justify-center transition-all bg-white opacity-100 active:scale-95"
+            :class="newGroupType === 20 ? 'ring-2 ring-[#4a4e69]' : ''"
+            @click="handleSelectType(20)"
           >
             <view
               class="i-carbon-user-multiple text-28rpx mb-4rpx"
@@ -243,10 +288,15 @@
               友情
             </text>
           </view>
+
+          <!-- Single Type -->
           <view
-            class="h-90rpx rounded-24rpx flex flex-col items-center justify-center transition-all bg-white"
-            :class="newGroupType === 30 ? 'ring-2 ring-[#4a4e69] bg-white' : 'opacity-60'"
-            @click="newGroupType = 30"
+            class="h-100rpx rounded-24rpx flex flex-col items-center justify-center transition-all bg-white relative overflow-hidden"
+            :class="[
+              newGroupType === 30 ? 'ring-2 ring-[#4a4e69]' : '',
+              hasSingleGroup ? 'opacity-30' : 'opacity-100 active:scale-95'
+            ]"
+            @click="handleSelectType(30)"
           >
             <view
               class="i-carbon-user-avatar text-28rpx mb-4rpx"
@@ -258,6 +308,9 @@
             >
               单人
             </text>
+            <view v-if="hasSingleGroup" class="absolute inset-0 flex items-center justify-center bg-gray-50/50">
+               <view class="i-carbon-locked text-24rpx text-gray-400" />
+            </view>
           </view>
         </view>
 
@@ -277,14 +330,34 @@
         </view>
       </view>
     </uv-popup>
+    <!-- Global Join Request Popup -->
+    <JoinRequestPopup />
   </view>
 </template>
 
 <script setup lang="ts">
-import { getGroupListAPI, quitGroupAPI, createGroupAPI } from '@/service/signin'
+import {
+  getGroupListAPI,
+  quitGroupAPI,
+  createGroupAPI,
+  toggleGroupVisibilityAPI,
+} from '@/service/signin'
 import dayjs from 'dayjs'
 import { useUserStore } from '@/store'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
+import { onUnload } from '@dcloudio/uni-app'
+import JoinRequestPopup from '@/components/JoinRequestPopup.vue'
+import { useGlobalStore } from '@/store/global'
+
+const globalStore = useGlobalStore()
+
+// 核心：监听全局刷新信号
+watch(() => globalStore.refreshId, (newVal) => {
+    if (newVal > 0) {
+        console.log('管理页响应全局刷新信号:', newVal)
+        fetchGroups()
+    }
+})
 
 const userStore = useUserStore()
 const groupList = ref([])
@@ -305,6 +378,21 @@ const filteredGroupList = computed(() => {
     return groupList.value.filter((item) => item.is_owner)
   }
 })
+
+const hasLoveGroup = computed(() => groupList.value.some((g) => g.group_type === 10))
+const hasSingleGroup = computed(() => groupList.value.some((g) => g.group_type === 30))
+
+const handleSelectType = (type: number) => {
+  if (type === 10 && hasLoveGroup.value) {
+    uni.showToast({ title: '您已拥有一个爱情关系，无法再次创建', icon: 'none' })
+    return
+  }
+  if (type === 30 && hasSingleGroup.value) {
+    uni.showToast({ title: '您已拥有一个单人关系，无法再次创建', icon: 'none' })
+    return
+  }
+  newGroupType.value = type
+}
 
 // Create Group
 const createGroupPopup = ref(null)
@@ -399,6 +487,37 @@ const getOtherName = (item) => {
   return otherMember?.nickName || otherMember?.nickname || otherMember?.name || '对方'
 }
 
+const handleToggleVisibility = async (item) => {
+  if (item.group_type === 10 || item.group_type === 30) {
+    uni.showToast({ title: '当前关系类型不支持隐藏', icon: 'none' })
+    return
+  }
+
+  const actionText = item.is_hidden ? '显示' : '隐藏'
+  const content = item.is_hidden
+    ? '显示后，别人搜索您的账号可以看到并申请加入该关系。'
+    : '隐藏后，别人搜索您的账号将看不到该关系。'
+
+  uni.showModal({
+    title: `确认${actionText}`,
+    content: content,
+    success: async (res) => {
+      if (res.confirm) {
+        uni.showLoading({ title: '设置中...' })
+        try {
+          await toggleGroupVisibilityAPI(item.id)
+          uni.showToast({ title: '设置成功', icon: 'success' })
+          fetchGroups()
+        } catch (e) {
+          uni.showToast({ title: e.msg || '操作失败', icon: 'none' })
+        } finally {
+          uni.hideLoading()
+        }
+      }
+    },
+  })
+}
+
 const fetchGroups = async () => {
   try {
     const res = await getGroupListAPI()
@@ -438,6 +557,10 @@ const getDaysCount = (item) => {
 
 onMounted(() => {
   fetchGroups()
+})
+
+onUnload(() => {
+  // logic
 })
 </script>
 

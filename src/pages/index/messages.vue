@@ -125,6 +125,16 @@ const handleMessageClick = (item) => {
         markNotificationReadAPI(item.id).catch(e => console.error('Mark read failed:', e))
     }
     
+    // 增加一个内容包含判断作为降级方案（兼容旧数据）
+    const isJoinRelated = item.notice_type === 20 || 
+                         item.notice_type === 40 || 
+                         (item.content && item.content.includes('申请加入'))
+
+    // 如果是申请类消息，直接返回，不展示“进入空间”弹窗
+    if (isJoinRelated) {
+        return
+    }
+
     uni.showModal({
         title: '进入空间',
         content: `是否进入与 ${item.sender_name || '家人'} 的专属空间？`,

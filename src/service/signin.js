@@ -149,3 +149,49 @@ export const createGroupAPI = (data) => {
     data,
   })
 }
+
+/**
+ * 切换关系的隐藏/显示状态
+ * @param {number} groupId
+ */
+export const toggleGroupVisibilityAPI = (groupId) => {
+  return http({
+    url: `/api/signin/group/${groupId}/toggle_visibility/`,
+    method: 'POST',
+  })
+}
+
+/**
+ * 获取某个人的所有关系群组
+ * @param {Object} params { user_id?: number; email?: string }
+ */
+export const getUserGroupsAPI = (params) => {
+  return http({
+    url: '/api/signin/group/get_user_groups/',
+    method: 'GET',
+    query: params,
+  })
+}
+
+/**
+ * 发起加入申请
+ * @param {number} groupId 群组ID
+ */
+export const applyToJoinAPI = (groupId) => {
+  return http({
+    url: `/api/signin/group/${groupId}/apply_to_join/`,
+    method: 'POST',
+  })
+}
+
+/**
+ * 处理加入申请 (同意/拒绝)
+ * @param {Object} data { request_id: number; action: 'approve'|'reject'; remark?: string }
+ */
+export const handleJoinRequestAPI = (data) => {
+  return http({
+    url: '/api/signin/group/handle_join_request/',
+    method: 'POST',
+    data,
+  })
+}

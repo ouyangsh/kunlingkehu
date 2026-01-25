@@ -18,6 +18,7 @@ declare module '@vue/runtime-core' {
     FlyHeader: typeof import('./../components/fly-header/fly-header.vue')['default']
     FlyLogin: typeof import('./../components/fly-login/fly-login.vue')['default']
     FlyNavbar: typeof import('./../components/fly-navbar/fly-navbar.vue')['default']
+    JoinRequestPopup: typeof import('./../components/JoinRequestPopup.vue')['default']
     Loading1: typeof import('./../components/qiun-loading/loading1.vue')['default']
     Loading2: typeof import('./../components/qiun-loading/loading2.vue')['default']
     Loading3: typeof import('./../components/qiun-loading/loading3.vue')['default']

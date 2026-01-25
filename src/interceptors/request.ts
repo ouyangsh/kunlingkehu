@@ -39,6 +39,8 @@ const httpInterceptor = {
     // 4. 添加 token 请求头标识
     const userStore = useUserStore()
     const { token } = userStore.userInfo
+    console.log('请求拦截器 - 当前接口基地址:', baseURL)
+    console.log('请求拦截器 - 请求完整URL:', options.url)
     console.log('请求拦截器 - 用户登录状态:', userStore.isLogined)
     console.log('请求拦截器 - Token:', token ? '已设置' : '未设置')
     if (token && !options.url.includes('/api/email_code') && !options.url.includes('/api/email_login')) {

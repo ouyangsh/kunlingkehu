@@ -2,27 +2,39 @@
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import { registerPushCIDAPI } from '@/service/signin'
 import { useUserStore } from '@/store/user'
+import { useGlobalStore } from '@/store/global'
 import { autoLogin } from '@/utils/autoLogin'
 import { setLoginPromise } from '@/utils/loginWaiter'
 
 import { watch } from 'vue'
 
 const userStore = useUserStore()
+const globalStore = useGlobalStore()
 
-// 1. 顶层监听推送消息，确保在 App 启动的第一时间就开始监听
-// #ifdef APP-PLUS
-uni.onPushMessage((res) => {
-  console.log('【收到推送消息核心回调】:', JSON.stringify(res))
-  // 无论什么类型，都先弹出一个简单提示协助排查
-  if (res.type === 'receive') {
-    uni.showModal({
-      title: res.data?.title || '新消息',
-      content: res.data?.content || '您收到一条新消息',
-      showCancel: false,
-    })
-  }
-})
-// #endif
+// 核心：监听全局推送
+const handlePush = (res) => {
+    console.log('【收到推送消息回调】:', JSON.stringify(res))
+    // 触发全局刷新信号（关键）
+    globalStore.triggerRefresh()
+
+    const data = res.data || {}
+    const payload = data.payload || data
+
+    // 针对“通过申请”做特殊提示
+    if (res.type === 'receive' && (payload.type === 'join_approved' || payload.payload?.type === 'join_approved')) {
+         uni.showModal({
+            title: '🎉 关系申请已通过',
+            content: data.content || '您现在可以进入新的空间了',
+            showCancel: false,
+            success: (modalRes) => {
+                if (modalRes.confirm) {
+                    // 再次确认刷新
+                    globalStore.triggerRefresh()
+                }
+            }
+        })
+    }
+}
 
 const registerPush = () => {
   // #ifdef APP-PLUS
@@ -64,6 +76,9 @@ watch(
     console.log('App.vue - 登录状态监听触发:', newVal)
     if (newVal) {
       registerPush()
+      globalStore.connectWebSocket()
+    } else {
+        globalStore.closeWebSocket()
     }
   },
   { immediate: true },
@@ -71,6 +86,9 @@ watch(
 
 onLaunch(async () => {
   console.log('App Launch')
+  // #ifdef APP-PLUS
+  uni.onPushMessage(handlePush)
+  // #endif
   uni.hideTabBar()
 
   // 应用启动时自动登录

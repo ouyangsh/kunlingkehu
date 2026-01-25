@@ -24,7 +24,7 @@
         <view :class="isForceJoin ? 'i-carbon-chevron-left' : 'i-carbon-menu'" class="text-44rpx" />
       </view>
       <text class="text-40rpx font-700 tracking-wider text-[#333]">
-        {{ currentGroup?.member_count === 2 ? 'Love' : 'Family' }}
+        {{ currentGroup ? (currentGroup?.group_type === 30 ? 'Single' : currentGroup?.member_count === 2 ? 'Love' : 'Family') : 'Aileme' }}
       </text>
       <view
         class="absolute right-10rpx top-0 h-full w-100rpx flex items-center justify-center text-gray-400"
@@ -52,7 +52,7 @@
 
         <view class="flex flex-col items-center mb-20rpx px-40rpx text-center">
           <view class="text-28rpx text-gray-500 font-500 mb-2rpx">
-            和 {{ displayRelationNames }} 已连续爱了
+            <template v-if="currentGroup?.group_type !== 30">和 {{ displayRelationNames }} </template>已连续爱了
           </view>
         </view>
 
@@ -142,6 +142,11 @@
           >
             <text class="text-white text-30rpx font-700">进入关系</text>
           </view>
+          
+          <!-- Manual Refresh Fallback -->
+          <view class="pt-20rpx" @click="loadLatestGroup">
+              <text class="text-24rpx text-gray-400 border-b border-gray-200 pb-4rpx">还没看到新关系？点此刷新</text>
+          </view>
         </view>
       </view>
     </template>
@@ -215,7 +220,7 @@
 
         <!-- Remind Link Area -->
         <view
-          v-if="!isCheckedIn || uncompletedCount > 0"
+          v-if="(currentGroup?.group_type !== 30) && (!isCheckedIn || uncompletedCount > 0)"
           class="flex flex-col items-center"
           @click="handleRemind"
         >
@@ -344,9 +349,9 @@
       round="40rpx"
       :safeAreaInsetBottom="false"
     >
-      <view class="w-540rpx bg-white p-40rpx flex flex-col relative overflow-hidden">
+      <view class="w-540rpx bg-white p-40rpx flex flex-col relative overflow-hidden" style="max-height: 80vh;">
         <!-- Modal Header -->
-        <view class="flex items-center justify-center mb-40rpx relative">
+        <view class="flex items-center justify-center mb-30rpx relative flex-shrink-0">
           <text class="text-34rpx font-700 text-[#333]">爱了吗成员关系</text>
           <view
             class="absolute -right-20rpx -top-20rpx p-20rpx text-gray-300 z-10"
@@ -356,17 +361,33 @@
           </view>
         </view>
 
-        <!-- Modal Body Image -->
-        <view class="w-full h-340rpx rounded-32rpx overflow-hidden mb-40rpx shadow-sm">
-          <image
-            src="/static/used-images/home_featured.png"
-            class="w-full h-full"
-            mode="aspectFill"
-          />
-        </view>
+        <!-- Modal Body: Member List (Scrollable) -->
+        <scroll-view scroll-y class="w-full flex-1 mb-30rpx" style="max-height: calc(80vh - 200rpx);">
+            <view class="space-y-24rpx pr-10rpx">
+                <view 
+                    v-for="(member, idx) in currentGroup?.member_details" 
+                    :key="idx"
+                    class="flex items-center justify-between py-10rpx"
+                >
+                    <view class="flex items-center">
+                        <view class="w-70rpx h-70rpx rounded-full bg-gray-50 border-2 border-white shadow-sm overflow-hidden mr-20rpx flex-shrink-0">
+                            <image :src="member.avatar || '/static/used-images/default_avatar.png'" class="w-full h-full" mode="aspectFill" />
+                        </view>
+                        <view class="flex flex-col">
+                            <text class="text-26rpx font-600 text-[#333]">{{ member.name }}</text>
+                            <text class="text-20rpx text-pink-400 font-500">连续爱了 {{ member.streak_count || 1 }} 天</text>
+                        </view>
+                    </view>
+                    <!-- Status Indicator -->
+                    <view class="flex flex-col items-end flex-shrink-0">
+                        <view class="i-carbon-checkmark-filled text-28rpx text-green-400 opacity-60" />
+                    </view>
+                </view>
+            </view>
+        </scroll-view>
 
         <!-- Modal Footer Link -->
-        <view class="flex items-center justify-center" @click="goToManage">
+        <view class="flex items-center justify-center flex-shrink-0" @click="goToManage">
           <text class="text-26rpx text-gray-400 font-500">管理/解除关系 ></text>
         </view>
       </view>
@@ -453,13 +474,69 @@
         </view>
       </view>
     </uv-popup>
+
+    <!-- Join Group List Selection Modal -->
+    <uv-popup
+      ref="joinGroupListPopup"
+      v-model="showJoinGroupListPopup"
+      mode="center"
+      round="48rpx"
+      :safeAreaInsetBottom="false"
+    >
+      <view
+        class="w-600rpx bg-white p-48rpx flex flex-col items-center relative overflow-hidden"
+      >
+        <view class="mb-40rpx flex flex-col items-center">
+          <text class="text-34rpx font-700 text-[#333] mb-12rpx">选择要加入的关系</text>
+          <text class="text-24rpx text-gray-400">请选择一个关系发送加入申请</text>
+        </view>
+
+        <scroll-view scroll-y class="w-full max-h-500rpx mb-40rpx">
+          <view class="space-y-20rpx">
+            <view
+              v-for="g in targetUserGroups"
+              :key="g.id"
+              class="w-full p-30rpx bg-gray-50 rounded-24rpx border border-gray-100 flex items-center justify-between active:bg-gray-100 transition-colors"
+              @click="submitJoinRequest(g)"
+            >
+              <view class="flex flex-col items-start">
+                <text class="text-30rpx font-700 text-[#333] mb-4rpx">{{ g.name }}</text>
+                <view class="flex items-center">
+                   <view class="w-12rpx h-12rpx rounded-full mr-12rpx" 
+                         :class="g.group_type === 10 ? 'bg-pink-400' : 'bg-blue-400'"></view>
+                   <text class="text-22rpx text-gray-400">
+                     {{ g.group_type === 10 ? '爱情' : g.group_type === 20 ? '友情' : '个人' }} · {{ g.member_count }}人
+                   </text>
+                </view>
+              </view>
+              <view class="i-carbon-chevron-right text-gray-300 text-36rpx" />
+            </view>
+            <view v-if="targetUserGroups.length === 0" class="py-40rpx text-center text-gray-300 text-26rpx">
+              该用户暂无公开关系
+            </view>
+          </view>
+        </scroll-view>
+
+        <uv-button
+          type="default"
+          shape="circle"
+          customStyle="width: 100%; height: 80rpx; border: 1px solid #eee; font-size: 28rpx; color: #999;"
+          @click="showJoinGroupListPopup = false; joinGroupListPopup.close();"
+        >
+          取消
+        </uv-button>
+      </view>
+    </uv-popup>
+
+    <!-- Global Join Request Popup -->
+    <JoinRequestPopup />
   </view>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useUserStore } from '@/store'
-import { onLoad, onShow, onHide } from '@dcloudio/uni-app'
+import { onLoad, onShow, onHide, onUnload } from '@dcloudio/uni-app'
 import {
   getGroupListAPI,
   checkInAPI,
@@ -469,12 +546,34 @@ import {
   remindGroupAPI,
   getNotificationsAPI,
   searchUsersAPI,
+  getUserGroupsAPI,
+  applyToJoinAPI,
+  handleJoinRequestAPI,
 } from '@/service/signin'
+import { useGlobalStore } from '@/store/global'
 import ParticleHeart from '@/components/ParticleHeart.vue'
 import BottomNav from '@/components/BottomNav.vue'
+import JoinRequestPopup from '@/components/JoinRequestPopup.vue'
 import dayjs from 'dayjs'
 
 const userStore = useUserStore()
+const globalStore = useGlobalStore()
+
+// 核心：监听全局刷新信号，自动重置界面状态并加载数据
+watch(() => globalStore.refreshId, (newVal) => {
+    if (newVal > 0) {
+        console.log('首页响应全局刷新信号:', newVal)
+        // 1. 关闭搜索/强入模式
+        isForceJoin.value = false
+        
+        // 2. 延迟刷新数据（关键）：防止推送比后端 DB 事务提交更早到达
+        setTimeout(() => {
+            loadLatestGroup()
+            fetchUnreadStatus()
+        }, 800)
+    }
+})
+
 const userInfo = ref({})
 const isInitLoaded = ref(false)
 const isForceJoin = ref(false)
@@ -495,6 +594,15 @@ const newName = ref('')
 const suggestions = ref([])
 const showSuggestions = ref(false)
 let searchTimer = null
+
+// 加入申请相关状态
+const targetUserGroups = ref([])
+const showJoinGroupListPopup = ref(false)
+const joinGroupListPopup = ref(null)
+
+const incomingRequest = ref(null)
+const showApprovePopup = ref(false)
+const approvePopup = ref(null)
 
 const openDrawer = () => {
   showDrawer.value = true
@@ -560,15 +668,18 @@ const fetchUnreadStatus = async () => {
 }
 
 onShow(() => {
-  // Refresh user info from store in case it updated
-  userInfo.value = userStore.userInfo || {}
-  loadLatestGroup()
-  fetchUnreadStatus()
-  connectWebSocket()
+    // Refresh user info from store in case it updated
+    userInfo.value = userStore.userInfo || {}
+    loadLatestGroup()
+    fetchUnreadStatus()
 })
 
-onHide(() => {
-  closeWebSocket()
+onLoad(() => {
+    // onLoad logic
+})
+
+onUnload(() => {
+    // onUnload logic
 })
 
 const loadLatestGroup = async () => {
@@ -732,24 +843,79 @@ const editGroupEmail = () => {
 
 const handleJoin = async () => {
   if (!joinEmail.value) {
-    uni.showToast({ title: '请输入邮箱', icon: 'none' })
+    uni.showToast({ title: '请输入邮箱/用户名', icon: 'none' })
     return
   }
-  if (!joinEmail.value.includes('@')) {
-    uni.showToast({ title: '邮箱格式不正确', icon: 'none' })
-    return
-  }
+  
   try {
-    uni.showLoading({ title: '加入中...' })
-    await joinGroupByEmailAPI({ email: joinEmail.value })
-    uni.showToast({ title: '加入成功', icon: 'success' })
-    joinEmail.value = ''
-    setTimeout(() => {
-      isForceJoin.value = false
-      loadLatestGroup()
-    }, 800)
+    uni.showLoading({ title: '获取关系中...' })
+    // 先获取该用户拥有的群组
+    const res = await getUserGroupsAPI({ email: joinEmail.value })
+    targetUserGroups.value = res.data || []
+    
+    if (targetUserGroups.value.length === 0) {
+      uni.showToast({ title: '该用户目前没有可加入的关系', icon: 'none' })
+      return
+    }
+    
+    // 打开选择弹窗
+    showJoinGroupListPopup.value = true
+    if (joinGroupListPopup.value) {
+      joinGroupListPopup.value.open()
+    }
   } catch (e) {
-    uni.showToast({ title: e.msg || '加入失败', icon: 'none' })
+    uni.showToast({ title: e.msg || '获取失败', icon: 'none' })
+  } finally {
+    uni.hideLoading()
+  }
+}
+
+const submitJoinRequest = async (group) => {
+  try {
+    uni.showLoading({ title: '提交申请中...' })
+    await applyToJoinAPI(group.id)
+    uni.showToast({ title: '申请已发送', icon: 'success' })
+    
+    // 关闭选择窗口
+    showJoinGroupListPopup.value = false
+    if (joinGroupListPopup.value) {
+      joinGroupListPopup.value.close()
+    }
+    
+    // 清空输入
+    joinEmail.value = ''
+    isForceJoin.value = false
+  } catch (e) {
+    uni.showToast({ title: e.msg || '申请失败', icon: 'none' })
+  } finally {
+    uni.hideLoading()
+  }
+}
+
+const processRequest = async (action) => {
+  if (!incomingRequest.value) return
+  
+  try {
+    uni.showLoading({ title: '正在处理...' })
+    await handleJoinRequestAPI({
+      request_id: incomingRequest.value.request_id,
+      action: action
+    })
+    
+    uni.showToast({ title: action === 'approve' ? '已同意' : '已拒绝', icon: 'none' })
+    
+    // 关闭窗口
+    showApprovePopup.value = false
+    if (approvePopup.value) {
+      approvePopup.value.close()
+    }
+    
+    // 如果是同意，直接刷新群组列表
+    if (action === 'approve') {
+       loadLatestGroup()
+    }
+  } catch (e) {
+    uni.showToast({ title: e.msg || '处理失败', icon: 'none' })
   } finally {
     uni.hideLoading()
   }
@@ -967,6 +1133,23 @@ const connectWebSocket = () => {
             duration: 3000,
           })
         }
+      }
+
+      // 处理加入申请 (对接收方)
+      if (data.type === 'join_request') {
+        console.log('Received join request via WebSocket', data)
+        incomingRequest.value = data
+        showApprovePopup.value = true
+        if (approvePopup.value) {
+           approvePopup.value.open()
+        }
+      }
+
+      // 处理申请通过 (对发起方)
+      if (data.type === 'join_approved') {
+        console.log('Join request approved!', data)
+        uni.showToast({ title: data.msg || '加入关系申请已通过', icon: 'success' })
+        loadLatestGroup()
       }
     } catch (e) {
       console.error('WebSocket message parse error', e)

@@ -293,9 +293,9 @@
             <view
               class="flex items-center space-x-36rpx"
               @click="
-                popup.close();
-                showDrawer = false;
-                isForceJoin = true;
+                popup.close()
+                showDrawer = false
+                isForceJoin = true
               "
             >
               <view class="i-carbon-add-alt text-gray-500 text-44rpx" />
@@ -334,12 +334,17 @@
             <view class="bg-[#f2f2f4] rounded-32rpx p-40rpx flex flex-col items-start shadow-sm">
               <text class="text-30rpx font-700 text-[#333] mb-20rpx">每日爱了吗</text>
               <uv-button
-                type="primary"
+                :type="isCheckedIn ? 'info' : 'primary'"
                 shape="circle"
-                customStyle="background: #4a4e69; border: none; width: 100%; height: 80rpx; font-weight: 600; font-size: 28rpx;"
+                :customStyle="
+                  isCheckedIn
+                    ? 'background: #e0e0e6; color: #666; border: none; width: 100%; height: 80rpx; font-weight: 600; font-size: 28rpx;'
+                    : 'background: #4a4e69; border: none; width: 100%; height: 80rpx; font-weight: 600; font-size: 28rpx;'
+                "
+                :disabled="isCheckedIn"
                 @click="handleCheckIn"
               >
-                立即签到
+                {{ isCheckedIn ? '今日已签到' : '立即签到' }}
               </uv-button>
               <text class="text-22rpx text-gray-400 mt-20rpx leading-relaxed">
                 已连续打卡 {{ streakCount }} 天，再打卡 {{ 365 - streakCount }} 天获得奖励
@@ -456,8 +461,8 @@
           shape="circle"
           customStyle="background: #4a4e69; border: none; width: 100%; height: 90rpx; font-weight: 700; font-size: 30rpx; letter-spacing: 4rpx;"
           @click="
-            showGreetingPopup = false;
-            greetingPopup.close();
+            showGreetingPopup = false
+            greetingPopup.close()
           "
         >
           收到心意
@@ -501,8 +506,8 @@
         <view
           class="mt-24rpx"
           @click="
-            showEditNamePopup = false;
-            editNamePopup.close();
+            showEditNamePopup = false
+            editNamePopup.close()
           "
         >
           <text class="text-26rpx text-gray-400">取消</text>
@@ -561,8 +566,8 @@
           shape="circle"
           customStyle="width: 100%; height: 80rpx; border: 1px solid #eee; font-size: 28rpx; color: #999;"
           @click="
-            showJoinGroupListPopup = false;
-            joinGroupListPopup.close();
+            showJoinGroupListPopup = false
+            joinGroupListPopup.close()
           "
         >
           取消
@@ -794,8 +799,11 @@ const handleCheckIn = async () => {
   loadLatestGroup()
 
   if (!currentGroup.value) {
-    uni.showToast({ title: '请先加入一个群组', icon: 'none' })
-    editGroupEmail()
+    // 关闭抽屉
+    showDrawer.value = false
+    if (popup.value) popup.value.close()
+
+    uni.showToast({ title: '请先在页面加入或创建关系', icon: 'none' })
     return
   }
 

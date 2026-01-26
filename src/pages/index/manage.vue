@@ -129,7 +129,10 @@
               :class="item.is_hidden ? 'bg-gray-100 text-gray-400' : 'bg-blue-50 text-blue-400'"
               @click.stop="handleToggleVisibility(item)"
             >
-              <view :class="item.is_hidden ? 'i-carbon-view-off' : 'i-carbon-view'" class="text-40rpx" />
+              <view
+                :class="item.is_hidden ? 'i-carbon-view-off' : 'i-carbon-view'"
+                class="text-40rpx"
+              />
             </view>
 
             <view class="text-gray-300" @click.stop="openDisconnectModal(item)">
@@ -179,38 +182,38 @@
           <template v-if="selectedGroup?.group_type === 10">
             和 {{ getOtherName(selectedGroup) }} 的爱情关系
           </template>
-          <template v-else-if="selectedGroup?.group_type === 20">
-            该友情群组
-          </template>
-          <template v-else>
-            该单人关系
-          </template>
+          <template v-else-if="selectedGroup?.group_type === 20">该友情群组</template>
+          <template v-else>该单人关系</template>
         </text>
 
         <!-- Group Profile for Friendship, Image for others -->
         <template v-if="selectedGroup?.group_type === 20">
-            <view class="w-full bg-[#f8f8f8] rounded-32rpx p-40rpx mb-40rpx flex flex-col items-center justify-center border border-gray-50 shadow-inner">
-                <view class="flex items-center -space-x-20rpx mb-24rpx">
-                    <image 
-                        v-for="(m, idx) in selectedGroup?.member_details" 
-                        :key="idx"
-                        :src="m.avatar || '/static/used-images/default_avatar.png'" 
-                        class="w-100rpx h-100rpx rounded-full border-4 border-white shadow-sm bg-white"
-                        mode="aspectFill"
-                    />
-                </view>
-                <text class="text-30rpx font-600 text-[#333]">{{ selectedGroup?.name }}</text>
-                <text class="text-22rpx text-gray-400 mt-8rpx">{{ selectedGroup?.member_count }} 位成员已加入</text>
+          <view
+            class="w-full bg-[#f8f8f8] rounded-32rpx p-40rpx mb-40rpx flex flex-col items-center justify-center border border-gray-50 shadow-inner"
+          >
+            <view class="flex items-center -space-x-20rpx mb-24rpx">
+              <image
+                v-for="(m, idx) in selectedGroup?.member_details"
+                :key="idx"
+                :src="m.avatar || '/static/used-images/default_avatar.png'"
+                class="w-100rpx h-100rpx rounded-full border-4 border-white shadow-sm bg-white"
+                mode="aspectFill"
+              />
             </view>
+            <text class="text-30rpx font-600 text-[#333]">{{ selectedGroup?.name }}</text>
+            <text class="text-22rpx text-gray-400 mt-8rpx">
+              {{ selectedGroup?.member_count }} 位成员已加入
+            </text>
+          </view>
         </template>
         <template v-else>
-            <view class="w-full h-340rpx rounded-32rpx overflow-hidden mb-40rpx shadow-md">
-                <image
-                    src="/static/used-images/home_featured.png"
-                    class="w-full h-full"
-                    mode="aspectFill"
-                />
-            </view>
+          <view class="w-full h-340rpx rounded-32rpx overflow-hidden mb-40rpx shadow-md">
+            <image
+              src="/static/used-images/home_featured.png"
+              class="w-full h-full"
+              mode="aspectFill"
+            />
+          </view>
         </template>
 
         <text class="text-26rpx text-gray-400 mb-60rpx">爱意珍贵，每一步都值得深思</text>
@@ -252,7 +255,7 @@
             class="h-100rpx rounded-24rpx flex flex-col items-center justify-center transition-all bg-white relative overflow-hidden"
             :class="[
               newGroupType === 10 ? 'ring-2 ring-[#4a4e69]' : '',
-              hasLoveGroup ? 'opacity-30' : 'opacity-100 active:scale-95'
+              hasLoveGroup ? 'opacity-30' : 'opacity-100 active:scale-95',
             ]"
             @click="handleSelectType(10)"
           >
@@ -266,8 +269,11 @@
             >
               爱情
             </text>
-            <view v-if="hasLoveGroup" class="absolute inset-0 flex items-center justify-center bg-gray-50/50">
-               <view class="i-carbon-locked text-24rpx text-gray-400" />
+            <view
+              v-if="hasLoveGroup"
+              class="absolute inset-0 flex items-center justify-center bg-gray-50/50"
+            >
+              <view class="i-carbon-locked text-24rpx text-gray-400" />
             </view>
           </view>
 
@@ -294,7 +300,7 @@
             class="h-100rpx rounded-24rpx flex flex-col items-center justify-center transition-all bg-white relative overflow-hidden"
             :class="[
               newGroupType === 30 ? 'ring-2 ring-[#4a4e69]' : '',
-              hasSingleGroup ? 'opacity-30' : 'opacity-100 active:scale-95'
+              hasSingleGroup ? 'opacity-30' : 'opacity-100 active:scale-95',
             ]"
             @click="handleSelectType(30)"
           >
@@ -308,8 +314,11 @@
             >
               单人
             </text>
-            <view v-if="hasSingleGroup" class="absolute inset-0 flex items-center justify-center bg-gray-50/50">
-               <view class="i-carbon-locked text-24rpx text-gray-400" />
+            <view
+              v-if="hasSingleGroup"
+              class="absolute inset-0 flex items-center justify-center bg-gray-50/50"
+            >
+              <view class="i-carbon-locked text-24rpx text-gray-400" />
             </view>
           </view>
         </view>
@@ -345,19 +354,33 @@ import {
 import dayjs from 'dayjs'
 import { useUserStore } from '@/store'
 import { onMounted, ref, computed, watch } from 'vue'
-import { onUnload } from '@dcloudio/uni-app'
+import { onUnload, onLoad } from '@dcloudio/uni-app'
 import JoinRequestPopup from '@/components/JoinRequestPopup.vue'
 import { useGlobalStore } from '@/store/global'
 
 const globalStore = useGlobalStore()
 
-// 核心：监听全局刷新信号
-watch(() => globalStore.refreshId, (newVal) => {
-    if (newVal > 0) {
-        console.log('管理页响应全局刷新信号:', newVal)
-        fetchGroups()
-    }
+onLoad((query) => {
+  if (query?.openCreate) {
+    // New user auto flow: switch to 'Owned' tab and open modal
+    activeTab.value = 1
+    // Delay slightly to ensure UI is ready
+    setTimeout(() => {
+      openCreateModal()
+    }, 500)
+  }
 })
+
+// 核心：监听全局刷新信号
+watch(
+  () => globalStore.refreshId,
+  (newVal) => {
+    if (newVal > 0) {
+      console.log('管理页响应全局刷新信号:', newVal)
+      fetchGroups()
+    }
+  },
+)
 
 const userStore = useUserStore()
 const groupList = ref([])
@@ -400,7 +423,14 @@ const newGroupName = ref('')
 const newGroupType = ref(10) // Default Love
 
 const goBack = () => {
-  uni.navigateBack()
+  const pages = getCurrentPages()
+  if (pages.length > 1) {
+    uni.navigateBack()
+  } else {
+    uni.reLaunch({
+      url: '/pages/index/index',
+    })
+  }
 }
 
 const handlePin = (id) => {
@@ -500,7 +530,7 @@ const handleToggleVisibility = async (item) => {
 
   uni.showModal({
     title: `确认${actionText}`,
-    content: content,
+    content,
     success: async (res) => {
       if (res.confirm) {
         uni.showLoading({ title: '设置中...' })

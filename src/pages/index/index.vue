@@ -293,30 +293,15 @@
             <view
               class="flex items-center space-x-36rpx"
               @click="
-                popup.close()
-                showDrawer = false
-                isForceJoin = true
+                popup.close();
+                showDrawer = false;
+                isForceJoin = true;
               "
             >
               <view class="i-carbon-add-alt text-gray-500 text-44rpx" />
               <text class="text-30rpx font-500 text-[#444]">加入新的关系</text>
             </view>
-            <!-- <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
-                    <view class="i-carbon-locked text-gray-500 text-44rpx" />
-                    <text class="text-30rpx font-500 text-[#444]">隐私设置</text>
-                </view>
-                <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
-                    <view class="i-carbon-badge text-gray-500 text-44rpx" />
-                    <text class="text-30rpx font-500 text-[#444]">会员中心</text>
-                </view>
-                <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
-                    <view class="i-carbon-help text-gray-500 text-44rpx" />
-                    <text class="text-30rpx font-500 text-[#444]">帮助与反馈</text>
-                </view>
-                <view class="flex items-center space-x-36rpx" @click="uni.showToast({ title: '功能暂未开放，敬请期待', icon: 'none' })">
-                    <view class="i-carbon-settings text-gray-500 text-44rpx" />
-                    <text class="text-30rpx font-500 text-[#444]">设置</text>
-                </view> -->
+
             <view class="flex items-center w-full justify-between" @click="goToMessages">
               <view class="flex items-center space-x-36rpx">
                 <view class="i-carbon-email text-gray-500 text-44rpx" />
@@ -461,8 +446,8 @@
           shape="circle"
           customStyle="background: #4a4e69; border: none; width: 100%; height: 90rpx; font-weight: 700; font-size: 30rpx; letter-spacing: 4rpx;"
           @click="
-            showGreetingPopup = false
-            greetingPopup.close()
+            showGreetingPopup = false;
+            greetingPopup.close();
           "
         >
           收到心意
@@ -506,8 +491,8 @@
         <view
           class="mt-24rpx"
           @click="
-            showEditNamePopup = false
-            editNamePopup.close()
+            showEditNamePopup = false;
+            editNamePopup.close();
           "
         >
           <text class="text-26rpx text-gray-400">取消</text>
@@ -566,8 +551,8 @@
           shape="circle"
           customStyle="width: 100%; height: 80rpx; border: 1px solid #eee; font-size: 28rpx; color: #999;"
           @click="
-            showJoinGroupListPopup = false
-            joinGroupListPopup.close()
+            showJoinGroupListPopup = false;
+            joinGroupListPopup.close();
           "
         >
           取消

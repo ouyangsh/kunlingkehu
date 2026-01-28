@@ -24,6 +24,7 @@ declare module '@vue/runtime-core' {
     Loading3: typeof import('./../components/qiun-loading/loading3.vue')['default']
     Loading4: typeof import('./../components/qiun-loading/loading4.vue')['default']
     Loading5: typeof import('./../components/qiun-loading/loading5.vue')['default']
+    LogoutPopup: typeof import('./../components/LogoutPopup.vue')['default']
     ParticleHeart: typeof import('./../components/ParticleHeart.vue')['default']
     QiunDataCharts: typeof import('./../components/qiun-data-charts/qiun-data-charts.vue')['default']
     QiunError: typeof import('./../components/qiun-error/qiun-error.vue')['default']

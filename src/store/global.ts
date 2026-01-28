@@ -6,6 +6,7 @@ import { handleJoinRequestAPI } from '@/service/signin'
 export const useGlobalStore = defineStore('global', () => {
     const incomingRequest = ref(null)
     const showApprovePopup = ref(false)
+    const showLogoutPopup = ref(false)
     const hasUnreadMessages = ref(false)
     const refreshId = ref(0)
     const socketTask = ref(null)
@@ -121,6 +122,7 @@ export const useGlobalStore = defineStore('global', () => {
     return {
         incomingRequest,
         showApprovePopup,
+        showLogoutPopup,
         hasUnreadMessages,
         refreshId,
         triggerRefresh,

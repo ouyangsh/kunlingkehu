@@ -100,6 +100,14 @@
       </view>
 
       <view class="mt-24rpx text-center text-22rpx text-gray-300">未注册账号将为您自动创建</view>
+      
+      <!-- Privacy Policy Section -->
+      <view class="mt-48rpx flex flex-row items-center justify-center text-22rpx text-gray-400">
+        <text>登录即代表您已阅读并同意</text>
+        <text class="text-[#ff9a9e] px-4rpx" @click="goToPrivacy(10)">《隐私政策》</text>
+        <text>和</text>
+        <text class="text-[#ff9a9e] px-4rpx" @click="goToPrivacy(20)">《用户协议》</text>
+      </view>
     </view>
   </view>
 </template>
@@ -177,6 +185,12 @@ const redirectBack = () => {
   } else {
     uni.reLaunch({ url: '/pages/index/index' })
   }
+}
+
+const goToPrivacy = (type: number) => {
+  uni.navigateTo({
+    url: `/pages/login/privacy?type=${type}`,
+  })
 }
 
 const onSubmit = async () => {

@@ -74,9 +74,11 @@
 import { ref } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { getNotificationsAPI, markAllNotificationsReadAPI, markNotificationReadAPI } from '@/service/signin'
+import { useGlobalStore } from '@/store/global'
 import BottomNav from '@/components/BottomNav.vue'
 import dayjs from 'dayjs'
 
+const globalStore = useGlobalStore()
 const statusBarHeight = uni.getSystemInfoSync().statusBarHeight
 const notifications = ref([])
 const loading = ref(false)
@@ -125,13 +127,23 @@ const handleMessageClick = (item) => {
         markNotificationReadAPI(item.id).catch(e => console.error('Mark read failed:', e))
     }
     
-    // 增加一个内容包含判断作为降级方案（兼容旧数据）
-    const isJoinRelated = item.notice_type === 20 || 
-                         item.notice_type === 40 || 
-                         (item.content && item.content.includes('申请加入'))
+    // 仅对待处理的加入申请（20）触发全局审批弹窗
+    const isJoinRelated = item.notice_type === 20
 
-    // 如果是申请类消息，直接返回，不展示“进入空间”弹窗
+    // 如果是申请类消息，提取信息并触发全局弹窗
     if (isJoinRelated) {
+        globalStore.incomingRequest = {
+            group_name: item.group_name || '未知关系',
+            group_id: item.group,
+            sender_name: item.sender_name || '系统用户',
+            request_id: item.target_id || item.id // 关键修复：优先使用业务对象 ID (JoinRequest ID)
+        }
+        globalStore.showApprovePopup = true
+        return
+    }
+
+    // 如果是被拒绝的消息（40），或者没有关联群组的消息，不做后续弹窗处理
+    if (item.notice_type === 40 || !item.group) {
         return
     }
 

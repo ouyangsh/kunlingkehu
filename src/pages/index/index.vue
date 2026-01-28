@@ -312,6 +312,11 @@
                 class="bg-[#ff4d4f] w-16rpx h-16rpx rounded-full"
               ></view>
             </view>
+            
+            <view class="flex items-center space-x-36rpx" @click="handleLogout">
+              <view class="i-carbon-logout text-gray-500 text-44rpx" />
+              <text class="text-30rpx font-500 text-[#444]">退出登录</text>
+            </view>
           </view>
 
           <!-- Promotion Card Section -->
@@ -338,14 +343,15 @@
           </view>
         </view>
 
-        <!-- Logout Footer -->
+        <!-- Fixed Footer for Deregister -->
         <view
           class="flex items-center justify-center py-40rpx border-t border-gray-50 flex-shrink-0 bg-white pb-100rpx"
-          @click="handleLogout"
+          @click="handleDeregister"
         >
-          <view class="i-carbon-logout text-gray-600 text-40rpx mr-20rpx" />
-          <text class="text-30rpx font-500 text-gray-600">退出登录</text>
+          <view class="i-carbon-user-avatar-filled-blocked text-red-500 text-40rpx mr-20rpx" />
+          <text class="text-30rpx font-500 text-red-500">注销账户</text>
         </view>
+        
         <!-- Bottom Tab Safe Spacer -->
         <view class="w-full h-safe flex-shrink-0 bg-white"></view>
       </view>
@@ -560,8 +566,52 @@
       </view>
     </uv-popup>
 
-    <!-- Global Join Request Popup -->
-    <JoinRequestPopup />
+    <!-- Deregister Confirmation Modal -->
+    <uv-popup
+      ref="deregisterPopup"
+      v-model="showDeregisterPopup"
+      mode="center"
+      round="48rpx"
+      :safeAreaInsetBottom="false"
+    >
+      <view
+        class="w-560rpx bg-[#f2f2f4] p-48rpx flex flex-col items-center relative overflow-hidden"
+      >
+        <view class="mb-32rpx flex flex-col items-center">
+          <text class="text-44rpx mb-16rpx">⚠️</text>
+          <text class="text-32rpx font-700 text-[#333] mb-8rpx">账户注销警告</text>
+          <view class="w-80rpx h-4rpx bg-red-400 rounded-full opacity-20"></view>
+        </view>
+
+        <view class="w-full mb-48rpx text-center px-20rpx">
+          <text class="text-28rpx text-red-500 leading-relaxed font-600">
+            注销后账户将被永久删除，所有数据（包含签到记录、关系绑定等）将无法找回。
+          </text>
+          <view class="mt-20rpx">
+            <text class="text-24rpx text-gray-400">确定要执行此操作吗？</text>
+          </view>
+        </view>
+
+        <uv-button
+          type="error"
+          shape="circle"
+          customStyle="background: #ff4d4f; border: none; width: 100%; height: 90rpx; font-weight: 700; font-size: 28rpx;"
+          @click="confirmDeregister"
+        >
+          确定永久注销
+        </uv-button>
+        
+        <view
+          class="mt-32rpx"
+          @click="
+            showDeregisterPopup = false;
+            deregisterPopup.close();
+          "
+        >
+          <text class="text-26rpx text-gray-400 font-500">点错了，先不注销</text>
+        </view>
+      </view>
+    </uv-popup>
   </view>
 </template>
 
@@ -582,10 +632,10 @@ import {
   applyToJoinAPI,
   handleJoinRequestAPI,
 } from '@/service/signin'
+import { deregisterAPI } from '@/service/auth'
 import { useGlobalStore } from '@/store/global'
 import ParticleHeart from '@/components/ParticleHeart.vue'
 import BottomNav from '@/components/BottomNav.vue'
-import JoinRequestPopup from '@/components/JoinRequestPopup.vue'
 import dayjs from 'dayjs'
 
 const userStore = useUserStore()
@@ -625,6 +675,8 @@ const currentGreeting = ref('')
 const joinEmail = ref('')
 const showEditNamePopup = ref(false)
 const editNamePopup = ref(null)
+const showDeregisterPopup = ref(false)
+const deregisterPopup = ref(null)
 const newName = ref('')
 
 const suggestions = ref([])
@@ -723,21 +775,31 @@ onUnload(() => {
 })
 
 const loadLatestGroup = async () => {
+  // 记录当前正在查看的群组 ID
+  const currentId = groupList.value[currentIndex.value]?.id
+
   try {
     const res = await getGroupListAPI()
     const list = res.data?.results || res.data || []
-    groupList.value = list
-
+    
     if (list.length > 0) {
-      // Check for pinned group and set as current index
-      const pId = uni.getStorageSync('pinnedGroupId')
+      // 优先保留当前 ID，其次尝试从缓存获取
+      const pId = currentId || uni.getStorageSync('pinnedGroupId')
+      let targetIndex = 0
+      
       if (pId) {
-        const pinnedIndex = list.findIndex((g) => String(g.id) === String(pId))
-        if (pinnedIndex !== -1) {
-          currentIndex.value = pinnedIndex
+        const foundIndex = list.findIndex((g) => String(g.id) === String(pId))
+        if (foundIndex !== -1) {
+          targetIndex = foundIndex
         }
       }
-      isCheckedIn.value = list[currentIndex.value]?.is_checked_in_today || false
+      
+      // 先更新数据，再同步索引
+      groupList.value = list
+      currentIndex.value = targetIndex
+      isCheckedIn.value = list[targetIndex]?.is_checked_in_today || false
+    } else {
+      groupList.value = []
     }
   } catch (e) {
     console.error(e)
@@ -751,6 +813,10 @@ const handleSwiperChange = (e) => {
   const current = groupList.value[currentIndex.value]
   if (current) {
     isCheckedIn.value = current.is_checked_in_today || false
+    // 实时更新置顶 ID，确保刷新后能停留在当前查看的空间
+    if (current.id) {
+      uni.setStorageSync('pinnedGroupId', current.id)
+    }
   }
 }
 
@@ -867,7 +933,8 @@ const handleUpdateName = async () => {
       editNamePopup.value.close()
     }
   } catch (e) {
-    uni.showToast({ title: e.msg || '修改失败', icon: 'none' })
+    const errorMsg = e.data?.msg || e.msg || '修改失败'
+    uni.showToast({ title: errorMsg, icon: 'none' })
   } finally {
     uni.hideLoading()
   }
@@ -894,7 +961,8 @@ const editGroupEmail = () => {
             loadLatestGroup()
           }, 500)
         } catch (e) {
-          uni.showToast({ title: e.msg || '加入失败', icon: 'none' })
+          const errorMsg = e.data?.msg || e.msg || '加入失败'
+          uni.showToast({ title: errorMsg, icon: 'none' })
         } finally {
           uni.hideLoading()
         }
@@ -926,7 +994,8 @@ const handleJoin = async () => {
       joinGroupListPopup.value.open()
     }
   } catch (e) {
-    uni.showToast({ title: e.msg || '获取失败', icon: 'none' })
+    const errorMsg = e.data?.msg || e.msg || '获取失败'
+    uni.showToast({ title: errorMsg, icon: 'none' })
   } finally {
     uni.hideLoading()
   }
@@ -948,7 +1017,8 @@ const submitJoinRequest = async (group) => {
     joinEmail.value = ''
     isForceJoin.value = false
   } catch (e) {
-    uni.showToast({ title: e.msg || '申请失败', icon: 'none' })
+    const errorMsg = e.data?.msg || e.msg || '申请失败'
+    uni.showToast({ title: errorMsg, icon: 'none' })
   } finally {
     uni.hideLoading()
   }
@@ -977,7 +1047,8 @@ const processRequest = async (action) => {
       loadLatestGroup()
     }
   } catch (e) {
-    uni.showToast({ title: e.msg || '处理失败', icon: 'none' })
+    const errorMsg = e.data?.msg || e.msg || '处理失败'
+    uni.showToast({ title: errorMsg, icon: 'none' })
   } finally {
     uni.hideLoading()
   }
@@ -1065,38 +1136,69 @@ const handleRemind = async () => {
 }
 
 const handleLogout = () => {
-  uni.showModal({
-    title: '确认退出',
-    content: '确定要清除缓存并退出登录吗？',
-    success: (res) => {
-      if (res.confirm) {
-        try {
-          // Stop WebSocket
-          closeWebSocket()
+  globalStore.showLogoutPopup = true
+}
 
-          // Clear store using available methods
-          userStore.clearUserInfo()
-          userStore.reset()
-          // Clear local storage
-          uni.clearStorageSync()
-          // Redirect
-          uni.reLaunch({
-            url: '/pages/login/index',
-            success: () => {
-              console.log('Redirect to login success')
-            },
-            fail: (err) => {
-              console.error('Redirect to login failed', err)
-              uni.showToast({ title: '跳转失败: ' + JSON.stringify(err), icon: 'none' })
-            },
-          })
-        } catch (e) {
-          console.error('Logout error', e)
-          uni.showToast({ title: '退出失败', icon: 'none' })
-        }
-      }
-    },
-  })
+const handleDeregister = () => {
+  showDeregisterPopup.value = true
+  if (deregisterPopup.value) {
+    deregisterPopup.value.open()
+  }
+}
+
+const confirmDeregister = async () => {
+  showDeregisterPopup.value = false
+  if (deregisterPopup.value) {
+    deregisterPopup.value.close()
+  }
+  
+  uni.showLoading({ title: '正在注销账户' })
+  try {
+    await deregisterAPI()
+    uni.hideLoading()
+    uni.showToast({
+      title: '账户已成功注销',
+      icon: 'success',
+      duration: 2000,
+    })
+    setTimeout(() => {
+      performCleanup()
+    }, 2000)
+  } catch (e) {
+    uni.hideLoading()
+    uni.showToast({
+      title: e.msg || '注销失败，请稍后重试',
+      icon: 'none',
+    })
+  }
+}
+
+const performCleanup = () => {
+  try {
+    // Stop WebSocket
+    closeWebSocket()
+
+    // Clear store
+    userStore.clearUserInfo()
+    if (userStore.reset) userStore.reset()
+    
+    // Clear local storage
+    uni.clearStorageSync()
+    
+    // Redirect
+    uni.reLaunch({
+      url: '/pages/login/index',
+      success: () => {
+        console.log('Redirect to login success')
+      },
+      fail: (err) => {
+        console.error('Redirect to login failed', err)
+        uni.showToast({ title: '跳转失败: ' + JSON.stringify(err), icon: 'none' })
+      },
+    })
+  } catch (e) {
+    console.error('Cleanup error', e)
+  }
 }
 
 // WebSocket Implementation

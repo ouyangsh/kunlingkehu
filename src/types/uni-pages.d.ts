@@ -10,7 +10,8 @@ interface NavigateToOptions {
        "/pages/group/list" |
        "/pages/index/manage" |
        "/pages/index/messages" |
-       "/pages/login/index";
+       "/pages/login/index" |
+       "/pages/login/privacy";
 }
 interface RedirectToOptions extends NavigateToOptions {}
 

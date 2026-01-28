@@ -8,7 +8,7 @@ import { http } from '@/utils/http'
  */
 export const logoutAPI = () => {
   return http({
-    url: '/logout',
+    url: '/api/logout/',
     method: 'POST',
   })
 }
@@ -58,5 +58,28 @@ export const emailLoginAPI = (params) => {
     url: '/api/email_login/',
     method: 'POST',
     data: params,
+  })
+}
+
+/**
+ * 账户注销
+ * @returns {Promise}
+ */
+export const deregisterAPI = () => {
+  return http({
+    url: '/api/system/user/deregister/',
+    method: 'POST',
+  })
+}
+/**
+ * 获取协议与条款
+ * @param {number} type 10: 隐私政策, 20: 用户协议
+ * @returns {Promise}
+ */
+export const getAgreementAPI = (type) => {
+  return http({
+    url: '/api/signin/agreement/',
+    method: 'GET',
+    data: { type },
   })
 }

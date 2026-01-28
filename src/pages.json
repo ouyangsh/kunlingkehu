@@ -75,6 +75,14 @@
         "backgroundColorTop": "#fffcfc",
         "disableScroll": true
       }
+    },
+    {
+      "path": "pages/login/privacy",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "协议详情",
+        "backgroundColor": "#fff"
+      }
     }
   ],
   "subPackages": []

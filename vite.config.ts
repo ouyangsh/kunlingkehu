@@ -49,6 +49,7 @@ export default ({ command, mode }: { command: string; mode: string }) => {
   console.log('isH5: ', process.env.UNI_PLATFORM === 'h5') // 得到 mp-weixin, h5, app 等
 
   return defineConfig({
+    base: env.VITE_APP_PUBLIC_BASE || '/',
     envDir: './env', // 自定义env目录
 
     plugins: [

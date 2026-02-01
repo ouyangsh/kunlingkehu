@@ -97,7 +97,7 @@
 
       <!-- Empty State: No Relationships / Join UI -->
       <view
-        v-else
+        v-if="!groupList.length"
         class="flex-1 w-full flex flex-col items-center justify-center px-60rpx text-center box-border"
       >
         <view class="i-carbon-user-multiple text-120rpx text-gray-200 mb-40rpx" />
@@ -216,25 +216,17 @@
                 }}
               </template>
               <template v-else>
-                {{ uncompletedCount > 0 ? `${uncompletedCount}人未完成` : '今日已完成' }}
+                {{ uncompletedCount > 0 ? `${uncompletedCount}人未完成` : '今日打卡完成' }}
               </template>
             </text>
           </view>
 
-          <!-- Restart Button -->
+          <!-- Calendar Button -->
           <view
             class="w-90rpx h-90rpx rounded-full bg-[#fcfcfc] border border-gray-50 flex items-center justify-center shadow-[0_4rpx_20rpx_rgb(0,0,0,0.02)] transition-all"
-            @click="handleCheckIn"
+            @click="goToCalendar"
           >
-            <image
-              :src="
-                isCheckedIn && uncompletedCount === 0
-                  ? '/static/used-images/checkin_restart_icon.png'
-                  : '/static/used-images/checkin_restart_inactive_icon.png'
-              "
-              class="w-48rpx h-48rpx"
-              mode="aspectFit"
-            />
+            <view class="i-carbon-calendar-heat-map text-48rpx text-pink-400" />
           </view>
         </view>
 
@@ -711,6 +703,10 @@ const closeRelationModal = () => {
   if (relationPopup.value) {
     relationPopup.value.close()
   }
+}
+
+const goToCalendar = () => {
+  uni.navigateTo({ url: '/pages/signin-calendar/index' })
 }
 
 const currentGroup = computed(() => {

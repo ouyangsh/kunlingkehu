@@ -83,6 +83,13 @@
         "navigationBarTitleText": "协议详情",
         "backgroundColor": "#fff"
       }
+    },
+    {
+      "path": "pages/signin-calendar/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "打卡日历"
+      }
     }
   ],
   "subPackages": []

@@ -37,6 +37,7 @@ if (isMp) {
   )
 }
 export default defineConfig({
+  safelist: ['i-carbon-calendar', 'i-carbon-calendar-heat-map'],
   presets: [
     ...presets,
     // 支持图标，需要搭配图标库，eg: @iconify-json/carbon, 使用 `<button class="i-carbon-sun dark:i-carbon-moon" />`

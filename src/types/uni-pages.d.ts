@@ -11,7 +11,8 @@ interface NavigateToOptions {
        "/pages/index/manage" |
        "/pages/index/messages" |
        "/pages/login/index" |
-       "/pages/login/privacy";
+       "/pages/login/privacy" |
+       "/pages/signin-calendar/index";
 }
 interface RedirectToOptions extends NavigateToOptions {}
 

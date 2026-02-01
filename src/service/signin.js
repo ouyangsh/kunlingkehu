@@ -195,3 +195,15 @@ export const handleJoinRequestAPI = (data) => {
     data,
   })
 }
+
+/**
+ * 获取打卡日历数据
+ * @param {number} year
+ * @param {number} month
+ */
+export const getCheckInCalendarAPI = (year, month) => {
+  return http({
+    url: `/api/signin/group/calendar/?year=${year}&month=${month}`,
+    method: 'GET',
+  })
+}

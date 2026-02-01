@@ -97,7 +97,7 @@
 
       <!-- Empty State: No Relationships / Join UI -->
       <view
-        v-if="!groupList.length"
+        v-if="!groupList.length || isForceJoin"
         class="flex-1 w-full flex flex-col items-center justify-center px-60rpx text-center box-border"
       >
         <view class="i-carbon-user-multiple text-120rpx text-gray-200 mb-40rpx" />

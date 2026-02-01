@@ -39,10 +39,10 @@
 
         <!-- Today Button -->
         <view 
-          class="w-80rpx h-80rpx rounded-24rpx bg-white border border-gray-100 shadow-sm flex items-center justify-center active:scale-95 transition-all"
+          class="px-24rpx h-70rpx rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center active:scale-95 transition-all text-[#333]"
           @click="goToToday"
         >
-           <view class="i-carbon-calendar-heat-map text-40rpx text-pink-400"/>
+           <text class="text-26rpx font-600">回到今天</text>
         </view>
       </view>
 

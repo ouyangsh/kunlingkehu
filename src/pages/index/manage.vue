@@ -350,6 +350,7 @@ import {
   quitGroupAPI,
   createGroupAPI,
   toggleGroupVisibilityAPI,
+  getLimitAPI,
 } from '@/service/signin'
 import dayjs from 'dayjs'
 import { useUserStore } from '@/store'
@@ -388,6 +389,7 @@ const loading = ref(true)
 const pinnedGroupId = ref(uni.getStorageSync('pinnedGroupId'))
 const disconnectPopup = ref(null)
 const selectedGroup = ref(null)
+const friendLimit = ref(5) // 默认值
 
 // Tabs and Filtering
 const tabs = ['我加入的', '我创建的']
@@ -493,6 +495,15 @@ const handleCreateGroup = async () => {
     uni.showToast({ title: '请输入关系名称', icon: 'none' })
     return
   }
+  
+  // 友情群组数量限制检查
+  if (newGroupType.value === 20) {
+    const friendCount = groupList.value.filter(g => g.group_type === 20).length
+    if (friendCount >= friendLimit.value) {
+      uni.showToast({ title: `友情群组数量已达上限(${friendLimit.value}个)`, icon: 'none' })
+      return
+    }
+  }
 
   uni.showLoading({ title: '正在创建...' })
   try {
@@ -587,6 +598,14 @@ const getDaysCount = (item) => {
 
 onMounted(() => {
   fetchGroups()
+  // 获取友情群组限制
+  getLimitAPI().then(res => {
+    if(res.data && res.data.limit) {
+      friendLimit.value = res.data.limit
+    }
+  }).catch(() => {
+      // ignore
+  })
 })
 
 onUnload(() => {

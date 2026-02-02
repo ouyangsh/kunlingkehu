@@ -139,6 +139,16 @@ export const searchUsersAPI = (q) => {
 }
 
 /**
+ * 获取友情群组限制数量
+ */
+export const getLimitAPI = () => {
+  return http({
+    url: '/api/signin/group/get_limit/',
+    method: 'GET',
+  })
+}
+
+/**
  * 创建群组/关系
  * @param {Object} data { name: string, group_type: number }
  */

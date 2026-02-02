@@ -16,7 +16,7 @@ const {
 } = env
 
 export default defineManifestConfig({
-  name: VITE_APP_TITLE,
+  name: 'aileme',
   appid: VITE_UNI_APPID,
   description: '',
   versionName: '1.0.0',
@@ -67,11 +67,18 @@ export default defineManifestConfig({
           '<uses-permission android:name="android.permission.WAKE_LOCK"/>',
           '<uses-permission android:name="android.permission.FLASHLIGHT"/>',
           '<uses-feature android:name="android.hardware.camera"/>',
+          '<uses-permission android:name="android.permission.INTERNET"/>',
           '<uses-permission android:name="android.permission.WRITE_SETTINGS"/>',
         ],
       },
       /* ios打包配置 */
-      ios: {},
+      ios: {
+        plist: {
+          NSAppTransportSecurity: {
+            NSAllowsArbitraryLoads: true,
+          },
+        },
+      },
       /* SDK配置 */
       sdkConfigs: {
         push: {
@@ -82,8 +89,36 @@ export default defineManifestConfig({
       },
       /* 图标配置 */
       icons: {
-        android: {},
-        ios: {},
+        android: {
+          hdpi: 'static/icons/android_hdpi.png',
+          xhdpi: 'static/icons/android_xhdpi.png',
+          xxhdpi: 'static/icons/android_xxhdpi.png',
+          xxxhdpi: 'static/icons/android_xxxhdpi.png',
+        },
+        ios: {
+          appstore: 'static/icons/ios_appstore_1024.png',
+          ipad: {
+            app: 'static/icons/ios_ipad_76_1x.png',
+            'app@2x': 'static/icons/ios_ipad_76_2x.png',
+            'notification': 'static/icons/ios_iphone_20_2x.png',
+            'notification@2x': 'static/icons/ios_iphone_40_2x.png',
+            'proapp@2x': 'static/icons/ios_ipad_83.5_2x.png',
+            'settings': 'static/icons/ios_iphone_29_2x.png',
+            'settings@2x': 'static/icons/ios_iphone_29_2x.png',
+            'spotlight': 'static/icons/ios_iphone_40_2x.png',
+            'spotlight@2x': 'static/icons/ios_iphone_40_2x.png',
+          },
+          iphone: {
+            'app@2x': 'static/icons/ios_iphone_60_2x.png',
+            'app@3x': 'static/icons/ios_iphone_60_3x.png',
+            'notification@2x': 'static/icons/ios_iphone_20_2x.png',
+            'notification@3x': 'static/icons/ios_iphone_20_3x.png',
+            'settings@2x': 'static/icons/ios_iphone_29_2x.png',
+            'settings@3x': 'static/icons/ios_iphone_29_3x.png',
+            'spotlight@2x': 'static/icons/ios_iphone_40_2x.png',
+            'spotlight@3x': 'static/icons/ios_iphone_40_3x.png',
+          },
+        },
       },
     },
   },
